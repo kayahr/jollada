@@ -17,6 +17,9 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
 
+    /** The child nodes */
+    private final Nodes nodes = new Nodes(this);
+
 
     /**
      * @see de.ailis.collada.model.ScopeIdentifiable#getSid()
@@ -59,5 +62,30 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable
     public void setId(final String id)
     {
         super.setId(id);
+    }
+
+
+    /**
+     * Returns the child nodes.
+     *
+     * @return The child nodes. Never null. May be empty.
+     */
+
+    public Nodes getNodes()
+    {
+        return this.nodes;
+    }
+
+
+
+    /**
+     * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
+     */
+
+    @Override
+    void setDocument(final Document document)
+    {
+        super.setDocument(document);
+        this.nodes.setDocument(document);
     }
 }

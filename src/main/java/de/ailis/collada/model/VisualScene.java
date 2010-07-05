@@ -23,6 +23,9 @@ public class VisualScene extends Scope implements Identifiable, AssetElement
     /** Asset-management information */
     private Asset asset;
 
+    /** The list of nodes */
+    private final Nodes nodes = new Nodes(this);
+
 
     /**
      * Returns the id.
@@ -98,5 +101,29 @@ public class VisualScene extends Scope implements Identifiable, AssetElement
     public void setAsset(final Asset asset)
     {
         this.asset = asset;
+    }
+
+
+    /**
+     * Returns the list of nodes.
+     *
+     * @return The list of nodes. Never null. May be empty.
+     */
+
+    public Nodes getNodes()
+    {
+        return this.nodes;
+    }
+
+
+    /**
+     * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
+     */
+
+    @Override
+    void setDocument(final Document document)
+    {
+        super.setDocument(document);
+        this.nodes.setDocument(document);
     }
 }
