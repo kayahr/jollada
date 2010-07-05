@@ -1,0 +1,24 @@
+Not implemented:
+
+  * All extra content.
+  * library_animation_clips
+  * library_animations
+  * library_articulated_systems
+  * library_cameras
+  * library_controllers
+  * library_effects
+  * library_force_fields
+  * library_formulas
+  * library_geometries
+  * library_images
+  * library_joints
+  * library_kinematics_models
+  * library_kinematics_scene
+  * library_lights
+  * library_materials
+  * library_nodes
+  * library_physics_materials
+  * library_physics_models
+  * library_physics_scenes
+  * evaluate_scene
+  

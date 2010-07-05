@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <artifactId>maven-java</artifactId>
+    <groupId>de.ailis.maven</groupId>
+    <version>2</version>
+  </parent>   
+  
+  <groupId>de.ailis.jollada</groupId>
+  <artifactId>jollada</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Jollada</name>
+  <url>http://www.ailis.de/~k/projects/xadrian/</url>
+  <description>Collada DOM API for Java</description>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>Klaus Reimer</name>
+    <url>http://www.ailis.de/~k/</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <id>k</id>
+      <name>Klaus Reimer</name>
+      <email>k@ailis.de</email>
+      <roles>
+        <role>Architect</role>
+      </roles>
+      <timezone>+1</timezone>
+      <url>http://www.ailis.de/~k/</url>
+    </developer>        
+  </developers>
+  
+  <scm>
+    <url>http://www.ailis.de/~k/hg/java/jollada</url>
+    <connection>scm:hg:http://www.ailis.de/~k/hg/java/jollada</connection>
+    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/jollada</developerConnection>
+  </scm>  
+  
+  <repositories>  
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>http://www.ailis.de/nexus/content/groups/public/</url>
+    </repository>
+    <repository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>http://www.ailis.de/nexus/content/groups/public-snapshots/</url>
+      <snapshots />
+    </repository>
+  </repositories>
+   
+  <distributionManagement>
+    <site>
+      <id>project-website</id>
+      <url>scpexe://k@ailis.de/home/k/public_html/projects/jollada/</url>
+    </site>
+  </distributionManagement>
+  
+  <dependencies>
+    <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.5</version>
+        <type>jar</type>
+        <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
