@@ -5,14 +5,6 @@
 
 package de.ailis.collada.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import de.ailis.collada.model.support.AssetElement;
-import de.ailis.collada.model.support.DocumentArrayList;
-import de.ailis.collada.model.support.DocumentAware;
-import de.ailis.collada.model.support.DocumentList;
-import de.ailis.collada.model.support.Identifiable;
 
 
 /**
@@ -21,14 +13,11 @@ import de.ailis.collada.model.support.Identifiable;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualSceneLibrary implements Serializable, AssetElement,
-    Identifiable, DocumentAware
+public class VisualSceneLibrary extends Element implements AssetElement,
+        Identifiable
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
-
-    /** The id. */
-    private String id;
 
     /** The name. */
     private String name;
@@ -37,14 +26,11 @@ public class VisualSceneLibrary implements Serializable, AssetElement,
     private Asset asset;
 
     /** The list of visual scenes. */
-    private final DocumentList<VisualScene> visualScenes = new DocumentArrayList<VisualScene>();
-
-    /** The document this library is currently connected to */
-    private Document document;
+    private final VisualScenes visualScenes = new VisualScenes();
 
 
     /**
-     * @see de.ailis.collada.model.support.AssetElement#getAsset()
+     * @see de.ailis.collada.model.AssetElement#getAsset()
      */
 
     @Override
@@ -84,18 +70,13 @@ public class VisualSceneLibrary implements Serializable, AssetElement,
      * Sets the id.
      *
      * @param id
-     *            The id to set. null to unset.
+     *            The id to set. Null to unset.
      */
 
     @Override
     public void setId(final String id)
     {
-        if (id != this.id)
-        {
-            if (this.document != null) this.document.unregister(this);
-            this.id = id;
-            if (this.document != null) this.document.register(this);
-        }
+        super.setId(id);
     }
 
 
@@ -130,36 +111,32 @@ public class VisualSceneLibrary implements Serializable, AssetElement,
      * @return The list of visual scenes. Never null. May be empty.
      */
 
-    public List<VisualScene> getVisualScenes()
+    public VisualScenes getVisualScenes()
     {
         return this.visualScenes;
     }
 
 
     /**
-     * @see DocumentAware#getDocument()
+     * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
      */
 
     @Override
-    public Document getDocument()
+    void setDocument(final Document document)
     {
-        return this.document;
+        super.setDocument(document);
+        this.visualScenes.setDocument(document);
     }
 
 
     /**
-     * @see DocumentAware#setDocument(Document)
+     * @see de.ailis.collada.model.Element#setScope(de.ailis.collada.model.Scope)
      */
 
     @Override
-    public void setDocument(final Document document)
+    void setScope(final Scope scope)
     {
-        if (document != this.document)
-        {
-            if (this.document != null) this.document.unregister(this);
-            this.document = document;
-            if (document != null) document.register(this);
-            this.visualScenes.setDocument(document);
-        }
+        super.setScope(scope);
+        this.visualScenes.setScope(scope);
     }
 }

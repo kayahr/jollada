@@ -3,9 +3,8 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.collada.model.support;
+package de.ailis.collada.model;
 
-import de.ailis.collada.model.Asset;
 
 
 /**

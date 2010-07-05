@@ -3,12 +3,10 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.collada.model.support;
+package de.ailis.collada.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import de.ailis.collada.model.Document;
 
 
 /**
@@ -19,8 +17,7 @@ import de.ailis.collada.model.Document;
  *            The array element type
  */
 
-public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
-    implements DocumentList<T>
+public class Elements<T extends Element> extends ArrayList<T>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -28,29 +25,36 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     /** The document. */
     private Document document;
 
+    /** The scope */
+    private Scope scope;
+
 
     /**
-     * Constructs a new document array list without an initial document.
+     * Constructs a new document array list without an initial document and
+     * scope.
      */
 
-    public DocumentArrayList()
+    public Elements()
     {
-        this(null);
+        this(null, null);
     }
 
 
     /**
-     * Constructs a new document array list with the specified initial document.
+     * Constructs a new document array list with the specified initial document
+     * and scope.
      *
      * @param document
-     *            The document. May be empty to start without an initial
-     *            document
+     *            The document. May be null to start without an initial document
+     * @param scope
+     *            The scope. May be null to start without an initial scope
      */
 
-    public DocumentArrayList(final Document document)
+    public Elements(final Document document, final Scope scope)
     {
         super();
         this.document = document;
+        this.scope = scope;
     }
 
 
@@ -63,8 +67,10 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     {
         final T oldElement = get(index);
         oldElement.setDocument(null);
+        oldElement.setScope(null);
         super.set(index, element);
         element.setDocument(this.document);
+        element.setScope(this.scope);
         return oldElement;
     }
 
@@ -78,6 +84,7 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     {
         final boolean result = super.add(element);
         element.setDocument(this.document);
+        element.setScope(this.scope);
         return result;
     }
 
@@ -91,6 +98,7 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     {
         super.add(index, element);
         element.setDocument(this.document);
+        element.setScope(this.scope);
     }
 
 
@@ -103,6 +111,7 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     {
         final T element = super.remove(index);
         element.setDocument(null);
+        element.setScope(null);
         return element;
     }
 
@@ -116,7 +125,11 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     {
         final boolean result = super.remove(element);
         if (result)
-            ((DocumentAware) element).setDocument(this.document);
+        {
+            final Element e = (Element) element;
+            e.setDocument(null);
+            e.setScope(null);
+        }
         return result;
     }
 
@@ -129,7 +142,10 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     public void clear()
     {
         for (final T element : this)
+        {
             element.setDocument(null);
+            element.setScope(null);
+        }
         super.clear();
     }
 
@@ -141,8 +157,11 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     @Override
     public boolean addAll(final Collection<? extends T> elements)
     {
-        for (final DocumentAware element : elements)
+        for (final Element element : elements)
+        {
             element.setDocument(this.document);
+            element.setScope(this.scope);
+        }
         return super.addAll(elements);
     }
 
@@ -155,8 +174,11 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
     public boolean addAll(final int index,
         final Collection<? extends T> elements)
     {
-        for (final DocumentAware element : elements)
+        for (final Element element : elements)
+        {
             element.setDocument(this.document);
+            element.setScope(this.scope);
+        }
         return super.addAll(index, elements);
     }
 
@@ -171,8 +193,12 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
         final boolean result = super.removeAll(elements);
         if (result)
             for (final Object element : elements)
-                if (element instanceof DocumentAware && contains(element))
-                    ((DocumentAware) element).setDocument(null);
+                if (element instanceof Element && contains(element))
+                {
+                    final Element e = (Element) element;
+                    e.setDocument(null);
+                    e.setScope(null);
+                }
         return result;
     }
 
@@ -187,32 +213,42 @@ public class DocumentArrayList<T extends DocumentAware> extends ArrayList<T>
         final boolean result = super.retainAll(elements);
         if (result)
             for (final Object element : elements)
-                if (element instanceof DocumentAware && !contains(element))
-                    ((DocumentAware) element).setDocument(null);
+                if (element instanceof Element && !contains(element))
+                {
+                    final Element e = (Element) element;
+                    e.setDocument(null);
+                    e.setScope(null);
+                }
         return result;
     }
 
 
     /**
-     * @see DocumentList#getDocument()
+     * Sets the document of all current and all future elements.
+     *
+     * @param document
+     *            The document to set. Null to unset.
      */
 
-    @Override
-    public Document getDocument()
-    {
-        return this.document;
-    }
-
-
-    /**
-     * @see DocumentList#setDocument(Document)
-     */
-
-    @Override
     public void setDocument(final Document document)
     {
         this.document = document;
         for (final T element : this)
             element.setDocument(document);
+    }
+
+
+    /**
+     * Sets the scope of all current and all future elements.
+     *
+     * @param scope
+     *            The scope to set. Null to unset.
+     */
+
+    public void setScope(final Scope scope)
+    {
+        this.scope = scope;
+        for (final T element : this)
+            element.setScope(scope);
     }
 }

@@ -5,61 +5,23 @@
 
 package de.ailis.collada.model;
 
-import java.io.Serializable;
-
-import de.ailis.collada.model.support.DocumentAware;
-import de.ailis.collada.model.support.Identifiable;
-
 
 /**
- * VisualScene
+ * A visual scene.
  *
- * @author k
+ * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualScene implements Serializable, DocumentAware, Identifiable
+public class VisualScene extends Scope implements Identifiable, AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
-
-    /** The document this element is currently connected to */
-    private Document document;
-
-    /** The visual scene id. */
-    private String id;
 
     /** The scene name. */
     private String name;
 
     /** Asset-management information */
     private Asset asset;
-
-
-    /**
-     * @see DocumentAware#getDocument()
-     */
-
-    @Override
-    public Document getDocument()
-    {
-        return this.document;
-    }
-
-
-    /**
-     * @see DocumentAware#setDocument(Document)
-     */
-
-    @Override
-    public void setDocument(final Document document)
-    {
-        if (document != this.document)
-        {
-            if (this.document != null) this.document.unregister(this);
-            this.document = document;
-            if (document != null) document.register(this);
-        }
-    }
 
 
     /**
@@ -85,12 +47,7 @@ public class VisualScene implements Serializable, DocumentAware, Identifiable
     @Override
     public void setId(final String id)
     {
-        if (id != this.id)
-        {
-            if (this.document != null) this.document.unregister(this);
-            this.id = id;
-            if (this.document != null) this.document.register(this);
-        }
+        super.setId(id);
     }
 
 

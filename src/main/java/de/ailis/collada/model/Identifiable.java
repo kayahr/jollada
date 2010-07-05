@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.collada.model.support;
+package de.ailis.collada.model;
 
 
 /**
@@ -32,4 +32,13 @@ public interface Identifiable
      */
 
     public void setId(String id);
+
+
+    /**
+     * Returns the document the element belongs to.
+     *
+     * @return The document the element belongs to. May be null if not set.
+     */
+
+    public Document getDocument();
 }

@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.collada.model.support;
+package de.ailis.collada.model;
 
 import java.util.List;
 

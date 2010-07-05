@@ -7,12 +7,7 @@ package de.ailis.collada.model;
 
 import java.net.URI;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import de.ailis.collada.model.support.AssetElement;
-import de.ailis.collada.model.support.DocumentArrayList;
-import de.ailis.collada.model.support.Identifiable;
 
 
 /**
@@ -36,11 +31,10 @@ public class Document implements AssetElement
     private final Asset asset = new Asset();
 
     /** The list of visual scene libraries */
-    private final List<VisualSceneLibrary> visualSceneLibraries = new DocumentArrayList<VisualSceneLibrary>(
-        this);
+    private final VisualSceneLibraries visualSceneLibraries = new VisualSceneLibraries(this);
 
     /** The ID-to-Element mapping */
-    private final Map<String, Identifiable> idMap = new HashMap<String, Identifiable>();
+    private final Map<String, Element> idMap = new HashMap<String, Element>();
 
 
     /**
@@ -60,16 +54,15 @@ public class Document implements AssetElement
      *            The element to register
      */
 
-    void register(final Identifiable element)
+    void register(final Element element)
     {
+        if (element == null)
+            throw new IllegalArgumentException("element must not be null");
+
         final String id = element.getId();
-        if (id != null)
-        {
-            if (this.idMap.containsKey(id))
-                throw new IllegalStateException(
-                    "Document already contains an element with id '" + id + "'");
-            this.idMap.put(id, element);
-        }
+        if (id != null) if (this.idMap.put(id, element) != null)
+            throw new InternalError(
+                "Element with id '" + id + "' already registered");
     }
 
 
@@ -80,16 +73,15 @@ public class Document implements AssetElement
      *            The element to unregister
      */
 
-    void unregister(final Identifiable element)
+    void unregister(final Element element)
     {
+        if (element == null)
+            throw new IllegalArgumentException("element must not be null");
+
         final String id = element.getId();
-        if (id != null)
-        {
-            if (!this.idMap.containsKey(id))
-                throw new IllegalStateException(
-                    "Document does not contain an element with id '" + id + "'");
-            this.idMap.remove(id);
-        }
+        if (id != null) if (this.idMap.remove(id) == null)
+            throw new InternalError(
+                "Element with id '" + id + "' not registered");
     }
 
 
@@ -146,7 +138,7 @@ public class Document implements AssetElement
 
 
     /**
-     * @see de.ailis.collada.model.support.AssetElement#getAsset()
+     * @see de.ailis.collada.model.AssetElement#getAsset()
      */
 
     @Override
@@ -162,8 +154,22 @@ public class Document implements AssetElement
      * @return The list of visual scene libraries. Never null. May be empty.
      */
 
-    public List<VisualSceneLibrary> getVisualSceneLibraries()
+    public Elements<VisualSceneLibrary> getVisualSceneLibraries()
     {
         return this.visualSceneLibraries;
+    }
+
+
+    /**
+     * Searches for the element with the specified ID and returns it.
+     *
+     * @param id
+     *            The ID of the element to search.
+     * @return The found element. Null when not found.
+     */
+
+    public Element getById(final String id)
+    {
+        return this.idMap.get(id);
     }
 }
