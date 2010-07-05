@@ -22,6 +22,16 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable
 
 
     /**
+     * Constructor.
+     */
+
+    public Node()
+    {
+        addDocumentAware(this.nodes);
+    }
+
+
+    /**
      * @see de.ailis.collada.model.ScopeIdentifiable#getSid()
      */
 

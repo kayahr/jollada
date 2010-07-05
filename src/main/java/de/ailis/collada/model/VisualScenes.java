@@ -6,6 +6,7 @@
 package de.ailis.collada.model;
 
 
+
 /**
  * List of visual scenes.
  *

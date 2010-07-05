@@ -30,6 +30,16 @@ public class VisualSceneLibrary extends Element implements AssetElement,
 
 
     /**
+     * Constructor
+     */
+
+    public VisualSceneLibrary()
+    {
+        addDocumentAware(this.visualScenes);
+    }
+
+
+    /**
      * @see de.ailis.collada.model.AssetElement#getAsset()
      */
 
@@ -114,29 +124,5 @@ public class VisualSceneLibrary extends Element implements AssetElement,
     public VisualScenes getVisualScenes()
     {
         return this.visualScenes;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
-     */
-
-    @Override
-    void setDocument(final Document document)
-    {
-        super.setDocument(document);
-        this.visualScenes.setDocument(document);
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Element#setScope(de.ailis.collada.model.Scope)
-     */
-
-    @Override
-    void setScope(final Scope scope)
-    {
-        super.setScope(scope);
-        this.visualScenes.setScope(scope);
     }
 }

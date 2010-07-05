@@ -28,6 +28,16 @@ public class VisualScene extends Scope implements Identifiable, AssetElement
 
 
     /**
+     * Constructor
+     */
+
+    public VisualScene()
+    {
+        addDocumentAware(this.nodes);
+    }
+
+
+    /**
      * Returns the id.
      *
      * @return The id. May be null if not set.
@@ -113,17 +123,5 @@ public class VisualScene extends Scope implements Identifiable, AssetElement
     public Nodes getNodes()
     {
         return this.nodes;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
-     */
-
-    @Override
-    void setDocument(final Document document)
-    {
-        super.setDocument(document);
-        this.nodes.setDocument(document);
     }
 }

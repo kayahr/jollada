@@ -6,6 +6,10 @@
 package de.ailis.collada.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.ailis.collada.model.support.DocumentAware;
 
 
 /**
@@ -31,6 +35,9 @@ public abstract class Element implements Serializable
     /** The element scope id (Only used by scope identifiables */
     protected String sid;
 
+    /** The elements which needs to be informed about document reference changes */
+    private final List<DocumentAware> documentAwares = new ArrayList<DocumentAware>();
+
 
     /**
      * Sets the document.
@@ -45,8 +52,24 @@ public abstract class Element implements Serializable
         {
             if (this.document != null) this.document.unregister(this);
             this.document = document;
+            for (final DocumentAware aware : this.documentAwares)
+                aware.setDocument(document);
             if (document != null) document.register(this);
         }
+    }
+
+
+    /**
+     * Adds a document-aware which is then automatically kept up-to-date with
+     * the document reference.
+     *
+     * @param documentAware
+     *            The element to inform about document reference changes.
+     */
+
+    protected void addDocumentAware(final DocumentAware documentAware)
+    {
+        this.documentAwares.add(documentAware);
     }
 
 

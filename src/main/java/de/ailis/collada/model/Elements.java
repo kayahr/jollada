@@ -8,6 +8,8 @@ package de.ailis.collada.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import de.ailis.collada.model.support.DocumentAware;
+
 
 /**
  * An array list containing document aware elements.
@@ -17,7 +19,8 @@ import java.util.Collection;
  *            The array element type
  */
 
-public class Elements<T extends Element> extends ArrayList<T>
+public class Elements<T extends Element> extends ArrayList<T> implements
+        DocumentAware
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

@@ -58,7 +58,22 @@ public class DocumentTest
         scene.setId("newscene");
         assertNull(document.getById("scene"));
         assertSame(scene, document.getById("newscene"));
+
+        final Node node1 = new Node();
+        node1.setId("node1");
+
+        final Node node2 = new Node();
+        node2.setId("node2");
+
+        node1.getNodes().add(node2);
+        scene.getNodes().add(node1);
+
+        assertSame(node1, document.getById("node1"));
+        assertSame(node2, document.getById("node2"));
+
         libs.remove(lib2);
         assertNull(document.getById("scenenew"));
+        assertNull(document.getById("node1"));
+        assertNull(document.getById("node2"));
     }
 }
