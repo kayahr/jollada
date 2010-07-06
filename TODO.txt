@@ -1,6 +1,8 @@
 Not implemented:
 
   * All extra content.
+  * library_visual_scenes/visual_scene/evaluate_scene
+
   * library_animation_clips
   * library_animations
   * library_articulated_systems
@@ -20,5 +22,4 @@ Not implemented:
   * library_physics_materials
   * library_physics_models
   * library_physics_scenes
-  * evaluate_scene
   

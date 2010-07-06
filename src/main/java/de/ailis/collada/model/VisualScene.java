@@ -95,6 +95,7 @@ public class VisualScene extends Scope implements Identifiable, AssetElement
      * @return The asset-management information. May be null if not set.
      */
 
+    @Override
     public Asset getAsset()
     {
         return this.asset;

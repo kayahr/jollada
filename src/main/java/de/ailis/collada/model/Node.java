@@ -5,20 +5,39 @@
 
 package de.ailis.collada.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * Node
+ * A scene node.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Node extends Scope implements ScopeIdentifiable, Identifiable
+public class Node extends Scope implements ScopeIdentifiable, Identifiable,
+    AssetElement
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The child nodes */
+    /** The asset-management information. */
+    private Asset asset;
+
+    /** The node name. */
+    private String name;
+
+    /** The child nodes. */
     private final Nodes nodes = new Nodes(this);
+
+    /** The node type. */
+    private NodeType type = NodeType.NODE;
+
+    /** The list of layer names this node belongs to. */
+    private final List<String> layers = new ArrayList<String>();
+
+    /** The list of transformations. */
+    private final Transformations transformations = new Transformations();
 
 
     /**
@@ -87,7 +106,6 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable
     }
 
 
-
     /**
      * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
      */
@@ -97,5 +115,107 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable
     {
         super.setDocument(document);
         this.nodes.setDocument(document);
+    }
+
+
+    /**
+     * Sets the node name.
+     *
+     * @param name
+     *            The node name to set. Null to unset.
+     */
+
+    public void setName(final String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Returns the node name.
+     *
+     * @return The node name. May be null if not set.
+     */
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+
+    /**
+     * Sets the node type.
+     *
+     * @param type
+     *            The node type to set. Must not be null.
+     */
+
+    public void setType(final NodeType type)
+    {
+        if (type == null)
+            throw new IllegalArgumentException("type must not be null");
+        this.type = type;
+    }
+
+
+    /**
+     * Returns the node type.
+     *
+     * @return The node type. Never null.
+     */
+
+    public NodeType getType()
+    {
+        return this.type;
+    }
+
+
+    /**
+     * Returns the list of layer names this node belongs to.
+     *
+     * @return The layer names list. Never null. May be empty.
+     */
+
+    public List<String> getLayers()
+    {
+        return this.layers;
+    }
+
+
+    /**
+     * Returns the asset-management information.
+     *
+     * @return The asset-management information. May be null if not set.
+     */
+
+    @Override
+    public Asset getAsset()
+    {
+        return this.asset;
+    }
+
+
+    /**
+     * Sets the asset-management information.
+     *
+     * @param asset
+     *            The asset-management information to set. Null to unset.
+     */
+
+    public void setAsset(final Asset asset)
+    {
+        this.asset = asset;
+    }
+
+
+    /**
+     * Returns the list of transformations.
+     *
+     * @return The list of transformations. Never null. May be empty.
+     */
+
+    public Transformations getTransformations()
+    {
+        return this.transformations;
     }
 }
