@@ -5,12 +5,12 @@
 
 package de.ailis.collada.model;
 
-import de.ailis.gramath.MutableTuple3f;
-import de.ailis.gramath.Tuple3f;
+import de.ailis.gramath.MutableVector3f;
+import de.ailis.gramath.Vector3f;
 
 
 /**
- * Translate transformation.
+ * Scale transformation.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
@@ -20,33 +20,33 @@ public class ScaleTransform extends Transformation
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
 
-    /** The translation axis */
-    private final MutableTuple3f translation = new MutableTuple3f();
+    /** The rotation axis */
+    private final MutableVector3f scaling = new MutableVector3f();
 
 
     /**
-     * Sets the translation.
+     * Sets the scaling.
      *
-     * @param translation
-     *            The translation to set. Must not be null.
+     * @param scaling
+     *            The scaling. Must not be null.
      */
 
-    public void setTranslation(final Tuple3f translation)
+    public void setScaling(final Vector3f scaling)
     {
-        if (translation == null)
-            throw new IllegalArgumentException("translation must not be null");
-        this.translation.set(translation);
+        if (scaling == null)
+            throw new IllegalArgumentException("scaling must not be null");
+        this.scaling.set(scaling);
     }
 
 
     /**
-     * Returns the translation.
+     * Returns the scaling.
      *
-     * @return The translation. Never null.
+     * @return The scaling. Never null.
      */
 
-    public MutableTuple3f getTranslation()
+    public MutableVector3f getScaling()
     {
-        return this.translation;
+        return this.scaling;
     }
 }
