@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualScene extends Scope implements Identifiable, AssetElement
+public class VisualScene extends Element implements Identifiable, AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -25,16 +25,6 @@ public class VisualScene extends Scope implements Identifiable, AssetElement
 
     /** The list of nodes */
     private final Nodes nodes = new Nodes(this);
-
-
-    /**
-     * Constructor
-     */
-
-    public VisualScene()
-    {
-        addDocumentAware(this.nodes);
-    }
 
 
     /**

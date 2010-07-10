@@ -5,8 +5,8 @@
 
 package de.ailis.collada.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -16,25 +16,25 @@ import java.util.List;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Asset
+public class Asset implements Serializable
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
     /** The contributors who worked on the parent element */
-    private final List<Contributor> contributors = new ArrayList<Contributor>();
+    private final ArrayList<Contributor> contributors = new ArrayList<Contributor>();
 
-    /** The date and time the parent element was created. */
-    private Date created;
+    /** The creation time stamp. */
+    private long created;
 
-    /** The date and time the parent element was last modified. */
-    private Date modified;
+    /** The time stamp of the last modification. */
+    private long modified;
 
     /** The geographic location. */
     private GeographicLocation geographicLocation;
 
     /** List of keywords */
-    private final List<String> keywords = new ArrayList<String>();
+    private final ArrayList<String> keywords = new ArrayList<String>();
 
     /** Revision information */
     private String revision;
@@ -56,7 +56,7 @@ public class Asset
 
     public Asset()
     {
-        this(new Date());
+        this(System.currentTimeMillis());
     }
 
 
@@ -69,7 +69,7 @@ public class Asset
      *            for the modified time stamp.
      */
 
-    public Asset(final Date created)
+    public Asset(final long created)
     {
         this(created, created);
     }
@@ -80,12 +80,12 @@ public class Asset
      * time stamp set to the specified times.
      *
      * @param created
-     *            The date and time the parent element was created.
+     *            The time stamp when the parent element was created.
      * @param modified
-     *            The date and time the parent element was last modified.
+     *            The time stamp when the parent element was last modified.
      */
 
-    public Asset(final Date created, final Date modified)
+    public Asset(final long created, final long modified)
     {
         this.created = created;
         this.modified = modified;
@@ -93,58 +93,51 @@ public class Asset
 
 
     /**
-     * Returns the date and time the parent element was created.
+     * Returns the creation time stamp.
      *
-     * @return The date and time the parent element was created. Never null.
+     * @return The creation time stamp.
      */
 
-    public Date getCreated()
+    public long getCreated()
     {
         return this.created;
     }
 
 
     /**
-     * Sets the date and time the parent element was created.
+     * Sets the creation time stamp.
      *
      * @param created
-     *            The date and time the parent element was created. Must not be
-     *            null.
+     *            The creation time stamp to set.
      */
 
-    public void setCreated(final Date created)
+    public void setCreated(final long created)
     {
-        if (created == null)
-            throw new IllegalArgumentException("created must not be null");
         this.created = created;
     }
 
 
     /**
-     * Returns the date and time the parent element was last modified.
+     * Returns last modification time stamp.
      *
-     * @return The date and time the parent element was last modified. Never
-     *         null.
+     * @return The last modification time stamp.
      */
 
-    public Date getModified()
+    public long getModified()
     {
         return this.modified;
     }
 
 
     /**
-     * Sets the date and time the parent element was last modified.
+     * Sets the last modification time stamp.
      *
      * @param modified
-     *            The date and time the parent element was last modified. Must
-     *            not be null.
+     *            The last modification time stamp to set.
      */
 
-    public void setModified(final Date modified)
+    public void setModified(final long modified)
     {
-        if (modified == null)
-            throw new IllegalArgumentException("created must not be null");
         this.modified = modified;
     }
 

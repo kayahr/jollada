@@ -1,7 +1,11 @@
 Not implemented:
 
   * All extra content.
-  * library_visual_scenes/visual_scene/evaluate_scene
+  * visual_scene/evaluate_scene
+  * node/instance_controller
+  * instance_material/bind
+  * instance_material/bind_vertex_input
+  * node/instance_node
 
   * library_animation_clips
   * library_animations

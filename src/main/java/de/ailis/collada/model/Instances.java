@@ -7,12 +7,14 @@ package de.ailis.collada.model;
 
 
 /**
- * List of visual scenes.
+ * Base class for instance lists.
  *
  * @author Klaus Reimer (k@ailis.de)
+ * @param <T>
+ *            The instance type
  */
 
-public class VisualScenes extends Elements<VisualScene>
+public abstract class Instances<T extends Instance> extends Elements<T>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -22,11 +24,12 @@ public class VisualScenes extends Elements<VisualScene>
      * Constructor.
      *
      * @param parent
-     *            The parent element
+     *            The parent element. Must not be null.
      */
 
-    VisualScenes(final Element parent)
+    Instances(final Element parent)
     {
         super(parent);
     }
+
 }

@@ -31,13 +31,4 @@ public interface ScopeIdentifiable
      */
 
     public String getSid();
-
-
-    /**
-     * Returns the scope the element is in.
-     *
-     * @return The scope. Null if not set.
-     */
-
-    public Scope getScope();
 }

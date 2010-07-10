@@ -21,12 +21,12 @@ public class VisualSceneLibraries extends Elements<VisualSceneLibrary>
     /**
      * Constructor
      *
-     * @param document
-     *            The document. May be null if not initially set.
+     * @param parent
+     *            The parent element.
      */
 
-    public VisualSceneLibraries(final Document document)
+    VisualSceneLibraries(final Element parent)
     {
-        super(document, null);
+        super(parent);
     }
 }

@@ -26,17 +26,7 @@ public class VisualSceneLibrary extends Element implements AssetElement,
     private Asset asset;
 
     /** The list of visual scenes. */
-    private final VisualScenes visualScenes = new VisualScenes();
-
-
-    /**
-     * Constructor
-     */
-
-    public VisualSceneLibrary()
-    {
-        addDocumentAware(this.visualScenes);
-    }
+    private final VisualScenes visualScenes = new VisualScenes(this);
 
 
     /**

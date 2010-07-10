@@ -8,56 +8,38 @@ package de.ailis.collada.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import de.ailis.collada.model.support.DocumentAware;
-
 
 /**
- * An array list containing document aware elements.
+ * An array list containing parent aware elements.
  *
  * @author Klaus Reimer (k@ailis.de)
  * @param <T>
  *            The array element type
  */
 
-public class Elements<T extends Element> extends ArrayList<T> implements
-        DocumentAware
+public class Elements<T extends Element> extends ArrayList<T>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The document. */
-    private Document document;
-
-    /** The scope */
-    private Scope scope;
+    /** The parent element to use for all list items. */
+    private final Element parent;
 
 
     /**
-     * Constructs a new document array list without an initial document and
-     * scope.
-     */
-
-    public Elements()
-    {
-        this(null, null);
-    }
-
-
-    /**
-     * Constructs a new document array list with the specified initial document
-     * and scope.
+     * Constructs a new element list with the specified parent element to be
+     * used by all list items.
      *
-     * @param document
-     *            The document. May be null to start without an initial document
-     * @param scope
-     *            The scope. May be null to start without an initial scope
+     * @param parent
+     *            The parent element. Must not be null.
      */
 
-    public Elements(final Document document, final Scope scope)
+    Elements(final Element parent)
     {
         super();
-        this.document = document;
-        this.scope = scope;
+        if (parent == null)
+            throw new IllegalArgumentException("parent must not be null");
+        this.parent = parent;
     }
 
 
@@ -69,11 +51,9 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     public T set(final int index, final T element)
     {
         final T oldElement = get(index);
-        oldElement.setDocument(null);
-        oldElement.setScope(null);
+        this.parent.removeChild(oldElement);
         super.set(index, element);
-        element.setDocument(this.document);
-        element.setScope(this.scope);
+        this.parent.addChild(element);
         return oldElement;
     }
 
@@ -86,8 +66,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     public boolean add(final T element)
     {
         final boolean result = super.add(element);
-        element.setDocument(this.document);
-        element.setScope(this.scope);
+        this.parent.addChild(element);
         return result;
     }
 
@@ -100,8 +79,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     public void add(final int index, final T element)
     {
         super.add(index, element);
-        element.setDocument(this.document);
-        element.setScope(this.scope);
+        this.parent.addChild(element);
     }
 
 
@@ -113,8 +91,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     public T remove(final int index)
     {
         final T element = super.remove(index);
-        element.setDocument(null);
-        element.setScope(null);
+        this.parent.removeChild(element);
         return element;
     }
 
@@ -130,8 +107,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
         if (result)
         {
             final Element e = (Element) element;
-            e.setDocument(null);
-            e.setScope(null);
+            this.parent.removeChild(e);
         }
         return result;
     }
@@ -146,8 +122,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     {
         for (final T element : this)
         {
-            element.setDocument(null);
-            element.setScope(null);
+            this.parent.removeChild(element);
         }
         super.clear();
     }
@@ -162,8 +137,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     {
         for (final Element element : elements)
         {
-            element.setDocument(this.document);
-            element.setScope(this.scope);
+            this.parent.addChild(element);
         }
         return super.addAll(elements);
     }
@@ -179,8 +153,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
     {
         for (final Element element : elements)
         {
-            element.setDocument(this.document);
-            element.setScope(this.scope);
+            this.parent.addChild(element);
         }
         return super.addAll(index, elements);
     }
@@ -199,8 +172,7 @@ public class Elements<T extends Element> extends ArrayList<T> implements
                 if (element instanceof Element && contains(element))
                 {
                     final Element e = (Element) element;
-                    e.setDocument(null);
-                    e.setScope(null);
+                    this.parent.removeChild(e);
                 }
         return result;
     }
@@ -219,40 +191,8 @@ public class Elements<T extends Element> extends ArrayList<T> implements
                 if (element instanceof Element && !contains(element))
                 {
                     final Element e = (Element) element;
-                    e.setDocument(null);
-                    e.setScope(null);
+                    this.parent.removeChild(e);
                 }
         return result;
-    }
-
-
-    /**
-     * Sets the document of all current and all future elements.
-     *
-     * @param document
-     *            The document to set. Null to unset.
-     */
-
-    @Override
-    public void setDocument(final Document document)
-    {
-        this.document = document;
-        for (final T element : this)
-            element.setDocument(document);
-    }
-
-
-    /**
-     * Sets the scope of all current and all future elements.
-     *
-     * @param scope
-     *            The scope to set. Null to unset.
-     */
-
-    public void setScope(final Scope scope)
-    {
-        this.scope = scope;
-        for (final T element : this)
-            element.setScope(scope);
     }
 }

@@ -14,19 +14,19 @@ package de.ailis.collada.model;
 
 public class Nodes extends Elements<Node>
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
 
     /**
      * Constructor.
      *
-     * @param scope
-     *            The scope.
+     * @param parent
+     *            The parent element.
      */
 
-    public Nodes(final Scope scope)
+    Nodes(final Element parent)
     {
-        super(null, scope);
+        super(parent);
     }
 }

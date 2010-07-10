@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Document implements AssetElement
+public class Document extends Element implements AssetElement
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -31,10 +31,14 @@ public class Document implements AssetElement
     private final Asset asset = new Asset();
 
     /** The list of visual scene libraries */
-    private final VisualSceneLibraries visualSceneLibraries = new VisualSceneLibraries(this);
+    private final VisualSceneLibraries visualSceneLibraries = new VisualSceneLibraries(
+        this);
 
     /** The ID-to-Element mapping */
     private final Map<String, Element> idMap = new HashMap<String, Element>();
+
+    /** The scene */
+    private Scene scene;
 
 
     /**
@@ -44,6 +48,22 @@ public class Document implements AssetElement
     public Document()
     {
         this(Version.VERSION_1_5_0);
+    }
+
+
+    /**
+     * Creates a new empty COLLADA document with the specified version.
+     *
+     * @param version
+     *            The COLLADA document version. Must not be null.
+     */
+
+    public Document(final Version version)
+    {
+        if (version == null)
+            throw new IllegalArgumentException("version must not be null");
+        this.version = version;
+        setDocument(this);
     }
 
 
@@ -58,6 +78,7 @@ public class Document implements AssetElement
     {
         if (element == null)
             throw new IllegalArgumentException("element must not be null");
+
 
         final String id = element.getId();
         if (id != null) if (this.idMap.put(id, element) != null)
@@ -82,21 +103,6 @@ public class Document implements AssetElement
         if (id != null) if (this.idMap.remove(id) == null)
             throw new InternalError(
                 "Element with id '" + id + "' not registered");
-    }
-
-
-    /**
-     * Creates a new empty COLLADA document with the specified version.
-     *
-     * @param version
-     *            The COLLADA document version. Must not be null.
-     */
-
-    public Document(final Version version)
-    {
-        if (version == null)
-            throw new IllegalArgumentException("version must not be null");
-        this.version = version;
     }
 
 
@@ -171,5 +177,46 @@ public class Document implements AssetElement
     public Element getById(final String id)
     {
         return this.idMap.get(id);
+    }
+
+
+    /**
+     * Returns the scene.
+     *
+     * @return The scene. May be empty if not set.
+     */
+
+    public Scene getScene()
+    {
+        return this.scene;
+    }
+
+
+    /**
+     * Sets the scene.
+     *
+     * @param scene
+     *            The scene to set. Null to unset.
+     */
+
+    public void setScene(final Scene scene)
+    {
+        if (scene != this.scene)
+        {
+            // Remove old scene if present
+            if (this.scene != null) removeChild(this.scene);
+
+            if (scene != null)
+            {
+                // Detach new scene from previous document
+                final Document document = scene.getDocument();
+                if (document != null) document.setScene(null);
+
+                // Add scene
+                addChild(scene);
+            }
+
+            this.scene = scene;
+        }
     }
 }

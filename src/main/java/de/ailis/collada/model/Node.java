@@ -15,7 +15,7 @@ import java.util.List;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Node extends Scope implements ScopeIdentifiable, Identifiable,
+public class Node extends Element implements ScopeIdentifiable, Identifiable,
     AssetElement
 {
     /** Serial version UID. */
@@ -23,6 +23,9 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable,
 
     /** The asset-management information. */
     private Asset asset;
+
+    /** The scope ID */
+    private String sid;
 
     /** The node name. */
     private String name;
@@ -34,24 +37,25 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable,
     private NodeType type = NodeType.NODE;
 
     /** The list of layer names this node belongs to. */
-    private final List<String> layers = new ArrayList<String>();
+    private final ArrayList<String> layers = new ArrayList<String>();
 
     /** The list of transformations. */
-    private final Transformations transformations = new Transformations();
+    private final Transformations transformations = new Transformations(this);
+
+    /** The list of camera instances. */
+    private final CameraInstances cameraInstances = new CameraInstances(this);
+
+    /** The list of geometry instances. */
+    private final GeometryInstances geometryInstances = new GeometryInstances(this);
+
+    /** The list of light instances. */
+    private final LightInstances lightInstances = new LightInstances(this);
 
 
     /**
-     * Constructor.
-     */
-
-    public Node()
-    {
-        addDocumentAware(this.nodes);
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.ScopeIdentifiable#getSid()
+     * Returns the scope ID.
+     *
+     * @return The scope ID. May be null if not set.
      */
 
     @Override
@@ -62,13 +66,16 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable,
 
 
     /**
-     * @see de.ailis.collada.model.ScopeIdentifiable#setSid(java.lang.String)
+     * Sets the scope ID.
+     *
+     * @param sid
+     *            The scope ID to set. Null to unset.
      */
 
     @Override
     public void setSid(final String sid)
     {
-        super.setSid(sid);
+        this.sid = sid;
     }
 
 
@@ -103,18 +110,6 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable,
     public Nodes getNodes()
     {
         return this.nodes;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Element#setDocument(de.ailis.collada.model.Document)
-     */
-
-    @Override
-    void setDocument(final Document document)
-    {
-        super.setDocument(document);
-        this.nodes.setDocument(document);
     }
 
 
@@ -217,5 +212,41 @@ public class Node extends Scope implements ScopeIdentifiable, Identifiable,
     public Transformations getTransformations()
     {
         return this.transformations;
+    }
+
+
+    /**
+     * Returns the list of camera instances.
+     *
+     * @return The list of camera instances. Never null. May be empty.
+     */
+
+    public CameraInstances getCameraInstances()
+    {
+        return this.cameraInstances;
+    }
+
+
+    /**
+     * Returns the list of camera instances.
+     *
+     * @return The list of camera instances. Never null. May be empty.
+     */
+
+    public GeometryInstances getGeometryInstances()
+    {
+        return this.geometryInstances;
+    }
+
+
+    /**
+     * Returns the list of light instances.
+     *
+     * @return The list of light instances. Never null. May be empty.
+     */
+
+    public LightInstances getLightInstances()
+    {
+        return this.lightInstances;
     }
 }

@@ -18,6 +18,9 @@ public abstract class Transformation extends Element implements ScopeIdentifiabl
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
 
+    /** The scope ID */
+    private String sid;
+
 
     /**
      * Returns the scope ID.
@@ -42,6 +45,6 @@ public abstract class Transformation extends Element implements ScopeIdentifiabl
     @Override
     public void setSid(final String sid)
     {
-        super.setSid(sid);
+        this.sid = sid;
     }
 }

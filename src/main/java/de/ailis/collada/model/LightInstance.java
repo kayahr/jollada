@@ -5,28 +5,30 @@
 
 package de.ailis.collada.model;
 
+import java.net.URI;
+
 
 /**
- * List of transformations.
+ * A light instance.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Transformations extends Elements<Transformation>
+public abstract class LightInstance extends Instance
 {
-    /** Serial version UID. */
+    /** Serial version UID */
     private static final long serialVersionUID = 1L;
 
 
     /**
      * Constructor
      *
-     * @param parent
-     *            The parent element
+     * @param url
+     *            The URL of the location of the light element to instantiate.
      */
 
-    Transformations(final Element parent)
+    public LightInstance(final URI url)
     {
-        super(parent);
+        super(url);
     }
 }
