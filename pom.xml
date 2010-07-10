@@ -5,7 +5,7 @@
   <parent>
     <artifactId>maven-java</artifactId>
     <groupId>de.ailis.maven</groupId>
-    <version>2</version>
+    <version>5</version>
   </parent>   
   
   <groupId>de.ailis.jollada</groupId>
@@ -53,12 +53,13 @@
       <id>ailis-releases</id>
       <name>Ailis Maven Releases</name>
       <url>http://www.ailis.de/nexus/content/groups/public/</url>
+      <snapshots><enabled>false</enabled></snapshots>
     </repository>
     <repository>
       <id>ailis-snapshots</id>
       <name>Ailis Maven Snapshots</name>
       <url>http://www.ailis.de/nexus/content/groups/public-snapshots/</url>
-      <snapshots />
+      <releases><enabled>false</enabled></releases>
     </repository>
   </repositories>
    
