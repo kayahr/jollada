@@ -135,11 +135,13 @@ public class Document extends Element implements AssetElement
      *
      * @param base
      *            The base URI to set. null to unset.
+     * @return The document for chaining.
      */
 
-    public void setBase(final URI base)
+    public Document setBase(final URI base)
     {
         this.base = base;
+        return this;
     }
 
 
@@ -197,9 +199,9 @@ public class Document extends Element implements AssetElement
      *
      * @param scene
      *            The scene to set. Null to unset.
-     */
+     * @return The document for chaining.     */
 
-    public void setScene(final Scene scene)
+    public Document setScene(final Scene scene)
     {
         if (scene != this.scene)
         {
@@ -218,5 +220,6 @@ public class Document extends Element implements AssetElement
 
             this.scene = scene;
         }
+        return this;
     }
 }
