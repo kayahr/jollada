@@ -14,7 +14,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public abstract class MaterialInstance extends Element implements
+public final class MaterialInstance extends Element implements
         ScopeIdentifiable
 {
     /** Serial version UID */

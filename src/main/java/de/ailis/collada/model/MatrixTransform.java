@@ -15,7 +15,7 @@ import de.ailis.gramath.MutableMatrix4f;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class MatrixTransform extends Transformation
+public final class MatrixTransform extends Transformation
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -29,13 +29,15 @@ public class MatrixTransform extends Transformation
      *
      * @param matrix
      *            The matrix to set. Must not be null.
+     * @return This transform for chaining.
      */
 
-    public void setMatrix(final Matrix4f matrix)
+    public MatrixTransform setMatrix(final Matrix4f matrix)
     {
         if (matrix == null)
             throw new IllegalArgumentException("matrix must not be null");
         this.matrix.set(matrix);
+        return this;
     }
 
 

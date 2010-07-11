@@ -14,7 +14,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public abstract class LightInstance extends Instance
+public final class LightInstance extends Instance
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

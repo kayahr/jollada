@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3f;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class RotateTransform extends Transformation
+public final class RotateTransform extends Transformation
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -32,13 +32,15 @@ public class RotateTransform extends Transformation
      *
      * @param axis
      *            The rotation axis to set. Must not be null.
+     * @return This transform for chaining.
      */
 
-    public void setAxis(final Vector3f axis)
+    public RotateTransform setAxis(final Vector3f axis)
     {
         if (axis == null)
             throw new IllegalArgumentException("axis must not be null");
         this.axis.set(axis);
+        return this;
     }
 
 
@@ -71,10 +73,12 @@ public class RotateTransform extends Transformation
      *
      * @param angle
      *            The rotation angle in degrees to set.
+     * @return This transform for chaining.
      */
 
-    public void setAngle(final float angle)
+    public RotateTransform setAngle(final float angle)
     {
         this.angle = angle;
+        return this;
     }
 }
