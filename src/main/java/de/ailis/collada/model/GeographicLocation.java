@@ -213,8 +213,7 @@ public final class GeographicLocation implements Serializable
         final int prime = 31;
         int result = 1;
         result = prime * result + Float.floatToIntBits(this.altitude);
-        result = prime * result
-            + ((this.altitudeMode == null) ? 0 : this.altitudeMode.hashCode());
+        result = prime * result + this.altitudeMode.hashCode();
         result = prime * result + Float.floatToIntBits(this.latitude);
         result = prime * result + Float.floatToIntBits(this.longitude);
         return result;
