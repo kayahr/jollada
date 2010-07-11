@@ -15,7 +15,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Contributor implements Serializable
+public final class Contributor implements Serializable
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -59,11 +59,13 @@ public class Contributor implements Serializable
      *
      * @param author
      *            The author's name to set. Null to unset.
+     * @return This contributor for chaining.
      */
 
-    public void setAuthor(final String author)
+    public Contributor setAuthor(final String author)
     {
         this.author = author;
+        return this;
     }
 
 
@@ -84,11 +86,13 @@ public class Contributor implements Serializable
      *
      * @param authorEMail
      *            The author's E-Mail address to set. Null to unset.
+     * @return This contributor for chaining.
      */
 
-    public void setAuthorEMail(final String authorEMail)
+    public Contributor setAuthorEMail(final String authorEMail)
     {
         this.authorEMail = authorEMail;
+        return this;
     }
 
 
@@ -109,11 +113,13 @@ public class Contributor implements Serializable
      *
      * @param authorWebsite
      *            The author's website to set. Null to unset
+     * @return This contributor for chaining.
      */
 
-    public void setAuthorWebsite(final URI authorWebsite)
+    public Contributor setAuthorWebsite(final URI authorWebsite)
     {
         this.authorWebsite = authorWebsite;
+        return this;
     }
 
 
@@ -134,11 +140,13 @@ public class Contributor implements Serializable
      *
      * @param authoringTool
      *            The name of the authoring tool to set. Null to unset.
+     * @return This contributor for chaining.
      */
 
-    public void setAuthoringTool(final String authoringTool)
+    public Contributor setAuthoringTool(final String authoringTool)
     {
         this.authoringTool = authoringTool;
+        return this;
     }
 
 
@@ -159,11 +167,13 @@ public class Contributor implements Serializable
      *
      * @param comments
      *            The comments to set. Null to unset.
+     * @return This contributor for chaining.
      */
 
-    public void setComments(final String comments)
+    public Contributor setComments(final String comments)
     {
         this.comments = comments;
+        return this;
     }
 
 
@@ -184,11 +194,13 @@ public class Contributor implements Serializable
      *
      * @param copyright
      *            The copyright to set. Null to unset
+     * @return This contributor for chaining.
      */
 
-    public void setCopyright(final String copyright)
+    public Contributor setCopyright(final String copyright)
     {
         this.copyright = copyright;
+        return this;
     }
 
 
@@ -209,10 +221,106 @@ public class Contributor implements Serializable
      *
      * @param sourceData
      *            The source data URI to set. Null to unset.
+     * @return This contributor for chaining.
      */
 
-    public void setSourceData(final URI sourceData)
+    public Contributor setSourceData(final URI sourceData)
     {
         this.sourceData = sourceData;
+        return this;
+    }
+
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+            + ((this.author == null) ? 0 : this.author.hashCode());
+        result = prime * result
+            + ((this.authorEMail == null) ? 0 : this.authorEMail.hashCode());
+        result = prime
+            * result
+            + ((this.authorWebsite == null) ? 0 : this.authorWebsite.hashCode());
+        result = prime
+            * result
+            + ((this.authoringTool == null) ? 0 : this.authoringTool.hashCode());
+        result = prime * result
+            + ((this.comments == null) ? 0 : this.comments.hashCode());
+        result = prime * result
+            + ((this.copyright == null) ? 0 : this.copyright.hashCode());
+        result = prime * result
+            + ((this.sourceData == null) ? 0 : this.sourceData.hashCode());
+        return result;
+    }
+
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final Contributor other = (Contributor) obj;
+        if (this.author == null)
+        {
+            if (other.author != null) return false;
+        }
+        else if (!this.author.equals(other.author)) return false;
+        if (this.authorEMail == null)
+        {
+            if (other.authorEMail != null) return false;
+        }
+        else if (!this.authorEMail.equals(other.authorEMail)) return false;
+        if (this.authorWebsite == null)
+        {
+            if (other.authorWebsite != null) return false;
+        }
+        else if (!this.authorWebsite.equals(other.authorWebsite)) return false;
+        if (this.authoringTool == null)
+        {
+            if (other.authoringTool != null) return false;
+        }
+        else if (!this.authoringTool.equals(other.authoringTool)) return false;
+        if (this.comments == null)
+        {
+            if (other.comments != null) return false;
+        }
+        else if (!this.comments.equals(other.comments)) return false;
+        if (this.copyright == null)
+        {
+            if (other.copyright != null) return false;
+        }
+        else if (!this.copyright.equals(other.copyright)) return false;
+        if (this.sourceData == null)
+        {
+            if (other.sourceData != null) return false;
+        }
+        else if (!this.sourceData.equals(other.sourceData)) return false;
+        return true;
+    }
+
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+
+    @Override
+    public String toString()
+    {
+        return "Contributor [author=" + this.author + ", authorEMail="
+            + this.authorEMail + ", authorWebsite=" + this.authorWebsite
+            + ", authoringTool=" + this.authoringTool + ", comments="
+            + this.comments + ", copyright=" + this.copyright + ", sourceData="
+            + this.sourceData + "]";
     }
 }

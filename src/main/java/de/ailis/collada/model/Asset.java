@@ -16,7 +16,7 @@ import java.util.List;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Asset implements Serializable
+public final class Asset implements Serializable
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -38,6 +38,9 @@ public class Asset implements Serializable
 
     /** Revision information */
     private String revision;
+
+    /** The description of the topical subject */
+    private String subject;
 
     /** The title */
     private String title;
@@ -109,11 +112,13 @@ public class Asset implements Serializable
      *
      * @param created
      *            The creation time stamp to set.
+     * @return This asset for chaining.
      */
 
-    public void setCreated(final long created)
+    public Asset setCreated(final long created)
     {
         this.created = created;
+        return this;
     }
 
 
@@ -134,11 +139,13 @@ public class Asset implements Serializable
      *
      * @param modified
      *            The last modification time stamp to set.
+     * @return This asset for chaining.
      */
 
-    public void setModified(final long modified)
+    public Asset setModified(final long modified)
     {
         this.modified = modified;
+        return this;
     }
 
 
@@ -171,12 +178,14 @@ public class Asset implements Serializable
      *
      * @param geographicLocation
      *            The geographic location to set. Null to unset.
+     * @return This asset for chaining.
      */
 
-    public void setGeographicLocation(
+    public Asset setGeographicLocation(
         final GeographicLocation geographicLocation)
     {
         this.geographicLocation = geographicLocation;
+        return this;
     }
 
 
@@ -209,11 +218,40 @@ public class Asset implements Serializable
      *
      * @param revision
      *            The revision to set. Null to unset.
+     * @return This asset for chaining.
      */
 
-    public void setRevision(final String revision)
+    public Asset setRevision(final String revision)
     {
         this.revision = revision;
+        return this;
+    }
+
+
+    /**
+     * Returns the description of the topical subject.
+     *
+     * @return The subject. May be null if not set.
+     */
+
+    public String getSubject()
+    {
+        return this.subject;
+    }
+
+
+    /**
+     * Sets the description of the topical subject.
+     *
+     * @param subject
+     *            The subject to set. Null to unset.
+     * @return This asset for chaining.
+     */
+
+    public Asset setSubject(final String subject)
+    {
+        this.subject = subject;
+        return this;
     }
 
 
@@ -234,11 +272,13 @@ public class Asset implements Serializable
      *
      * @param title
      *            The title to set. Null to unset.
+     * @return This asset for chaining.
      */
 
-    public void setTitle(final String title)
+    public Asset setTitle(final String title)
     {
         this.title = title;
+        return this;
     }
 
 
@@ -259,13 +299,15 @@ public class Asset implements Serializable
      *
      * @param unit
      *            The unit of distance to set. Most not be null.
+     * @return This asset for chaining.
      */
 
-    public void setUnit(final Unit unit)
+    public Asset setUnit(final Unit unit)
     {
         if (unit == null)
             throw new IllegalArgumentException("unit must not be null");
         this.unit = unit;
+        return this;
     }
 
 
@@ -286,12 +328,118 @@ public class Asset implements Serializable
      *
      * @param upAxis
      *            The coordinate system orientation to set. Most nut be null.
+     * @return This asset for chaining.
      */
 
-    public void setUpAxis(final UpAxis upAxis)
+    public Asset setUpAxis(final UpAxis upAxis)
     {
         if (upAxis == null)
             throw new IllegalArgumentException("upAxis must not be null");
         this.upAxis = upAxis;
+        return this;
+    }
+
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+            + ((this.contributors == null) ? 0 : this.contributors.hashCode());
+        result = prime * result + (int) (this.created ^ (this.created >>> 32));
+        result = prime
+            * result
+            + ((this.geographicLocation == null) ? 0 : this.geographicLocation
+                    .hashCode());
+        result = prime * result
+            + ((this.keywords == null) ? 0 : this.keywords.hashCode());
+        result = prime * result
+            + (int) (this.modified ^ (this.modified >>> 32));
+        result = prime * result
+            + ((this.revision == null) ? 0 : this.revision.hashCode());
+        result = prime * result
+            + ((this.subject == null) ? 0 : this.subject.hashCode());
+        result = prime * result
+            + ((this.title == null) ? 0 : this.title.hashCode());
+        result = prime * result
+            + ((this.unit == null) ? 0 : this.unit.hashCode());
+        result = prime * result
+            + ((this.upAxis == null) ? 0 : this.upAxis.hashCode());
+        return result;
+    }
+
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final Asset other = (Asset) obj;
+        if (this.contributors == null)
+        {
+            if (other.contributors != null) return false;
+        }
+        else if (!this.contributors.equals(other.contributors)) return false;
+        if (this.created != other.created) return false;
+        if (this.geographicLocation == null)
+        {
+            if (other.geographicLocation != null) return false;
+        }
+        else if (!this.geographicLocation.equals(other.geographicLocation))
+            return false;
+        if (this.keywords == null)
+        {
+            if (other.keywords != null) return false;
+        }
+        else if (!this.keywords.equals(other.keywords)) return false;
+        if (this.modified != other.modified) return false;
+        if (this.revision == null)
+        {
+            if (other.revision != null) return false;
+        }
+        else if (!this.revision.equals(other.revision)) return false;
+        if (this.subject == null)
+        {
+            if (other.subject != null) return false;
+        }
+        else if (!this.subject.equals(other.subject)) return false;
+        if (this.title == null)
+        {
+            if (other.title != null) return false;
+        }
+        else if (!this.title.equals(other.title)) return false;
+        if (this.unit == null)
+        {
+            if (other.unit != null) return false;
+        }
+        else if (!this.unit.equals(other.unit)) return false;
+        if (this.upAxis != other.upAxis) return false;
+        return true;
+    }
+
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+
+    @Override
+    public String toString()
+    {
+        return "Asset [contributors=" + this.contributors + ", created="
+            + this.created + ", modified=" + this.modified
+            + ", geographicLocation=" + this.geographicLocation + ", keywords="
+            + this.keywords + ", revision=" + this.revision + ", subject="
+            + this.subject + ", title=" + this.title + ", unit=" + this.unit
+            + ", upAxis=" + this.upAxis + "]";
     }
 }
