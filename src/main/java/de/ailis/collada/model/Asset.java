@@ -39,7 +39,7 @@ public final class Asset implements Serializable
     /** Revision information */
     private String revision;
 
-    /** The description of the topical subject */
+    /** The description of the topical subject. */
     private String subject;
 
     /** The title */
@@ -92,6 +92,41 @@ public final class Asset implements Serializable
     {
         this.created = created;
         this.modified = modified;
+    }
+
+
+    /**
+     * Full constructor.
+     *
+     * @param created
+     *            The time stamp when the parent element was created.
+     * @param modified
+     *            The time stamp when the parent element was last modified.
+     * @param unit
+     *            The unit of distance. Must not be null.
+     * @param upAxis
+     *            The up Axis. Must not be null.
+     * @param geographicLocation
+     *            The geographic location. May be null.
+     * @param revision
+     *            The revision. May be null.
+     * @param subject
+     *            The description of the topical subject. May be null.
+     * @param title
+     *            The title. May be null.
+     */
+
+    public Asset(final long created, final long modified, final Unit unit,
+        final UpAxis upAxis, final GeographicLocation geographicLocation,
+        final String revision, final String subject, final String title)
+    {
+        this(created, modified);
+        setUnit(unit);
+        setUpAxis(upAxis);
+        this.geographicLocation = geographicLocation;
+        this.revision = revision;
+        this.subject = subject;
+        this.title = title;
     }
 
 
@@ -349,15 +384,13 @@ public final class Asset implements Serializable
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-            + ((this.contributors == null) ? 0 : this.contributors.hashCode());
+        result = prime * result + this.contributors.hashCode();
         result = prime * result + (int) (this.created ^ (this.created >>> 32));
         result = prime
             * result
             + ((this.geographicLocation == null) ? 0 : this.geographicLocation
                     .hashCode());
-        result = prime * result
-            + ((this.keywords == null) ? 0 : this.keywords.hashCode());
+        result = prime * result + this.keywords.hashCode();
         result = prime * result
             + (int) (this.modified ^ (this.modified >>> 32));
         result = prime * result
@@ -366,10 +399,8 @@ public final class Asset implements Serializable
             + ((this.subject == null) ? 0 : this.subject.hashCode());
         result = prime * result
             + ((this.title == null) ? 0 : this.title.hashCode());
-        result = prime * result
-            + ((this.unit == null) ? 0 : this.unit.hashCode());
-        result = prime * result
-            + ((this.upAxis == null) ? 0 : this.upAxis.hashCode());
+        result = prime * result + this.unit.hashCode();
+        result = prime * result + this.upAxis.hashCode();
         return result;
     }
 
@@ -385,11 +416,7 @@ public final class Asset implements Serializable
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final Asset other = (Asset) obj;
-        if (this.contributors == null)
-        {
-            if (other.contributors != null) return false;
-        }
-        else if (!this.contributors.equals(other.contributors)) return false;
+        if (!this.contributors.equals(other.contributors)) return false;
         if (this.created != other.created) return false;
         if (this.geographicLocation == null)
         {
@@ -397,11 +424,7 @@ public final class Asset implements Serializable
         }
         else if (!this.geographicLocation.equals(other.geographicLocation))
             return false;
-        if (this.keywords == null)
-        {
-            if (other.keywords != null) return false;
-        }
-        else if (!this.keywords.equals(other.keywords)) return false;
+        if (!this.keywords.equals(other.keywords)) return false;
         if (this.modified != other.modified) return false;
         if (this.revision == null)
         {
@@ -417,11 +440,8 @@ public final class Asset implements Serializable
         {
             if (other.title != null) return false;
         }
-        else if (!this.title.equals(other.title)) return false;
-        if (this.unit == null)
-        {
-            if (other.unit != null) return false;
-        }
+        else if (!this.title.equals(other.title))
+            return false;
         else if (!this.unit.equals(other.unit)) return false;
         if (this.upAxis != other.upAxis) return false;
         return true;
