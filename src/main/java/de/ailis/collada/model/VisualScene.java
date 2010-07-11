@@ -36,7 +36,7 @@ public class VisualScene extends Element implements Identifiable, AssetElement
     @Override
     public String getId()
     {
-        return this.id;
+        return super.getId();
     }
 
 
@@ -45,12 +45,14 @@ public class VisualScene extends Element implements Identifiable, AssetElement
      *
      * @param id
      *            The id to set. Null to unset.
+     * @return This visual scene for chaining.
      */
 
     @Override
-    public void setId(final String id)
+    public VisualScene setId(final String id)
     {
         super.setId(id);
+        return this;
     }
 
 
@@ -71,11 +73,13 @@ public class VisualScene extends Element implements Identifiable, AssetElement
      *
      * @param name
      *            The name to set. Null to unset.
+     * @return This visual scene for chaining.
      */
 
-    public void setName(final String name)
+    public VisualScene setName(final String name)
     {
         this.name = name;
+        return this;
     }
 
 
@@ -97,11 +101,13 @@ public class VisualScene extends Element implements Identifiable, AssetElement
      *
      * @param asset
      *            The asset-management information to set. Null to unset.
+     * @return This visual scene for chaining.
      */
 
-    public void setAsset(final Asset asset)
+    public VisualScene setAsset(final Asset asset)
     {
         this.asset = asset;
+        return this;
     }
 
 

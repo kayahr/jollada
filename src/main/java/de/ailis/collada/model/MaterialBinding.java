@@ -22,8 +22,8 @@ public class MaterialBinding extends Element
     private final DataFlowParams params = new DataFlowParams(this);
 
     /** The common material binding technique */
-    private final CommonMaterialBindingTechnique commonTechnique = new CommonMaterialBindingTechnique(
-        this);
+    private final CommonMaterialBindingTechnique commonTechnique =
+            new CommonMaterialBindingTechnique(this);
 
 
     /**

@@ -80,7 +80,7 @@ public class Document extends Element implements AssetElement
             throw new IllegalArgumentException("element must not be null");
 
 
-        final String id = element.getId();
+        final String id = element.id;
         if (id != null) if (this.idMap.put(id, element) != null)
             throw new InternalError(
                 "Element with id '" + id + "' already registered");
@@ -99,7 +99,7 @@ public class Document extends Element implements AssetElement
         if (element == null)
             throw new IllegalArgumentException("element must not be null");
 
-        final String id = element.getId();
+        final String id = element.id;
         if (id != null) if (this.idMap.remove(id) == null)
             throw new InternalError(
                 "Element with id '" + id + "' not registered");
