@@ -287,12 +287,10 @@ public final class Contributor implements Serializable
             + ((this.author == null) ? 0 : this.author.hashCode());
         result = prime * result
             + ((this.authorEMail == null) ? 0 : this.authorEMail.hashCode());
-        result = prime
-            * result
-            + ((this.authorWebsite == null) ? 0 : this.authorWebsite.hashCode());
-        result = prime
-            * result
-            + ((this.authoringTool == null) ? 0 : this.authoringTool.hashCode());
+        result = prime * result + ((this.authorWebsite == null) ? 0
+            : this.authorWebsite.hashCode());
+        result = prime * result + ((this.authoringTool == null) ? 0
+            : this.authoringTool.hashCode());
         result = prime * result
             + ((this.comments == null) ? 0 : this.comments.hashCode());
         result = prime * result

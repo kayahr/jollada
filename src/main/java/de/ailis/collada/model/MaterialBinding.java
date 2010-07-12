@@ -15,13 +15,13 @@ package de.ailis.collada.model;
 
 public final class MaterialBinding extends Element
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The list of data flow parameters */
+    /** The list of data flow parameters. */
     private final DataFlowParams params = new DataFlowParams(this);
 
-    /** The common material binding technique */
+    /** The common material binding technique. */
     private final CommonMaterialBindingTechnique commonTechnique =
             new CommonMaterialBindingTechnique(this);
 

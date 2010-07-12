@@ -58,7 +58,7 @@ public abstract class Array extends Element implements Identifiable
      */
 
     @Override
-    public String getId()
+    public final String getId()
     {
         return super.getId();
     }
@@ -86,7 +86,7 @@ public abstract class Array extends Element implements Identifiable
      * @return The name. May be null if not set.
      */
 
-    public String getName()
+    public final String getName()
     {
         return this.name;
     }

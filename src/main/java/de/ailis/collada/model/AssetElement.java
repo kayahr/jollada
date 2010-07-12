@@ -24,5 +24,5 @@ public interface AssetElement
      *         element. May be null for others.
      */
 
-    public Asset getAsset();
+    Asset getAsset();
 }

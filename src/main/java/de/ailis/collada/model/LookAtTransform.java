@@ -17,16 +17,16 @@ import de.ailis.gramath.Vector3f;
 
 public final class LookAtTransform extends Transformation
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The position of the eye */
+    /** The position of the eye. */
     private final MutableVector3f eye = new MutableVector3f(0, 0, 0);
 
-    /** The position of the interest point */
+    /** The position of the interest point. */
     private final MutableVector3f interest = new MutableVector3f(0, 0, -1);
 
-    /** The direction that points up */
+    /** The direction that points up. */
     private final MutableVector3f up = new MutableVector3f(0, 1, 0);
 
 

@@ -21,8 +21,9 @@ public final class Asset implements Serializable
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The contributors who worked on the parent element */
-    private final ArrayList<Contributor> contributors = new ArrayList<Contributor>();
+    /** The contributors who worked on the parent element. */
+    private final ArrayList<Contributor> contributors =
+            new ArrayList<Contributor>();
 
     /** The creation time stamp. */
     private long created;
@@ -33,22 +34,22 @@ public final class Asset implements Serializable
     /** The geographic location. */
     private GeographicLocation geographicLocation;
 
-    /** List of keywords */
+    /** List of keywords. */
     private final ArrayList<String> keywords = new ArrayList<String>();
 
-    /** Revision information */
+    /** Revision information. */
     private String revision;
 
     /** The description of the topical subject. */
     private String subject;
 
-    /** The title */
+    /** The title. */
     private String title;
 
-    /** The unit of distance */
+    /** The unit of distance. */
     private Unit unit = new Unit();
 
-    /** The orientation of the coordinate system */
+    /** The orientation of the coordinate system. */
     private UpAxis upAxis = UpAxis.Y_UP;
 
 

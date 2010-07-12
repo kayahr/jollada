@@ -21,7 +21,7 @@ public abstract class ElementAdapter implements ElementListener
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementRemoved(Element)
+     * @see ElementListener#elementRemoved(Element)
      */
 
     @Override
@@ -32,7 +32,7 @@ public abstract class ElementAdapter implements ElementListener
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementInserted(Element)
+     * @see ElementListener#elementInserted(Element)
      */
 
     @Override
@@ -43,7 +43,7 @@ public abstract class ElementAdapter implements ElementListener
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementRemovedFromDocument(Element)
+     * @see ElementListener#elementRemovedFromDocument(Element)
      */
 
     @Override
@@ -54,7 +54,7 @@ public abstract class ElementAdapter implements ElementListener
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementInsertedIntoDocument(Element)
+     * @see ElementListener#elementInsertedIntoDocument(Element)
      */
 
     @Override

@@ -14,10 +14,10 @@ package de.ailis.collada.model;
 
 public final class Scene extends Element
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The visual scene instance */
+    /** The visual scene instance. */
     private VisualSceneInstance visualSceneInstance;
 
 

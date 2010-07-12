@@ -29,18 +29,18 @@ public abstract class Element implements Serializable
     /** The parent element. */
     private Element parent;
 
-    /** The child elements */
+    /** The child elements. */
     private final List<Element> children = new ArrayList<Element>();
 
-    /** The element id (Only used by identifiables) */
+    /** The element id (Only used by identifiables). */
     protected String id;
 
-    /** The list of element listeners */
+    /** The list of element listeners. */
     private List<ElementListener> elementListeners;
 
 
     /**
-     * Constructor
+     * Constructor.
      */
 
     protected Element()
@@ -71,7 +71,7 @@ public abstract class Element implements Serializable
      *            The element to add. Must not be null.
      */
 
-    void addChild(final Element element)
+    final void addChild(final Element element)
     {
         if (element.parent == this)
             throw new IllegalStateException(
@@ -95,7 +95,7 @@ public abstract class Element implements Serializable
      *            The element to remove. Must not be null
      */
 
-    void removeChild(final Element element)
+    final void removeChild(final Element element)
     {
         if (element.parent != this)
             throw new IllegalStateException(
@@ -131,7 +131,7 @@ public abstract class Element implements Serializable
      * @return The parent element. May be null if not connected to a parent.
      */
 
-    public Element getParent()
+    public final Element getParent()
     {
         return this.parent;
     }
@@ -144,7 +144,7 @@ public abstract class Element implements Serializable
      *            The document to set. Null to unset.
      */
 
-    void setDocument(final Document document)
+    final void setDocument(final Document document)
     {
         if (document != this.document)
         {
@@ -171,7 +171,7 @@ public abstract class Element implements Serializable
      * @return The document. May be null if not set.
      */
 
-    public Document getDocument()
+    public final Document getDocument()
     {
         return this.document;
     }
@@ -219,22 +219,22 @@ public abstract class Element implements Serializable
      * @return The found element. Null if not found.
      */
 
-    public Element getBySid(final String sid)
+    public final Element getBySid(final String sid)
     {
         final List<Element> search = new ArrayList<Element>();
         search.add(this);
         while (search.size() > 0)
         {
             final Element[] elements = search
-                .toArray(new Element[search.size()]);
+                    .toArray(new Element[search.size()]);
             search.clear();
             for (final Element element : elements)
             {
-                if (element instanceof ScopeIdentifiable &&
-                    sid.equals(((ScopeIdentifiable) element).getSid()))
+                if (element instanceof ScopeIdentifiable
+                        && sid.equals(((ScopeIdentifiable) element).getSid()))
                     return element;
 
-                for (final Element child: element.children)
+                for (final Element child : element.children)
                     search.add(child);
             }
         }
@@ -246,10 +246,10 @@ public abstract class Element implements Serializable
      * Adds the specified element listener.
      *
      * @param listener
-     *            The lsitener to add. Must not be null.
+     *            The listener to add. Must not be null.
      */
 
-    public void addElementListener(final ElementListener listener)
+    public final void addElementListener(final ElementListener listener)
     {
         if (listener == null)
             throw new IllegalArgumentException("listener must not be null");
@@ -266,7 +266,7 @@ public abstract class Element implements Serializable
      *            The listener to remove. Must not be null.
      */
 
-    public void removeElementListener(final ElementListener listener)
+    public final void removeElementListener(final ElementListener listener)
     {
         if (listener == null)
             throw new IllegalArgumentException("listener must not be null");
@@ -283,7 +283,7 @@ public abstract class Element implements Serializable
     {
         if (this.elementListeners == null) return;
         for (final ElementListener listener : this.elementListeners
-            .toArray(new ElementListener[this.elementListeners.size()]))
+                .toArray(new ElementListener[this.elementListeners.size()]))
             listener.elementInserted(this);
     }
 
@@ -296,7 +296,7 @@ public abstract class Element implements Serializable
     {
         if (this.elementListeners == null) return;
         for (final ElementListener listener : this.elementListeners
-            .toArray(new ElementListener[this.elementListeners.size()]))
+                .toArray(new ElementListener[this.elementListeners.size()]))
             listener.elementRemoved(this);
     }
 
@@ -308,7 +308,7 @@ public abstract class Element implements Serializable
     {
         if (this.elementListeners == null) return;
         for (final ElementListener listener : this.elementListeners
-            .toArray(new ElementListener[this.elementListeners.size()]))
+                .toArray(new ElementListener[this.elementListeners.size()]))
             listener.elementRemovedFromDocument(this);
     }
 
@@ -321,7 +321,7 @@ public abstract class Element implements Serializable
     {
         if (this.elementListeners == null) return;
         for (final ElementListener listener : this.elementListeners
-            .toArray(new ElementListener[this.elementListeners.size()]))
+                .toArray(new ElementListener[this.elementListeners.size()]))
             listener.elementInsertedIntoDocument(this);
     }
 }

@@ -17,10 +17,10 @@ import de.ailis.gramath.Vector3f;
 
 public final class ScaleTransform extends Transformation
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The rotation axis */
+    /** The rotation axis. */
     private final MutableVector3f scaling = new MutableVector3f();
 
 

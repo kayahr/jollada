@@ -17,10 +17,10 @@ import de.ailis.gramath.Vector3f;
 
 public final class RotateTransform extends Transformation
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The rotation axis */
+    /** The rotation axis. */
     private final MutableVector3f axis = new MutableVector3f(0, 0, 0);
 
     /** The rotation angle in degree. */

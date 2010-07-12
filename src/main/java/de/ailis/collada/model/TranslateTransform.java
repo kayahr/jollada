@@ -17,10 +17,10 @@ import de.ailis.gramath.Vector3f;
 
 public final class TranslateTransform extends Transformation
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The translation axis */
+    /** The translation axis. */
     private final MutableVector3f translation = new MutableVector3f();
 
 

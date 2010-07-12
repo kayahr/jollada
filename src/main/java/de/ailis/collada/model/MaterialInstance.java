@@ -17,19 +17,19 @@ import java.net.URI;
 public final class MaterialInstance extends Element implements
         ScopeIdentifiable
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The symbol to bind the material to */
+    /** The symbol to bind the material to. */
     private String symbol;
 
     /** The URI of the location of the material element to instantiate. */
     private URI target;
 
-    /** The scope ID */
+    /** The scope ID. */
     private String sid;
 
-    /** The name */
+    /** The name. */
     private String name;
 
 

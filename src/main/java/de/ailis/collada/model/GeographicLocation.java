@@ -141,7 +141,7 @@ public final class GeographicLocation implements Serializable
 
 
     /**
-     * Sets the altitude relative to the ground
+     * Sets the altitude relative to the ground.
      *
      * @param altitude
      *            The altitude to set.

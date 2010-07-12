@@ -14,12 +14,12 @@ package de.ailis.collada.model;
 
 public final class VisualSceneLibraries extends Elements<VisualSceneLibrary>
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param parent
      *            The parent element.

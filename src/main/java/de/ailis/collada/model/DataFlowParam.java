@@ -17,16 +17,16 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The scope ID */
+    /** The scope ID. */
     private String sid;
 
-    /** The parameter name */
+    /** The parameter name. */
     private String name;
 
-    /** The data type */
+    /** The data type. */
     private DataType type;
 
-    /** The user-defined meaning of the parameter */
+    /** The user-defined meaning of the parameter. */
     private String semantic;
 
 

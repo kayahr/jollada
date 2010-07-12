@@ -14,6 +14,6 @@ package de.ailis.collada.model;
 
 public enum Version
 {
-    /** COLLADA Version 1.5.0 */
+    /** COLLADA Version 1.5.0. */
     VERSION_1_5_0
 }

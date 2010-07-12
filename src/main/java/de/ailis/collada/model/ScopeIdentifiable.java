@@ -22,7 +22,7 @@ public interface ScopeIdentifiable
      * @return This element for chaining
      */
 
-    public Element setSid(String sid);
+    Element setSid(String sid);
 
 
     /**
@@ -31,5 +31,5 @@ public interface ScopeIdentifiable
      * @return The scope ID.
      */
 
-    public String getSid();
+    String getSid();
 }

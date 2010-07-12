@@ -14,6 +14,12 @@ package de.ailis.collada.model;
 
 public final class FloatArray extends Array
 {
+    /** The default number of significant decimal digits. */
+    public static final int DEFAULT_DIGITS = 6;
+
+    /** The default largest exponent.  */
+    public static final int DEFAULT_MAGNITUDE = 38;
+
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
@@ -24,13 +30,13 @@ public final class FloatArray extends Array
      * The number of significant decimal digits of the float values that can be
      * contained in the array.
      */
-    private int digits = 6;
+    private int digits = DEFAULT_DIGITS;
 
     /**
      * The largest exponent of the float values that can be contained in the
      * array.
      */
-    private int magnitude = 38;
+    private int magnitude = DEFAULT_MAGNITUDE;
 
 
     /**

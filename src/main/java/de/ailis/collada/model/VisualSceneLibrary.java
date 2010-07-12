@@ -40,7 +40,7 @@ public final class VisualSceneLibrary extends Element implements AssetElement,
 
 
     /**
-     * Sets the asset-management information
+     * Sets the asset-management information.
      *
      * @param asset
      *            The asset-management information to set. Null to unset.

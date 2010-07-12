@@ -67,7 +67,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public T set(final int index, final T element)
+    public final T set(final int index, final T element)
     {
         final T oldElement = get(index);
         oldElement.removeElementListener(this.elementListener);
@@ -84,7 +84,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public boolean add(final T element)
+    public final boolean add(final T element)
     {
         final boolean result = super.add(element);
         this.parent.addChild(element);
@@ -98,7 +98,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public void add(final int index, final T element)
+    public final void add(final int index, final T element)
     {
         super.add(index, element);
         this.parent.addChild(element);
@@ -111,7 +111,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public T remove(final int index)
+    public final T remove(final int index)
     {
         final T element = super.remove(index);
         element.removeElementListener(this.elementListener);
@@ -129,7 +129,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      *            The element to remove
      */
 
-    void removeOnly(final Element element)
+    final void removeOnly(final Element element)
     {
         super.remove(element);
         element.removeElementListener(this.elementListener);
@@ -141,7 +141,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public boolean remove(final Object element)
+    public final boolean remove(final Object element)
     {
         final boolean result = super.remove(element);
         if (result)
@@ -159,7 +159,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public void clear()
+    public final void clear()
     {
         for (final T element : this)
         {
@@ -175,7 +175,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public boolean addAll(final Collection<? extends T> elements)
+    public final boolean addAll(final Collection<? extends T> elements)
     {
         for (final Element element : elements.toArray(new Element[elements
             .size()]))
@@ -192,7 +192,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public boolean addAll(final int index,
+    public final boolean addAll(final int index,
         final Collection<? extends T> elements)
     {
         for (final Element element : elements.toArray(new Element[elements
@@ -210,7 +210,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public boolean removeAll(final Collection<?> elements)
+    public final boolean removeAll(final Collection<?> elements)
     {
         boolean modified = false;
         final Iterator<?> e = iterator();
@@ -231,7 +231,7 @@ public abstract class Elements<T extends Element> extends ArrayList<T>
      */
 
     @Override
-    public boolean retainAll(final Collection<?> elements)
+    public final boolean retainAll(final Collection<?> elements)
     {
         boolean modified = false;
         final Iterator<?> e = iterator();

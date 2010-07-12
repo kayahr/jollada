@@ -27,7 +27,7 @@ public final class DataFlowSource extends Element implements Identifiable,
     /** The data array. */
     private Array array;
 
-    /** The common source technique */
+    /** The common source technique. */
     private CommonSourceTechnique commonTechnique;
 
 

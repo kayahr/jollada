@@ -12,7 +12,8 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class VisualScene extends Element implements Identifiable, AssetElement
+public final class VisualScene extends Element implements Identifiable,
+        AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -20,10 +21,10 @@ public final class VisualScene extends Element implements Identifiable, AssetEle
     /** The scene name. */
     private String name;
 
-    /** Asset-management information */
+    /** Asset-management information. */
     private Asset asset;
 
-    /** The list of nodes */
+    /** The list of nodes. */
     private final Nodes nodes = new Nodes(this);
 
 

@@ -16,16 +16,16 @@ import java.net.URI;
 
 public abstract class Instance extends Element implements ScopeIdentifiable
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The scope id */
+    /** The scope id. */
     private String sid;
 
-    /** The name */
+    /** The name. */
     private String name;
 
-    /** The URL of the location of the element to instantiate */
+    /** The URL of the location of the element to instantiate. */
     private URI url;
 
 
@@ -49,7 +49,7 @@ public abstract class Instance extends Element implements ScopeIdentifiable
      */
 
     @Override
-    public String getSid()
+    public final String getSid()
     {
         return this.sid;
     }
@@ -77,7 +77,7 @@ public abstract class Instance extends Element implements ScopeIdentifiable
      * @return The URL. Never null.
      */
 
-    public URI getUrl()
+    public final URI getUrl()
     {
         return this.url;
     }
@@ -106,7 +106,7 @@ public abstract class Instance extends Element implements ScopeIdentifiable
      * @return The name. May be null if not set.
      */
 
-    public String getName()
+    public final String getName()
     {
         return this.name;
     }

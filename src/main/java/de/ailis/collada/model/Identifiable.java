@@ -20,7 +20,7 @@ public interface Identifiable
      * @return The id. Maybe null if not set and element allows that.
      */
 
-    public String getId();
+    String getId();
 
 
     /**
@@ -32,5 +32,5 @@ public interface Identifiable
      * @return The element for chaining.
      */
 
-    public Element setId(String id);
+    Element setId(String id);
 }

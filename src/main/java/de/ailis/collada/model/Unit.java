@@ -16,18 +16,18 @@ import java.io.Serializable;
 
 public final class Unit implements Serializable
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The real-world meters of the unit */
+    /** The real-world meters of the unit. */
     private final float meter;
 
-    /** The name of the unit */
+    /** The name of the unit. */
     private final String name;
 
 
     /**
-     * Constructs a new unit with default values (1 meter)
+     * Constructs a new unit with default values (1 meter).
      */
 
     public Unit()

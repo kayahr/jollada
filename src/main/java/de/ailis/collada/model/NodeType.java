@@ -14,9 +14,9 @@ package de.ailis.collada.model;
 
 public enum NodeType
 {
-    /** A normal node */
+    /** A normal node. */
     NODE,
 
-    /** A joint node */
+    /** A joint node. */
     JOINT
 }

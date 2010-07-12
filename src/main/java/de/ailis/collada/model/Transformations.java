@@ -19,7 +19,7 @@ public final class Transformations extends Elements<Transformation>
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param parent
      *            The parent element

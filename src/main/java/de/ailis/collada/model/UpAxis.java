@@ -14,12 +14,12 @@ package de.ailis.collada.model;
 
 public enum UpAxis
 {
-    /** X axis points up */
+    /** X axis points up. */
     X_UP,
 
-    /** Y axis points up */
+    /** Y axis points up. */
     Y_UP,
 
-    /** Z axis points up */
+    /** Z axis points up. */
     Z_UP
 }

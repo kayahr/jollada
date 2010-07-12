@@ -15,10 +15,10 @@ package de.ailis.collada.model;
 public abstract class Transformation extends Element implements
         ScopeIdentifiable
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The scope ID */
+    /** The scope ID. */
     private String sid;
 
 
@@ -29,7 +29,7 @@ public abstract class Transformation extends Element implements
      */
 
     @Override
-    public String getSid()
+    public final String getSid()
     {
         return this.sid;
     }

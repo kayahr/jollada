@@ -16,12 +16,12 @@ import java.net.URI;
 
 public final class CameraInstance extends Instance
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param url
      *            The URL of the location of the camera element to instantiate.

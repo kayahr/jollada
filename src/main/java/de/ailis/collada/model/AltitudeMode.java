@@ -7,16 +7,16 @@ package de.ailis.collada.model;
 
 
 /**
- * Altitude mode
+ * Altitude mode.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
 public enum AltitudeMode
 {
-    /** Absolute altitude */
+    /** Absolute altitude. */
     ABSOLUTE,
 
-    /** Altitude relative to ground */
+    /** Altitude relative to ground. */
     RELATIVE_TO_GROUND
 }

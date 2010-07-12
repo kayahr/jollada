@@ -18,26 +18,26 @@ import java.util.Map;
 
 public final class Document extends Element implements AssetElement
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The COLLADA document version */
+    /** The COLLADA document version. */
     private final Version version;
 
-    /** The base URI */
+    /** The base URI. */
     private URI base;
 
-    /** The asset-management information */
+    /** The asset-management information. */
     private final Asset asset = new Asset();
 
-    /** The list of visual scene libraries */
-    private final VisualSceneLibraries visualSceneLibraries = new VisualSceneLibraries(
-        this);
+    /** The list of visual scene libraries. */
+    private final VisualSceneLibraries visualSceneLibraries =
+            new VisualSceneLibraries(this);
 
-    /** The ID-to-Element mapping */
+    /** The ID-to-Element mapping. */
     private final Map<String, Element> idMap = new HashMap<String, Element>();
 
-    /** The scene */
+    /** The scene. */
     private Scene scene;
 
 
@@ -199,7 +199,8 @@ public final class Document extends Element implements AssetElement
      *
      * @param scene
      *            The scene to set. Null to unset.
-     * @return The document for chaining.     */
+     * @return The document for chaining.
+     */
 
     public Document setScene(final Scene scene)
     {

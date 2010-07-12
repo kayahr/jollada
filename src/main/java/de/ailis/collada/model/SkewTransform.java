@@ -17,14 +17,15 @@ import de.ailis.gramath.Vector3f;
 
 public final class SkewTransform extends Transformation
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The rotation axis */
+    /** The rotation axis. */
     private final MutableVector3f rotationAxis = new MutableVector3f(0, 0, 0);
 
-    /** The translation axis */
-    private final MutableVector3f translationAxis = new MutableVector3f(0, 0, 0);
+    /** The translation axis. */
+    private final MutableVector3f translationAxis =
+            new MutableVector3f(0, 0, 0);
 
     /** The rotation angle in degree. */
     private float angle;

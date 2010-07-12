@@ -16,15 +16,15 @@ import java.net.URI;
 
 public final class GeometryInstance extends Instance
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The material binding */
+    /** The material binding. */
     private final MaterialBinding materialBinding = new MaterialBinding(this);
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param url
      *            The URL of the location of the camera element to instantiate.

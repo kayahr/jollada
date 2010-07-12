@@ -16,12 +16,12 @@ import java.net.URI;
 
 public final class LightInstance extends Instance
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param url
      *            The URL of the location of the light element to instantiate.

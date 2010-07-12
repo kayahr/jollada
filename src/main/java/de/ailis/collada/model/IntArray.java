@@ -14,17 +14,23 @@ package de.ailis.collada.model;
 
 public final class IntArray extends Array
 {
+    /** The default maximum value. */
+    public static final long DEFAULT_MAX_INCLUSIVE = 0x7fffffff;
+
+    /** The default maximum value. */
+    public static final long DEFAULT_MIN_INCLUSIVE = -0x80000000;
+
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
     /** The data. */
     private long[] data;
 
-    /** The minimum value that can be present in the array. */
-    private long maxInclusive = 0x7fffffff;
-
     /** The maximum value that can be present in the array. */
-    private long minInclusive = -0x80000000;
+    private long maxInclusive = DEFAULT_MAX_INCLUSIVE;
+
+    /** The minimum value that can be present in the array. */
+    private long minInclusive = DEFAULT_MIN_INCLUSIVE;
 
 
     /**

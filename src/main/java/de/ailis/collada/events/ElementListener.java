@@ -25,7 +25,7 @@ public interface ElementListener extends Serializable
      *            The element
      */
 
-    public void elementRemoved(Element element);
+    void elementRemoved(Element element);
 
 
     /**
@@ -35,7 +35,7 @@ public interface ElementListener extends Serializable
      *            The element
      */
 
-    public void elementInserted(Element element);
+    void elementInserted(Element element);
 
 
     /**
@@ -45,7 +45,7 @@ public interface ElementListener extends Serializable
      *            The element
      */
 
-    public void elementRemovedFromDocument(Element element);
+    void elementRemovedFromDocument(Element element);
 
 
     /**
@@ -55,5 +55,5 @@ public interface ElementListener extends Serializable
      *            The element
      */
 
-    public void elementInsertedIntoDocument(Element element);
+    void elementInsertedIntoDocument(Element element);
 }

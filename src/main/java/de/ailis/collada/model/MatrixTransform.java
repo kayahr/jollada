@@ -17,10 +17,10 @@ import de.ailis.gramath.MutableMatrix4f;
 
 public final class MatrixTransform extends Transformation
 {
-    /** Serial version UID */
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The matrix */
+    /** The matrix. */
     private final MutableMatrix4f matrix = MutableMatrix4f.identity();
 
 

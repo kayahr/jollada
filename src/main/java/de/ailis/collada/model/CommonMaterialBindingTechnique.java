@@ -23,7 +23,7 @@ public final class CommonMaterialBindingTechnique extends Element
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param parent
      *            The parent element. Must not be null.
