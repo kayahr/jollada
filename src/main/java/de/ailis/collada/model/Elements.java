@@ -7,6 +7,10 @@ package de.ailis.collada.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+
+import de.ailis.collada.events.ElementAdapter;
+import de.ailis.collada.events.ElementListener;
 
 
 /**
@@ -24,6 +28,21 @@ public class Elements<T extends Element> extends ArrayList<T>
 
     /** The parent element to use for all list items. */
     private final Element parent;
+
+    /**
+     * This element listener removes elements from the elements list when it was
+     * removed from its parent.
+     */
+    private final ElementListener elementListener = new ElementAdapter()
+    {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void elementRemoved(final Element element)
+        {
+            removeOnly(element);
+        }
+    };
 
 
     /**
@@ -51,9 +70,11 @@ public class Elements<T extends Element> extends ArrayList<T>
     public T set(final int index, final T element)
     {
         final T oldElement = get(index);
+        oldElement.removeElementListener(this.elementListener);
         this.parent.removeChild(oldElement);
         super.set(index, element);
         this.parent.addChild(element);
+        element.addElementListener(this.elementListener);
         return oldElement;
     }
 
@@ -67,6 +88,7 @@ public class Elements<T extends Element> extends ArrayList<T>
     {
         final boolean result = super.add(element);
         this.parent.addChild(element);
+        element.addElementListener(this.elementListener);
         return result;
     }
 
@@ -80,6 +102,7 @@ public class Elements<T extends Element> extends ArrayList<T>
     {
         super.add(index, element);
         this.parent.addChild(element);
+        element.addElementListener(this.elementListener);
     }
 
 
@@ -91,8 +114,25 @@ public class Elements<T extends Element> extends ArrayList<T>
     public T remove(final int index)
     {
         final T element = super.remove(index);
+        element.removeElementListener(this.elementListener);
         this.parent.removeChild(element);
         return element;
+    }
+
+
+    /**
+     * Removes the specified element only from this elements list (Not from the
+     * parent). This is used internally when a removed event is received for an
+     * element.
+     *
+     * @param element
+     *            The element to remove
+     */
+
+    void removeOnly(final Element element)
+    {
+        super.remove(element);
+        element.removeElementListener(this.elementListener);
     }
 
 
@@ -107,6 +147,7 @@ public class Elements<T extends Element> extends ArrayList<T>
         if (result)
         {
             final Element e = (Element) element;
+            e.removeElementListener(this.elementListener);
             this.parent.removeChild(e);
         }
         return result;
@@ -122,6 +163,7 @@ public class Elements<T extends Element> extends ArrayList<T>
     {
         for (final T element : this)
         {
+            element.removeElementListener(this.elementListener);
             this.parent.removeChild(element);
         }
         super.clear();
@@ -135,9 +177,11 @@ public class Elements<T extends Element> extends ArrayList<T>
     @Override
     public boolean addAll(final Collection<? extends T> elements)
     {
-        for (final Element element : elements)
+        for (final Element element : elements.toArray(new Element[elements
+            .size()]))
         {
             this.parent.addChild(element);
+            element.addElementListener(this.elementListener);
         }
         return super.addAll(elements);
     }
@@ -151,9 +195,11 @@ public class Elements<T extends Element> extends ArrayList<T>
     public boolean addAll(final int index,
         final Collection<? extends T> elements)
     {
-        for (final Element element : elements)
+        for (final Element element : elements.toArray(new Element[elements
+                                                                  .size()]))
         {
             this.parent.addChild(element);
+            element.addElementListener(this.elementListener);
         }
         return super.addAll(index, elements);
     }
@@ -166,15 +212,17 @@ public class Elements<T extends Element> extends ArrayList<T>
     @Override
     public boolean removeAll(final Collection<?> elements)
     {
-        final boolean result = super.removeAll(elements);
-        if (result)
-            for (final Object element : elements)
-                if (element instanceof Element && contains(element))
-                {
-                    final Element e = (Element) element;
-                    this.parent.removeChild(e);
-                }
-        return result;
+        boolean modified = false;
+        final Iterator<?> e = iterator();
+        while (e.hasNext())
+        {
+            if (elements.contains(e.next()))
+            {
+                e.remove();
+                modified = true;
+            }
+        }
+        return modified;
     }
 
 
@@ -185,14 +233,16 @@ public class Elements<T extends Element> extends ArrayList<T>
     @Override
     public boolean retainAll(final Collection<?> elements)
     {
-        final boolean result = super.retainAll(elements);
-        if (result)
-            for (final Object element : elements)
-                if (element instanceof Element && !contains(element))
-                {
-                    final Element e = (Element) element;
-                    this.parent.removeChild(e);
-                }
-        return result;
+        boolean modified = false;
+        final Iterator<?> e = iterator();
+        while (e.hasNext())
+        {
+            if (!elements.contains(e.next()))
+            {
+                e.remove();
+                modified = true;
+            }
+        }
+        return modified;
     }
 }

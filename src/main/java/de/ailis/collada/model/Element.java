@@ -78,7 +78,7 @@ public abstract class Element implements Serializable
                 "Element is already a child of this element");
 
         // Remove the element from its current parent
-        if (element.parent != null) element.parent.removeChild(element);
+        if (element.parent != null) element.parent.children.remove(element);
 
         // Set the elements parent
         element.setParent(this);
@@ -118,13 +118,10 @@ public abstract class Element implements Serializable
 
     private void setParent(final Element parent)
     {
-        if (parent != this.parent)
-        {
-            if (this.parent != null) fireElementRemoved();
-            this.parent = parent;
-            setDocument(parent == null ? null : parent.document);
-            if (parent != null) fireElementInserted();
-        }
+        if (this.parent != null) fireElementRemoved();
+        this.parent = parent;
+        setDocument(parent == null ? null : parent.document);
+        if (parent != null) fireElementInserted();
     }
 
 
@@ -189,7 +186,8 @@ public abstract class Element implements Serializable
 
     protected void setId(final String id)
     {
-        if ((id == null && this.id != null) || (id != null && !id.equals(this.id)))
+        if ((id == null && this.id != null)
+            || (id != null && !id.equals(this.id)))
         {
             if (this.document != null) this.document.unregister(this);
             this.id = id;
@@ -221,22 +219,23 @@ public abstract class Element implements Serializable
 
     public Element getBySid(final String sid)
     {
-        // Try to find element directly in the child list
-        for (final Element child : this.children)
+        final List<Element> search = new ArrayList<Element>();
+        search.add(this);
+        while (search.size() > 0)
         {
-            if (child instanceof ScopeIdentifiable &&
-                sid.equals(((ScopeIdentifiable) child).getSid()))
-                return child;
-        }
+            final Element[] elements = search
+                .toArray(new Element[search.size()]);
+            search.clear();
+            for (final Element element : elements)
+            {
+                if (element instanceof ScopeIdentifiable &&
+                    sid.equals(((ScopeIdentifiable) element).getSid()))
+                    return element;
 
-        // If not found in the child list then ask each child instead
-        for (final Element child : this.children)
-        {
-            final Element element = child.getBySid(sid);
-            if (element != null) return element;
+                for (final Element child: element.children)
+                    search.add(child);
+            }
         }
-
-        // Nothing found.
         return null;
     }
 
@@ -281,8 +280,9 @@ public abstract class Element implements Serializable
     private void fireElementInserted()
     {
         if (this.elementListeners == null) return;
-        for (final ElementListener listener : this.elementListeners)
-            listener.elementInserted();
+        for (final ElementListener listener : this.elementListeners
+            .toArray(new ElementListener[this.elementListeners.size()]))
+            listener.elementInserted(this);
     }
 
 
@@ -293,10 +293,10 @@ public abstract class Element implements Serializable
     private void fireElementRemoved()
     {
         if (this.elementListeners == null) return;
-        for (final ElementListener listener : this.elementListeners)
-            listener.elementRemoved();
+        for (final ElementListener listener : this.elementListeners
+            .toArray(new ElementListener[this.elementListeners.size()]))
+            listener.elementRemoved(this);
     }
-
 
     /**
      * Fires the elementRemovedFromDocument event.
@@ -305,8 +305,9 @@ public abstract class Element implements Serializable
     private void fireElementRemovedFromDocument()
     {
         if (this.elementListeners == null) return;
-        for (final ElementListener listener : this.elementListeners)
-            listener.elementRemovedFromDocument();
+        for (final ElementListener listener : this.elementListeners
+            .toArray(new ElementListener[this.elementListeners.size()]))
+            listener.elementRemovedFromDocument(this);
     }
 
 
@@ -317,7 +318,8 @@ public abstract class Element implements Serializable
     private void fireElementInsertedIntoDocument()
     {
         if (this.elementListeners == null) return;
-        for (final ElementListener listener : this.elementListeners)
-            listener.elementInsertedIntoDocument();
+        for (final ElementListener listener : this.elementListeners
+            .toArray(new ElementListener[this.elementListeners.size()]))
+            listener.elementInsertedIntoDocument(this);
     }
 }

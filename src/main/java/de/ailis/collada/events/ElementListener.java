@@ -7,6 +7,8 @@ package de.ailis.collada.events;
 
 import java.io.Serializable;
 
+import de.ailis.collada.model.Element;
+
 
 /**
  * Listener interface for element events.
@@ -18,28 +20,40 @@ public interface ElementListener extends Serializable
 {
     /**
      * Called when element is going to be removed from it's parent element.
+     *
+     * @param element
+     *            The element
      */
 
-    public void elementRemoved();
+    public void elementRemoved(Element element);
 
 
     /**
      * Called when node has been added to a parent element.
+     *
+     * @param element
+     *            The element
      */
 
-    public void elementInserted();
+    public void elementInserted(Element element);
 
 
     /**
      * Called when element is going to be removed from a document.
+     *
+     * @param element
+     *            The element
      */
 
-    public void elementRemovedFromDocument();
+    public void elementRemovedFromDocument(Element element);
 
 
     /**
      * Called when element is inserted into a document.
+     *
+     * @param element
+     *            The element
      */
 
-    public void elementInsertedIntoDocument();
+    public void elementInsertedIntoDocument(Element element);
 }

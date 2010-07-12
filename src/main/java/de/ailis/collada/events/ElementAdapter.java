@@ -5,6 +5,8 @@
 
 package de.ailis.collada.events;
 
+import de.ailis.collada.model.Element;
+
 
 /**
  * Adapter with empty implementations of the element listener.
@@ -19,44 +21,44 @@ public class ElementAdapter implements ElementListener
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementRemoved()
+     * @see de.ailis.collada.events.ElementListener#elementRemoved(Element)
      */
 
     @Override
-    public void elementRemoved()
+    public void elementRemoved(final Element element)
     {
         // Empty
     }
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementInserted()
+     * @see de.ailis.collada.events.ElementListener#elementInserted(Element)
      */
 
     @Override
-    public void elementInserted()
+    public void elementInserted(final Element element)
     {
         // Empty
     }
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementRemovedFromDocument()
+     * @see de.ailis.collada.events.ElementListener#elementRemovedFromDocument(Element)
      */
 
     @Override
-    public void elementRemovedFromDocument()
+    public void elementRemovedFromDocument(final Element element)
     {
         // Empty
     }
 
 
     /**
-     * @see de.ailis.collada.events.ElementListener#elementInsertedIntoDocument()
+     * @see de.ailis.collada.events.ElementListener#elementInsertedIntoDocument(Element)
      */
 
     @Override
-    public void elementInsertedIntoDocument()
+    public void elementInsertedIntoDocument(final Element element)
     {
         // Empty
     }
