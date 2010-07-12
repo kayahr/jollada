@@ -103,10 +103,10 @@ public final class FloatArray extends Array
      */
 
     @Override
-    public void setId(final String id)
+    public FloatArray setId(final String id)
     {
         super.setId(id);
-        // TODO return this;
+        return this;
     }
 
 

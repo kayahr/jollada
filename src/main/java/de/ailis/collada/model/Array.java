@@ -40,9 +40,9 @@ public abstract class Array extends Element implements Identifiable
      */
 
     @Override
-    public void setId(final String id)
+    public Array setId(final String id)
     {
         super.setId(id);
-        //return this;
+        return this;
     }
 }

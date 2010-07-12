@@ -18,7 +18,7 @@ public class CommonSourceTechnique extends Element
     private static final long serialVersionUID = 1L;
 
     /** The list of material instances. */
-    private final Accessor accessor = new Accessor(this);
+    private Accessor accessor;
 
 
     /**

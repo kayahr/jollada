@@ -97,10 +97,10 @@ public final class IntArray extends Array
      */
 
     @Override
-    public void setId(final String id)
+    public IntArray setId(final String id)
     {
         super.setId(id);
-        // TODO return this;
+        return this;
     }
 
 

@@ -45,7 +45,6 @@ public class ElementsTest
      * Tests the default constructor with null parent
      */
 
-    @SuppressWarnings("unused")
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNull()
     {

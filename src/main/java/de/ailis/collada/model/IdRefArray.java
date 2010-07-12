@@ -91,10 +91,10 @@ public final class IdRefArray extends Array
      */
 
     @Override
-    public void setId(final String id)
+    public IdRefArray setId(final String id)
     {
         super.setId(id);
-        // TODO return this;
+        return this;
     }
 
 

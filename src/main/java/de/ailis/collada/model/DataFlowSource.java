@@ -81,11 +81,12 @@ public class DataFlowSource extends Element implements Identifiable,
      */
 
     @Override
-    public void setId(final String id)
+    public DataFlowSource setId(final String id)
     {
         if (id == null)
             throw new IllegalArgumentException("id must not be null");
         super.setId(id);
+        return this;
     }
 
 
