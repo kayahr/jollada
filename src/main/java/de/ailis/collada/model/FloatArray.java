@@ -32,9 +32,6 @@ public final class FloatArray extends Array
      */
     private int magnitude = 38;
 
-    /** The name. */
-    private String name;
-
 
     /**
      * Constructor.
@@ -52,11 +49,10 @@ public final class FloatArray extends Array
 
 
     /**
-     * Returns the size of the data.
-     *
-     * @return The data size.
+     * @see de.ailis.collada.model.Array#getCount()
      */
 
+    @Override
     public int getCount()
     {
         return this.data.length;
@@ -64,30 +60,25 @@ public final class FloatArray extends Array
 
 
     /**
-     * Sets the data size. Internally this creates a new data array and copies
-     * the old data over to the new one (Truncating the data if necessary).
-     *
-     * @param count
-     *            The new data size
-     * @return This array for chaining.
+     * @see de.ailis.collada.model.Array#setCount(int)
      */
 
+    @Override
     public FloatArray setCount(final int count)
     {
         final double[] oldData = this.data;
         this.data = new double[count];
         System.arraycopy(oldData, 0, this.data, 0, Math
-            .min(count, oldData.length));
+                .min(count, oldData.length));
         return this;
     }
 
 
     /**
-     * Returns the data.
-     *
-     * @return The data.
+     * @see de.ailis.collada.model.Array#getData()
      */
 
+    @Override
     public double[] getData()
     {
         return this.data;
@@ -95,11 +86,7 @@ public final class FloatArray extends Array
 
 
     /**
-     * Sets the ID.
-     *
-     * @param id
-     *            The ID to set. Null to unset.
-     * @return This array for chaining.
+     * @see de.ailis.collada.model.Array#setId(java.lang.String)
      */
 
     @Override
@@ -111,41 +98,13 @@ public final class FloatArray extends Array
 
 
     /**
-     * Returns the ID.
-     *
-     * @return The ID. May be null if not set.
+     * @see de.ailis.collada.model.Array#setName(java.lang.String)
      */
 
     @Override
-    public String getId()
-    {
-        return this.id;
-    }
-
-
-    /**
-     * Returns the name.
-     *
-     * @return The name. May be null if not set.
-     */
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-
-    /**
-     * Sets the name.
-     *
-     * @param name
-     *            The name to set. Null to unset.
-     * @return This array for chaining.
-     */
-
     public FloatArray setName(final String name)
     {
-        this.name = name;
+        super.setName(name);
         return this;
     }
 

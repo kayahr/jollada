@@ -97,7 +97,7 @@ public class IntArrayTest
     {
         final IntArray array = new IntArray(4);
         assertNull(array.getId());
-        assertSame(array, array.setId("foo"));
+        assertSame(array, ((Identifiable) array).setId("foo"));
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());

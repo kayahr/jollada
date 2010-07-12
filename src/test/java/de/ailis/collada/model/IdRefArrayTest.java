@@ -95,7 +95,7 @@ public class IdRefArrayTest
     {
         final IdRefArray array = new IdRefArray(4);
         assertNull(array.getId());
-        assertSame(array, array.setId("foo"));
+        assertSame(array, ((Identifiable) array).setId("foo"));
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());

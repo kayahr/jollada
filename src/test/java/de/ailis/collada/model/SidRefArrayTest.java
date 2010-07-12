@@ -95,7 +95,7 @@ public class SidRefArrayTest
     {
         final SidRefArray array = new SidRefArray(4);
         assertNull(array.getId());
-        assertSame(array, array.setId("foo"));
+        assertSame(array, ((Identifiable) array).setId("foo"));
         array.setId("foo");
         assertEquals("foo", array.getId());
         array.setId(null);

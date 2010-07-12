@@ -17,6 +17,39 @@ public abstract class Array extends Element implements Identifiable
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
+    /** The name. */
+    protected String name;
+
+
+    /**
+     * Returns the size of the data.
+     *
+     * @return The data size.
+     */
+
+    public abstract int getCount();
+
+
+    /**
+     * Sets the data size. Internally this creates a new data array and copies
+     * the old data over to the new one (Truncating the data if necessary).
+     *
+     * @param count
+     *            The new data size
+     * @return This array for chaining.
+     */
+
+    public abstract Array setCount(final int count);
+
+
+    /**
+     * Returns the data.
+     *
+     * @return The data.
+     */
+
+    public abstract Object getData();
+
 
     /**
      * Returns the ID.
@@ -43,6 +76,33 @@ public abstract class Array extends Element implements Identifiable
     public Array setId(final String id)
     {
         super.setId(id);
+        return this;
+    }
+
+
+    /**
+     * Returns the name.
+     *
+     * @return The name. May be null if not set.
+     */
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            The name to set. Null to unset.
+     * @return This array for chaining.
+     */
+
+    public Array setName(final String name)
+    {
+        this.name = name;
         return this;
     }
 }
