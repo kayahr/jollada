@@ -14,7 +14,7 @@ import de.ailis.collada.model.Element;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class ElementAdapter implements ElementListener
+public abstract class ElementAdapter implements ElementListener
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

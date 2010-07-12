@@ -198,7 +198,10 @@ public class ElementTest
     @Test
     public void testRemoveElementListenerNotExists()
     {
-        new Node().removeElementListener(new ElementAdapter());
+        new Node().removeElementListener(new ElementAdapter()
+        {
+            private static final long serialVersionUID = 1L;
+        });
     }
 
 
@@ -214,9 +217,13 @@ public class ElementTest
         class TestAdapter extends ElementAdapter
         {
             private static final long serialVersionUID = -6339447807055123781L;
+
             public boolean removedFromDoc = false;
+
             public boolean insertedIntoDoc = false;
+
             public boolean inserted = false;
+
             public boolean removed = false;
 
             @Override
