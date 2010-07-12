@@ -14,7 +14,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Accessor extends Element
+public final class Accessor extends Element
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

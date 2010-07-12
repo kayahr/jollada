@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualSceneLibrary extends Element implements AssetElement,
+public final class VisualSceneLibrary extends Element implements AssetElement,
         Identifiable
 {
     /** Serial version UID. */

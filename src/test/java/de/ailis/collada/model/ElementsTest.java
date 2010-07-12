@@ -33,7 +33,7 @@ public class ElementsTest
     public void testConstructor()
     {
         final Node parent = new Node();
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node node = new Node();
         elements.add(node);
@@ -48,7 +48,7 @@ public class ElementsTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNull()
     {
-        new Elements<Node>(null).toString();
+        new Nodes(null).toString();
     }
 
 
@@ -62,13 +62,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -100,13 +100,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -138,13 +138,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -177,13 +177,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -219,13 +219,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -259,7 +259,7 @@ public class ElementsTest
     public void testRemoveNotExists()
     {
         final Node parent = new Node();
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
         final Node child = new Node();
 
         assertFalse(elements.remove(child));
@@ -276,7 +276,7 @@ public class ElementsTest
         final Document document = new Document();
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -305,13 +305,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -343,13 +343,13 @@ public class ElementsTest
         final Document oldDocument = new Document();
         final Node oldParent = new Node();
         oldDocument.addChild(oldParent);
-        final Elements<Node> oldElements = new Elements<Node>(oldParent);
+        final Elements<Node> oldElements = new Nodes(oldParent);
 
         final Document document = new Document();
 
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -381,7 +381,7 @@ public class ElementsTest
         final Document document = new Document();
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");
@@ -416,7 +416,7 @@ public class ElementsTest
         final Document document = new Document();
         final Node parent = new Node();
         document.addChild(parent);
-        final Elements<Node> elements = new Elements<Node>(parent);
+        final Elements<Node> elements = new Nodes(parent);
 
         final Node child = new Node();
         child.setId("ID");

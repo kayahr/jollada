@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Document extends Element implements AssetElement
+public final class Document extends Element implements AssetElement
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

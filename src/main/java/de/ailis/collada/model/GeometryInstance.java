@@ -14,7 +14,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class GeometryInstance extends Instance
+public final class GeometryInstance extends Instance
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

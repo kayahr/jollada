@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3f;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class LookAtTransform extends Transformation
+public final class LookAtTransform extends Transformation
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

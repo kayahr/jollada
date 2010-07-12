@@ -14,7 +14,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualSceneInstance extends Instance
+public final class VisualSceneInstance extends Instance
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

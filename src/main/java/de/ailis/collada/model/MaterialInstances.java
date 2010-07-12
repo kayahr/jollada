@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class MaterialInstances extends Elements<MaterialInstance>
+public final class MaterialInstances extends Elements<MaterialInstance>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

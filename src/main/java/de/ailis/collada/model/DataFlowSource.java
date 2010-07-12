@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class DataFlowSource extends Element implements Identifiable,
+public final class DataFlowSource extends Element implements Identifiable,
     AssetElement
 {
     /** Serial version UID. */

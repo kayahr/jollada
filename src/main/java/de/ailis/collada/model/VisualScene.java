@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualScene extends Element implements Identifiable, AssetElement
+public final class VisualScene extends Element implements Identifiable, AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

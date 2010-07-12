@@ -14,7 +14,7 @@ import java.net.URI;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class CameraInstance extends Instance
+public final class CameraInstance extends Instance
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

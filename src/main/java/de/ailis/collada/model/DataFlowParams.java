@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class DataFlowParams extends Elements<DataFlowParam>
+public final class DataFlowParams extends Elements<DataFlowParam>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

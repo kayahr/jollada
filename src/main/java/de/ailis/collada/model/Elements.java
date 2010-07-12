@@ -21,7 +21,7 @@ import de.ailis.collada.events.ElementListener;
  *            The array element type
  */
 
-public class Elements<T extends Element> extends ArrayList<T>
+public abstract class Elements<T extends Element> extends ArrayList<T>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

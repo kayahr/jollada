@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class GeometryInstances extends Instances<GeometryInstance>
+public final class GeometryInstances extends Instances<GeometryInstance>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

@@ -15,7 +15,7 @@ import java.util.List;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Node extends Element implements ScopeIdentifiable, Identifiable,
+public final class Node extends Element implements ScopeIdentifiable, Identifiable,
         AssetElement
 {
     /** Serial version UID. */

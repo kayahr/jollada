@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class VisualSceneLibraries extends Elements<VisualSceneLibrary>
+public final class VisualSceneLibraries extends Elements<VisualSceneLibrary>
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
