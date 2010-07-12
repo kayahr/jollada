@@ -45,6 +45,6 @@ public class CommonMaterialBindingTechniqueTest
     @Test(expected = IllegalArgumentException.class)
     public void testNullUrl()
     {
-        new CommonMaterialBindingTechnique(null);
+        new CommonMaterialBindingTechnique(null).toString();
     }
 }

@@ -64,7 +64,7 @@ public class GeographicLocationTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNull()
     {
-        new GeographicLocation(1, 2, 3, null);
+        new GeographicLocation(1, 2, 3, null).toString();
     }
 
 

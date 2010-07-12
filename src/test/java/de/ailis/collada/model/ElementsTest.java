@@ -48,7 +48,7 @@ public class ElementsTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNull()
     {
-        new Elements<Node>(null);
+        new Elements<Node>(null).toString();
     }
 
 

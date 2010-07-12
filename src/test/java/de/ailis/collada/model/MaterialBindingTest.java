@@ -46,6 +46,6 @@ public class MaterialBindingTest
     @Test(expected = IllegalArgumentException.class)
     public void testNullUrl()
     {
-        new MaterialBinding(null);
+        new MaterialBinding(null).toString();
     }
 }

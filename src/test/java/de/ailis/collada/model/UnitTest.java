@@ -55,7 +55,7 @@ public class UnitTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNull()
     {
-        new Unit(2, null);
+        new Unit(2, null).toString();
     }
 
 

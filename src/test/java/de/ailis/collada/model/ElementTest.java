@@ -59,7 +59,7 @@ public class ElementTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNullParent()
     {
-        new MaterialBinding(null);
+        new MaterialBinding(null).toString();
     }
 
 

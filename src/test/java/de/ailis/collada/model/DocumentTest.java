@@ -63,7 +63,7 @@ public class DocumentTest
     @Test(expected = IllegalArgumentException.class)
     public void testNullConstructor()
     {
-        new Document(null);
+        new Document(null).toString();
     }
 
 

@@ -52,7 +52,7 @@ public class MaterialInstanceTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithFirstNull() throws URISyntaxException
     {
-        new MaterialInstance(null, new URI("foo"));
+        new MaterialInstance(null, new URI("foo")).toString();
     }
 
 
@@ -66,7 +66,7 @@ public class MaterialInstanceTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithSecondNull() throws URISyntaxException
     {
-        new MaterialInstance("SYMBOL", null);
+        new MaterialInstance("SYMBOL", null).toString();
     }
 
 

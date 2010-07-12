@@ -42,7 +42,7 @@ public class DataFlowParamTest
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorWithNull()
     {
-        new DataFlowParam(null);
+        new DataFlowParam(null).toString();
     }
 
 
