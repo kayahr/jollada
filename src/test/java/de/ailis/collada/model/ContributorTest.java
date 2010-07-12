@@ -5,7 +5,6 @@
 
 package de.ailis.collada.model;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -33,7 +32,7 @@ public class ContributorTest
      */
 
     @Test
-    public void testConstructor()
+    public void testEmptyConstructor()
     {
         final Contributor contributor = new Contributor();
         assertNull(contributor.getAuthor());
@@ -47,51 +46,194 @@ public class ContributorTest
 
 
     /**
-     * Tests the equals() method.
+     * Tests the full constructor.
+     *
+     * @throws URISyntaxException
+     *             When invalid URI has been specified
      */
 
     @Test
-    public void testEquals()
+    public void testFullConstructor() throws URISyntaxException
     {
-        final Contributor contributor1 = new Contributor().setAuthor("me");
-        final Contributor contributor2 = new Contributor().setAuthor("me");
-        final Contributor contributor3 = new Contributor().setAuthor("him");
-        assertTrue(contributor1.equals(contributor2));
-        assertTrue(contributor1.equals(contributor1));
-        assertFalse(contributor1.equals(null));
-        assertFalse(contributor1.equals("someOther"));
-        assertFalse(contributor1.equals(contributor3));
+        final Contributor contributor = new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"));
+        assertEquals("AUTHOR", contributor.getAuthor());
+        assertEquals("EMAIL", contributor.getAuthorEMail());
+        assertEquals("TOOL", contributor.getAuthoringTool());
+        assertEquals(new URI("WEBSITE"), contributor.getAuthorWebsite());
+        assertEquals("COMMENTS", contributor.getComments());
+        assertEquals("COPYRIGHT", contributor.getCopyright());
+        assertEquals(new URI("SOURCE"), contributor.getSourceData());
+    }
+
+
+    /**
+     * Tests the equals() method.
+     *
+     * @throws URISyntaxException
+     *             When invalid URI has been specified
+     */
+
+    @Test
+    public void testEquals() throws URISyntaxException
+    {
+        final Contributor contributor = new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"));
+        assertTrue(contributor.equals(new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"))));
+        assertTrue(contributor.equals(contributor));
+        assertFalse(contributor.equals(null));
+        assertFalse(contributor.equals("someOther"));
+        assertFalse(contributor.equals(new Contributor("AUTHOR2", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"))));
+        assertFalse(contributor.equals(new Contributor("AUTHOR", "EMAIL2",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"))));
+        assertFalse(contributor.equals(new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE2"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"))));
+        assertFalse(contributor.equals(new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL2", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"))));
+        assertFalse(contributor.equals(new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS2", "COPYRIGHT", new URI(
+                "SOURCE"))));
+        assertFalse(contributor.equals(new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT2", new URI(
+                "SOURCE"))));
+        assertFalse(contributor.equals(new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE2"))));
+
+        assertFalse(new Contributor(null, "EMAIL", new URI("WEBSITE"), "TOOL",
+            "COMMENTS", "COPYRIGHT", new URI("SOURCE")).equals(contributor));
+        assertFalse(new Contributor("AUTHOR", null, new URI("WEBSITE"), "TOOL",
+            "COMMENTS", "COPYRIGHT", new URI("SOURCE")).equals(contributor));
+        assertFalse(new Contributor("AUTHOR", "EMAIL", null, "TOOL",
+            "COMMENTS", "COPYRIGHT", new URI("SOURCE")).equals(contributor));
+        assertFalse(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            null, "COMMENTS", "COPYRIGHT", new URI("SOURCE"))
+                .equals(contributor));
+        assertFalse(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            "TOOL", null, "COPYRIGHT", new URI("SOURCE")).equals(contributor));
+        assertFalse(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            "TOOL", "COMMENTS", null, new URI("SOURCE")).equals(contributor));
+        assertFalse(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            "TOOL", "COMMENTS", "COPYRIGHT", null).equals(contributor));
+
+
+        assertTrue(new Contributor(null, "EMAIL", new URI("WEBSITE"), "TOOL",
+            "COMMENTS", "COPYRIGHT", new URI("SOURCE")).equals(new Contributor(
+            null, "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE"))));
+        assertTrue(new Contributor("AUTHOR", null, new URI("WEBSITE"), "TOOL",
+            "COMMENTS", "COPYRIGHT", new URI("SOURCE")).equals(new Contributor(
+            "AUTHOR", null, new URI("WEBSITE"), "TOOL", "COMMENTS",
+            "COPYRIGHT", new URI("SOURCE"))));
+        assertTrue(new Contributor("AUTHOR", "EMAIL", null, "TOOL", "COMMENTS",
+            "COPYRIGHT", new URI("SOURCE")).equals(new Contributor("AUTHOR",
+            "EMAIL", null, "TOOL", "COMMENTS", "COPYRIGHT", new URI("SOURCE"))));
+        assertTrue(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"), null,
+            "COMMENTS", "COPYRIGHT", new URI("SOURCE")).equals(new Contributor(
+            "AUTHOR", "EMAIL", new URI("WEBSITE"), null, "COMMENTS",
+            "COPYRIGHT", new URI("SOURCE"))));
+        assertTrue(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            "TOOL", null, "COPYRIGHT", new URI("SOURCE"))
+                .equals(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+                    "TOOL", null, "COPYRIGHT", new URI("SOURCE"))));
+        assertTrue(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            "TOOL", "COMMENTS", null, new URI("SOURCE"))
+                .equals(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+                    "TOOL", "COMMENTS", null, new URI("SOURCE"))));
+        assertTrue(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"),
+            "TOOL", "COMMENTS", "COPYRIGHT", null).equals(new Contributor(
+            "AUTHOR", "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS",
+            "COPYRIGHT", null)));
     }
 
 
     /**
      * Tests the hashCode method.
+     *
+     * @throws URISyntaxException
+     *             When invalid URI has been specified
      */
 
     @Test
-    public void testHashCode()
+    public void testHashCode() throws URISyntaxException
     {
-        final Contributor contributor1 = new Contributor().setAuthor("me");
-        final Contributor contributor2 = new Contributor().setAuthor("me");
-        final Contributor contributor3 = new Contributor().setAuthor("him");
-        assertThat(contributor1.hashCode(), is(contributor2.hashCode()));
-        assertThat(contributor1.hashCode(), not(contributor3.hashCode()));
+        final Contributor contributor1 = new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"));
+        final Contributor contributor2 = new Contributor("AUTHOR", "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE"));
+        assertEquals(contributor1.hashCode(), contributor2.hashCode());
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR2",
+            "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL2", new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE2"), "TOOL", "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), "TOOL2", "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS2", "COPYRIGHT",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT2",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE2")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor(null, "EMAIL",
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR", null,
+            new URI("WEBSITE"), "TOOL", "COMMENTS", "COPYRIGHT", new URI(
+                "SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(),
+            not(new Contributor("AUTHOR", "EMAIL", null, "TOOL", "COMMENTS",
+                "COPYRIGHT", new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), null, "COMMENTS", "COPYRIGHT",
+            new URI("SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), "TOOL", null, "COPYRIGHT", new URI(
+                "SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(), not(new Contributor("AUTHOR",
+            "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS", null, new URI(
+                "SOURCE")).hashCode()));
+        assertThat(contributor1.hashCode(),
+            not(new Contributor("AUTHOR", "EMAIL", new URI("WEBSITE"), "TOOL",
+                "COMMENTS", "COPYRIGHT", null).hashCode()));
     }
 
 
     /**
      * Tests the toString method.
+     *
+     * @throws URISyntaxException
+     *             When invalid URI has been specified.
      */
 
     @Test
-    public void testToString()
+    public void testToString() throws URISyntaxException
     {
-        assertEquals("Contributor [author=null, authorEMail=null, " +
-                "authorWebsite=null, authoringTool=null, comments=null, " +
-                "copyright=null, sourceData=null]",
-            new Contributor().toString());
+        assertEquals("Contributor [author=AUTHOR, authorEMail=EMAIL, "
+            + "authorWebsite=WEBSITE, authoringTool=TOOL, comments=COMMENTS, "
+            + "copyright=COPYRIGHT, sourceData=SOURCE]", new Contributor(
+            "AUTHOR", "EMAIL", new URI("WEBSITE"), "TOOL", "COMMENTS",
+            "COPYRIGHT", new URI("SOURCE")).toString());
     }
-
 
     /**
      * Tests the author.

@@ -15,5 +15,8 @@ package de.ailis.collada.model;
 public enum DataType
 {
     /** Integer type */
-    INT
+    INT,
+
+    /** Float type */
+    FLOAT
 }

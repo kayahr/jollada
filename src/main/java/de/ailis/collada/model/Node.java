@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 public class Node extends Element implements ScopeIdentifiable, Identifiable,
-    AssetElement
+        AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -46,7 +46,8 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
     private final CameraInstances cameraInstances = new CameraInstances(this);
 
     /** The list of geometry instances. */
-    private final GeometryInstances geometryInstances = new GeometryInstances(this);
+    private final GeometryInstances geometryInstances = new GeometryInstances(
+        this);
 
     /** The list of light instances. */
     private final LightInstances lightInstances = new LightInstances(this);
@@ -73,9 +74,10 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
      */
 
     @Override
-    public void setSid(final String sid)
+    public Node setSid(final String sid)
     {
         this.sid = sid;
+        return this;
     }
 
 
@@ -86,7 +88,7 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
     @Override
     public String getId()
     {
-        return this.id;
+        return super.getId();
     }
 
 
@@ -95,9 +97,10 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
      */
 
     @Override
-    public void setId(final String id)
+    public Node setId(final String id)
     {
         super.setId(id);
+        return this;
     }
 
 
@@ -118,11 +121,13 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
      *
      * @param name
      *            The node name to set. Null to unset.
+     * @return This node for chaining.
      */
 
-    public void setName(final String name)
+    public Node setName(final String name)
     {
         this.name = name;
+        return this;
     }
 
 
@@ -143,13 +148,15 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
      *
      * @param type
      *            The node type to set. Must not be null.
+     * @return This node for chaining.
      */
 
-    public void setType(final NodeType type)
+    public Node setType(final NodeType type)
     {
         if (type == null)
             throw new IllegalArgumentException("type must not be null");
         this.type = type;
+        return this;
     }
 
 
@@ -195,11 +202,13 @@ public class Node extends Element implements ScopeIdentifiable, Identifiable,
      *
      * @param asset
      *            The asset-management information to set. Null to unset.
+     * @return This node for chaining.
      */
 
-    public void setAsset(final Asset asset)
+    public Node setAsset(final Asset asset)
     {
         this.asset = asset;
+        return this;
     }
 
 

@@ -43,6 +43,49 @@ public final class Contributor implements Serializable
 
 
     /**
+     * Constructs a new contributor with all information set to null.
+     */
+
+    public Contributor()
+    {
+        // Empty
+    }
+
+
+    /**
+     * Full constructor. All parameters are optional and can be null.
+     *
+     * @param author
+     *            The author's name.
+     * @param authorEMail
+     *            The autor's full email address.
+     * @param authorWebsite
+     *            The URL of the autor's website.
+     * @param authoringTool
+     *            The name of the used authoring tool.
+     * @param comments
+     *            Comments from this contributor.
+     * @param copyright
+     *            The copyright information.
+     * @param sourceData
+     *            The URI reference to the source data.
+     */
+
+    public Contributor(final String author, final String authorEMail,
+        final URI authorWebsite, final String authoringTool,
+        final String comments, final String copyright, final URI sourceData)
+    {
+        this.author = author;
+        this.authorEMail = authorEMail;
+        this.authorWebsite = authorWebsite;
+        this.authoringTool = authoringTool;
+        this.comments = comments;
+        this.copyright = copyright;
+        this.sourceData = sourceData;
+    }
+
+
+    /**
      * Returns the author's name.
      *
      * @return The author's name. May be null if not set.

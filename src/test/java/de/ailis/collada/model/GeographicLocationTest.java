@@ -58,6 +58,17 @@ public class GeographicLocationTest
 
 
     /**
+     * Tests constructor with null parameter.
+     */
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorWithNull()
+    {
+        new GeographicLocation(1, 2, 3, null);
+    }
+
+
+    /**
      * Tests the equals() method.
      */
 
@@ -66,17 +77,16 @@ public class GeographicLocationTest
     {
         final GeographicLocation location1 = new GeographicLocation(1, 2, 3);
         final GeographicLocation location2 = new GeographicLocation(1, 2, 3);
-        final GeographicLocation location3 = new GeographicLocation(2, 3, 4);
-        final GeographicLocation location4 = new GeographicLocation(1, 2, 3,
-            AltitudeMode.ABSOLUTE);
         assertTrue(location1.equals(location2));
         assertTrue(location1.equals(location1));
         assertFalse(location1.equals(null));
         assertFalse(location1.equals("someOther"));
-        assertFalse(location1.equals(location3));
-        assertFalse(location1.equals(location4));
+        assertFalse(location1.equals(new GeographicLocation(2, 2, 3)));
+        assertFalse(location1.equals(new GeographicLocation(1, 3, 3)));
+        assertFalse(location1.equals(new GeographicLocation(1, 2, 4)));
+        assertFalse(location1.equals(new GeographicLocation(1, 2, 3,
+            AltitudeMode.ABSOLUTE)));
     }
-
 
     /**
      * Tests the hashCode method.
@@ -162,7 +172,6 @@ public class GeographicLocationTest
         assertEquals(AltitudeMode.RELATIVE_TO_GROUND,
             location.getAltitudeMode());
     }
-
 
 
     /**

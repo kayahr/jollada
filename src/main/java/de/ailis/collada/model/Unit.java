@@ -88,8 +88,7 @@ public final class Unit implements Serializable
         final int prime = 31;
         int result = 1;
         result = prime * result + Float.floatToIntBits(this.meter);
-        result = prime * result
-            + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + this.name.hashCode();
         return result;
     }
 
@@ -107,10 +106,6 @@ public final class Unit implements Serializable
         final Unit other = (Unit) obj;
         if (Float.floatToIntBits(this.meter) != Float
                 .floatToIntBits(other.meter)) return false;
-        if (this.name == null)
-        {
-            if (other.name != null) return false;
-        }
         else if (!this.name.equals(other.name)) return false;
         return true;
     }

@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3f;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class ScaleTransform extends Transformation
+public final class ScaleTransform extends Transformation
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -29,13 +29,15 @@ public class ScaleTransform extends Transformation
      *
      * @param scaling
      *            The scaling. Must not be null.
+     * @return This transform for chaining.
      */
 
-    public void setScaling(final Vector3f scaling)
+    public ScaleTransform setScaling(final Vector3f scaling)
     {
         if (scaling == null)
             throw new IllegalArgumentException("scaling must not be null");
         this.scaling.set(scaling);
+        return this;
     }
 
 

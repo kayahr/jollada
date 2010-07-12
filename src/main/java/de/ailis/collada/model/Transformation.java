@@ -6,14 +6,14 @@
 package de.ailis.collada.model;
 
 
-
 /**
  * Look-at transformation.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public abstract class Transformation extends Element implements ScopeIdentifiable
+public abstract class Transformation extends Element implements
+        ScopeIdentifiable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -40,11 +40,13 @@ public abstract class Transformation extends Element implements ScopeIdentifiabl
      *
      * @param sid
      *            The scope ID to set. Null to unset.
+     * @return This transformation for chaining.
      */
 
     @Override
-    public void setSid(final String sid)
+    public Transformation setSid(final String sid)
     {
         this.sid = sid;
+        return this;
     }
 }

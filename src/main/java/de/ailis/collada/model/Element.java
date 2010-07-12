@@ -182,9 +182,10 @@ public abstract class Element implements Serializable
      *
      * @param id
      *            The ID to set. Null to unset.
+     * @return This element for chaining.
      */
 
-    protected void setId(final String id)
+    protected Element setId(final String id)
     {
         if ((id == null && this.id != null)
             || (id != null && !id.equals(this.id)))
@@ -193,13 +194,14 @@ public abstract class Element implements Serializable
             this.id = id;
             if (this.document != null) this.document.register(this);
         }
+        return this;
     }
 
 
     /**
-     * Returns the ID.
+     * Returns the element id.
      *
-     * @return The ID. Null if not set
+     * @return The element id
      */
 
     String getId()

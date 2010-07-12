@@ -19,9 +19,10 @@ public interface ScopeIdentifiable
      *
      * @param sid
      *            The scope ID to set.
+     * @return This element for chaining
      */
 
-    public void setSid(String sid);
+    public Element setSid(String sid);
 
 
     /**

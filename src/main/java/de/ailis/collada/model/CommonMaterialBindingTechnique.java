@@ -12,7 +12,7 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class CommonMaterialBindingTechnique extends Element
+public final class CommonMaterialBindingTechnique extends Element
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public class CommonMaterialBindingTechnique extends Element
      *            The parent element. Must not be null.
      */
 
-    CommonMaterialBindingTechnique(final Element parent)
+    CommonMaterialBindingTechnique(final MaterialBinding parent)
     {
         super(parent);
     }

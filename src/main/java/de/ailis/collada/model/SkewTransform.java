@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3f;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class SkewTransform extends Transformation
+public final class SkewTransform extends Transformation
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -35,13 +35,15 @@ public class SkewTransform extends Transformation
      *
      * @param rotationAxis
      *            The rotation axis to set. Must not be null.
+     * @return This transform for chaining.
      */
 
-    public void setRotationAxis(final Vector3f rotationAxis)
+    public SkewTransform setRotationAxis(final Vector3f rotationAxis)
     {
         if (rotationAxis == null)
             throw new IllegalArgumentException("rotationAxis must not be null");
         this.rotationAxis.set(rotationAxis);
+        return this;
     }
 
 
@@ -62,14 +64,16 @@ public class SkewTransform extends Transformation
      *
      * @param translationAxis
      *            The translation axis to set. Must not be null.
+     * @return This transform for chaining.
      */
 
-    public void setTranslationAxis(final Vector3f translationAxis)
+    public SkewTransform setTranslationAxis(final Vector3f translationAxis)
     {
         if (translationAxis == null)
             throw new IllegalArgumentException(
                 "translationAxis must not be null");
         this.translationAxis.set(translationAxis);
+        return this;
     }
 
 
@@ -102,10 +106,12 @@ public class SkewTransform extends Transformation
      *
      * @param angle
      *            The rotation angle in degrees to set.
+     * @return This transform for chaining.
      */
 
-    public void setAngle(final float angle)
+    public SkewTransform setAngle(final float angle)
     {
         this.angle = angle;
+        return this;
     }
 }

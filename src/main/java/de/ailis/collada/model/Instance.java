@@ -60,12 +60,14 @@ public abstract class Instance extends Element implements ScopeIdentifiable
      *
      * @param sid
      *            The scope ID to set. Null to unset.
+     * @return This instance for chaining.
      */
 
     @Override
-    public void setSid(final String sid)
+    public Instance setSid(final String sid)
     {
         this.sid = sid;
+        return this;
     }
 
 
@@ -86,13 +88,15 @@ public abstract class Instance extends Element implements ScopeIdentifiable
      *
      * @param url
      *            The URL to set. Must not be null.
+     * @return This instance for chaining.
      */
 
-    public void setUrl(final URI url)
+    public Instance setUrl(final URI url)
     {
         if (url == null)
             throw new IllegalArgumentException("url must not be null");
         this.url = url;
+        return this;
     }
 
 
@@ -113,10 +117,12 @@ public abstract class Instance extends Element implements ScopeIdentifiable
      *
      * @param name
      *            The name to set. Null to unset.
+     * @return This instance for chaining.
      */
 
-    public void setName(final String name)
+    public Instance setName(final String name)
     {
         this.name = name;
+        return this;
     }
 }

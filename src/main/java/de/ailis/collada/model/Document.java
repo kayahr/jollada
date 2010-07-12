@@ -80,7 +80,7 @@ public class Document extends Element implements AssetElement
             throw new IllegalArgumentException("element must not be null");
 
 
-        final String id = element.getId();
+        final String id = element.id;
         if (id != null) if (this.idMap.put(id, element) != null)
             throw new InternalError(
                 "Element with id '" + id + "' already registered");
@@ -99,7 +99,7 @@ public class Document extends Element implements AssetElement
         if (element == null)
             throw new IllegalArgumentException("element must not be null");
 
-        final String id = element.getId();
+        final String id = element.id;
         if (id != null) if (this.idMap.remove(id) == null)
             throw new InternalError(
                 "Element with id '" + id + "' not registered");
@@ -135,11 +135,13 @@ public class Document extends Element implements AssetElement
      *
      * @param base
      *            The base URI to set. null to unset.
+     * @return The document for chaining.
      */
 
-    public void setBase(final URI base)
+    public Document setBase(final URI base)
     {
         this.base = base;
+        return this;
     }
 
 
@@ -197,9 +199,9 @@ public class Document extends Element implements AssetElement
      *
      * @param scene
      *            The scene to set. Null to unset.
-     */
+     * @return The document for chaining.     */
 
-    public void setScene(final Scene scene)
+    public Document setScene(final Scene scene)
     {
         if (scene != this.scene)
         {
@@ -218,5 +220,6 @@ public class Document extends Element implements AssetElement
 
             this.scene = scene;
         }
+        return this;
     }
 }

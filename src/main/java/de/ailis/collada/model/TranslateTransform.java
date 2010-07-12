@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3f;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class TranslateTransform extends Transformation
+public final class TranslateTransform extends Transformation
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -29,13 +29,15 @@ public class TranslateTransform extends Transformation
      *
      * @param translation
      *            The translation to set. Must not be null.
+     * @return This transform for chaining.
      */
 
-    public void setTranslation(final Vector3f translation)
+    public TranslateTransform setTranslation(final Vector3f translation)
     {
         if (translation == null)
             throw new IllegalArgumentException("translation must not be null");
         this.translation.set(translation);
+        return this;
     }
 
 

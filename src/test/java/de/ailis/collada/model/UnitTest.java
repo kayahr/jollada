@@ -48,6 +48,16 @@ public class UnitTest
         assertEquals("meters", unit.getName());
     }
 
+    /**
+     * Tests constructor with null parameter.
+     */
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorWithNull()
+    {
+        new Unit(2, null);
+    }
+
 
     /**
      * Tests the equals() method.

@@ -1,0 +1,30 @@
+/*
+ * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
+ * See LICENSE.txt for licensing information.
+ */
+
+package de.ailis.collada.model;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+
+/**
+ * Tests the DataType class.
+ *
+ * @author Klaus Reimer (k@ailis.de)
+ */
+
+public class DataTypeTest
+{
+    /**
+     * Tests the valueOf method.
+     */
+
+    @Test
+    public void testValueOf()
+    {
+        assertEquals(DataType.INT, DataType.valueOf("INT"));
+    }
+}
