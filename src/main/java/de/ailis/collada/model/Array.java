@@ -73,7 +73,7 @@ public abstract class Array extends Element implements Identifiable
      */
 
     @Override
-    public Array setId(final String id)
+    public Element setId(final String id)
     {
         super.setId(id);
         return this;

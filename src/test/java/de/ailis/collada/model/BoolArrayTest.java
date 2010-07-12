@@ -6,6 +6,7 @@
 package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -29,9 +30,9 @@ public class BoolArrayTest
     public void testConstructor()
     {
         final BoolArray array = new BoolArray(16);
-        assertEquals(16, array.getCount());
-        assertNull(array.getId());
-        assertNull(array.getName());
+        assertEquals(16, ((Array) array).getCount());
+        assertNull(((Array) array).getId());
+        assertNull(((Array) array).getName());
     }
 
 
@@ -58,8 +59,9 @@ public class BoolArrayTest
         array.getData()[1] = true;
         array.getData()[2] = true;
         array.getData()[3] = true;
-        assertSame(array, array.setCount(6));
+        assertSame(array, ((Array) array).setCount(6));
         assertEquals(6, array.getCount());
+        assertNotNull(((Array) array).getData());
         assertTrue(array.getData()[0]);
         assertTrue(array.getData()[1]);
         assertTrue(array.getData()[2]);
@@ -80,7 +82,7 @@ public class BoolArrayTest
     {
         final BoolArray array = new BoolArray(4);
         assertNull(array.getName());
-        assertSame(array, array.setName("foo"));
+        assertSame(array, ((Array) array).setName("foo"));
         assertEquals("foo", array.getName());
         array.setName(null);
         assertNull(array.getName());
@@ -96,7 +98,7 @@ public class BoolArrayTest
     {
         final BoolArray array = new BoolArray(4);
         assertNull(array.getId());
-        assertSame(array, ((Identifiable) array).setId("foo"));
+        assertSame(array, ((Element) array).setId("foo"));
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());
