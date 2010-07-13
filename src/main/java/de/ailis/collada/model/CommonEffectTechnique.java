@@ -7,28 +7,35 @@ package de.ailis.collada.model;
 
 
 /**
- * A image.
+ * Technique for a common effect profile.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class Image extends Element implements Identifiable,
+public final class CommonEffectTechnique extends Element implements Identifiable,
         AssetElement, ScopeIdentifiable
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The scene name. */
-    private String name;
-
     /** Asset-management information. */
     private Asset asset;
 
-    /** The scope ID. */
+    /** The scope ID */
     private String sid;
 
-    /** The image source. */
-    private ImageSource source;
+
+    /**
+     * Constructor.
+     *
+     * @param sid
+     *            The scope ID. Must not be null.
+     */
+
+    public CommonEffectTechnique(final String sid)
+    {
+        setSid(sid);
+    }
 
 
     /**
@@ -59,29 +66,32 @@ public final class Image extends Element implements Identifiable,
 
 
     /**
-     * Returns the name.
+     * Returns the scope ID.
      *
-     * @return The name. May be null if not set.
+     * @return The scope ID. Never null.
      */
 
-    public String getName()
+    @Override
+    public String getSid()
     {
-        return this.name;
+        return this.sid;
     }
 
 
     /**
-     * Sets the name.
+     * Sets the scope ID.
      *
-     * @param name
-     *            The name to set. Null to unset.
+     * @param sid
+     *            The scope ID to set. Must not be null.
      */
 
-    public void setName(final String name)
+    @Override
+    public void setSid(final String sid)
     {
-        this.name = name;
+        if (sid == null)
+            throw new IllegalArgumentException("sid must not be null");
+        this.sid = sid;
     }
-
 
     /**
      * Returns the asset-management information.
@@ -106,57 +116,5 @@ public final class Image extends Element implements Identifiable,
     public void setAsset(final Asset asset)
     {
         this.asset = asset;
-    }
-
-
-    /**
-     * Sets the scope ID.
-     *
-     * @param sid
-     *            The scope ID to set. Null to unset.
-     */
-
-    @Override
-    public void setSid(final String sid)
-    {
-        this.sid = sid;
-    }
-
-
-    /**
-     * Returns the scope ID.
-     *
-     * @return The scope ID. May be null if not set.
-     */
-
-    @Override
-    public String getSid()
-    {
-        return this.sid;
-    }
-
-
-    /**
-     * Returns the image source.
-     *
-     * @return The image source. May be null if not set.
-     */
-
-    public ImageSource getSource()
-    {
-        return this.source;
-    }
-
-
-    /**
-     * Sets the image source.
-     *
-     * @param source
-     *            The image source to set. Null to unset.
-     */
-
-    public void setSource(final ImageSource source)
-    {
-        this.source = source;
     }
 }

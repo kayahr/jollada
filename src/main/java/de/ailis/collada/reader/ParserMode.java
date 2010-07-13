@@ -28,6 +28,9 @@ enum ParserMode {
     /** Parser is in image init_from element */
     IMAGE_INIT_FROM("init_from"),
 
+    /** Parser is in image init_from element ref */
+    IMAGE_INIT_FROM_REF("ref"),
+
     /** Parser is in library_materials element */
     LIBRARY_MATERIALS("library_materials"),
 

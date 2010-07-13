@@ -7,13 +7,13 @@ package de.ailis.collada.model;
 
 
 /**
- * A image.
+ * A material.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class Image extends Element implements Identifiable,
-        AssetElement, ScopeIdentifiable
+public final class Material extends Element implements Identifiable,
+        AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -24,11 +24,21 @@ public final class Image extends Element implements Identifiable,
     /** Asset-management information. */
     private Asset asset;
 
-    /** The scope ID. */
-    private String sid;
+    /** The effect instance. */
+    private EffectInstance effectInstance;
 
-    /** The image source. */
-    private ImageSource source;
+
+    /**
+     * Constructor.
+     *
+     * @param effectInstance
+     *            The effect instance. Must not be null.
+     */
+
+    public Material(final EffectInstance effectInstance)
+    {
+        setEffectInstance(effectInstance);
+    }
 
 
     /**
@@ -110,53 +120,29 @@ public final class Image extends Element implements Identifiable,
 
 
     /**
-     * Sets the scope ID.
+     * Returns the effect instance.
      *
-     * @param sid
-     *            The scope ID to set. Null to unset.
+     * @return The effect instance. Never null.
      */
 
-    @Override
-    public void setSid(final String sid)
+    public EffectInstance getEffectInstance()
     {
-        this.sid = sid;
+        return this.effectInstance;
     }
 
 
     /**
-     * Returns the scope ID.
+     * Sets the effect instance.
      *
-     * @return The scope ID. May be null if not set.
+     * @param effectInstance
+     *            The effect instance to set. Must not be null.
      */
 
-    @Override
-    public String getSid()
+    public void setEffectInstance(final EffectInstance effectInstance)
     {
-        return this.sid;
-    }
-
-
-    /**
-     * Returns the image source.
-     *
-     * @return The image source. May be null if not set.
-     */
-
-    public ImageSource getSource()
-    {
-        return this.source;
-    }
-
-
-    /**
-     * Sets the image source.
-     *
-     * @param source
-     *            The image source to set. Null to unset.
-     */
-
-    public void setSource(final ImageSource source)
-    {
-        this.source = source;
+        if (effectInstance == null)
+            throw new IllegalArgumentException(
+                "effectInstance must not be null");
+        this.effectInstance = effectInstance;
     }
 }

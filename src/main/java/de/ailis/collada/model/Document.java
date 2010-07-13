@@ -30,6 +30,13 @@ public final class Document extends Element implements AssetElement
     /** The asset-management information. */
     private final Asset asset = new Asset();
 
+    /** The list of image libraries. */
+    private final ImageLibraries imageLibraries = new ImageLibraries(this);
+
+    /** The list of material libraries. */
+    private final MaterialLibraries materialLibraries =
+            new MaterialLibraries(this);
+
     /** The list of geometry libraries. */
     private final GeometryLibraries geometryLibraries = new GeometryLibraries(
         this);
@@ -159,6 +166,30 @@ public final class Document extends Element implements AssetElement
 
 
     /**
+     * Returns the list of image libraries.
+     *
+     * @return The list of image libraries. Never null. May be empty.
+     */
+
+    public ImageLibraries getImageLibraries()
+    {
+        return this.imageLibraries;
+    }
+
+
+    /**
+     * Returns the list of material libraries.
+     *
+     * @return The list of material libraries. Never null. May be empty.
+     */
+
+    public MaterialLibraries getMaterialLibraries()
+    {
+        return this.materialLibraries;
+    }
+
+
+    /**
      * Returns the list of geometry libraries.
      *
      * @return The list of geometry libraries. Never null. May be empty.
@@ -168,6 +199,7 @@ public final class Document extends Element implements AssetElement
     {
         return this.geometryLibraries;
     }
+
 
     /**
      * Returns the list of visual scene libraries.

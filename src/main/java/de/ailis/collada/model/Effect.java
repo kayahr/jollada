@@ -7,13 +7,13 @@ package de.ailis.collada.model;
 
 
 /**
- * A image.
+ * A effecte.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class Image extends Element implements Identifiable,
-        AssetElement, ScopeIdentifiable
+public final class Effect extends Element implements Identifiable,
+        AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -24,17 +24,27 @@ public final class Image extends Element implements Identifiable,
     /** Asset-management information. */
     private Asset asset;
 
-    /** The scope ID. */
-    private String sid;
+    /** The common profile. */
+    private CommonEffectProfile commonProfile;
 
-    /** The image source. */
-    private ImageSource source;
+
+    /**
+     * Constructor.
+     *
+     * @param id
+     *            The effect id. Must not be null.
+     */
+
+    public Effect(final String id)
+    {
+        setId(id);
+    }
 
 
     /**
      * Returns the id.
      *
-     * @return The id. May be null if not set.
+     * @return The id. Never null.
      */
 
     @Override
@@ -48,12 +58,14 @@ public final class Image extends Element implements Identifiable,
      * Sets the id.
      *
      * @param id
-     *            The id to set. Null to unset.
+     *            The id to set. Must not be null.
      */
 
     @Override
     public void setId(final String id)
     {
+        if (id == null)
+            throw new IllegalArgumentException("id must not be null");
         super.updateId(id);
     }
 
@@ -110,53 +122,26 @@ public final class Image extends Element implements Identifiable,
 
 
     /**
-     * Sets the scope ID.
+     * Returns the common profile.
      *
-     * @param sid
-     *            The scope ID to set. Null to unset.
+     * @return The common profile. May be null if not set.
      */
 
-    @Override
-    public void setSid(final String sid)
+    public CommonEffectProfile getCommonProfile()
     {
-        this.sid = sid;
+        return this.commonProfile;
     }
 
 
     /**
-     * Returns the scope ID.
+     * Sets the common profile.
      *
-     * @return The scope ID. May be null if not set.
+     * @param commonProfile
+     *            The common profile to set. Null to unset.
      */
 
-    @Override
-    public String getSid()
+    public void setCommonProfile(final CommonEffectProfile commonProfile)
     {
-        return this.sid;
-    }
-
-
-    /**
-     * Returns the image source.
-     *
-     * @return The image source. May be null if not set.
-     */
-
-    public ImageSource getSource()
-    {
-        return this.source;
-    }
-
-
-    /**
-     * Sets the image source.
-     *
-     * @param source
-     *            The image source to set. Null to unset.
-     */
-
-    public void setSource(final ImageSource source)
-    {
-        this.source = source;
+        this.commonProfile = commonProfile;
     }
 }

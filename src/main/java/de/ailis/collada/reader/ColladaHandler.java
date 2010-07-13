@@ -5,7 +5,6 @@
 
 package de.ailis.collada.reader;
 
-import java.awt.Image;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -18,8 +17,14 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.sun.xml.internal.ws.wsdl.writer.document.ParamType;
 
+import de.ailis.collada.builders.EffectInstanceBuilder;
+import de.ailis.collada.builders.MaterialBuilder;
 import de.ailis.collada.model.Document;
 import de.ailis.collada.model.Geometry;
+import de.ailis.collada.model.Image;
+import de.ailis.collada.model.ImageLibrary;
+import de.ailis.collada.model.ImageSource;
+import de.ailis.collada.model.MaterialLibrary;
 import de.ailis.collada.model.Primitives;
 import de.ailis.collada.model.SharedInput;
 import de.ailis.collada.model.Triangles;
@@ -58,7 +63,7 @@ public class ColladaHandler extends DefaultHandler
     private Effect effect;
 
     /** The current common profile */
-    private CommonProfile commonProfile;
+    private CommonEffectProfile commonProfile;
 
     /** The current common technique */
     private CommonTechnique commonTechnique;
@@ -180,6 +185,14 @@ public class ColladaHandler extends DefaultHandler
     /** The current profile param */
     private ProfileParam profileParam;
 
+    private ImageLibrary imageLibrary;
+
+    private MaterialLibrary materialLibrary;
+
+    private MaterialBuilder materialBuilder;
+
+    private EffectInstanceBuilder effectInstanceBuilder;
+
 
     /**
      * Constructs a new parser.
@@ -204,14 +217,14 @@ public class ColladaHandler extends DefaultHandler
         {
             case ROOT:
                 if (localName.equals("Document"))
-                    enterElement(ParserMode.Document);
+                    enterElement(ParserMode.COLLADA);
                 break;
 
-            case Document:
+            case COLLADA:
                 if (localName.equals("library_images"))
-                    enterElement(ParserMode.LIBRARY_IMAGES);
+                    enterLibraryImages(attributes);
                 else if (localName.equals("library_materials"))
-                    enterElement(ParserMode.LIBRARY_MATERIALS);
+                    enterLibraryMaterials(attributes);
                 else if (localName.equals("library_effects"))
                     enterElement(ParserMode.LIBRARY_EFFECTS);
                 else if (localName.equals("library_geometries"))
@@ -232,7 +245,12 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case IMAGE:
-                if (localName.equals("init_from")) enterImageInitFrom();
+                if (localName.equals("init_from"))
+                    enterElement(ParserMode.IMAGE_INIT_FROM);
+                break;
+
+            case IMAGE_INIT_FROM:
+                if (localName.equals("ref")) enterImageInitFromRef();
                 break;
 
             case LIBRARY_MATERIALS:
@@ -527,16 +545,24 @@ public class ColladaHandler extends DefaultHandler
 
         switch (this.mode)
         {
-            case IMAGE_INIT_FROM:
-                leaveImageInitFrom();
+            case IMAGE_INIT_FROM_REF:
+                leaveImageInitFromRef();
                 break;
 
             case IMAGE:
                 leaveImage();
                 break;
 
+            case LIBRARY_IMAGES:
+                leaveLibraryImages();
+                break;
+
             case MATERIAL:
                 leaveMaterial();
+                break;
+
+            case LIBRARY_MATERIALS:
+                leaveLibraryMaterials();
                 break;
 
             case SHADING_COLOR:
@@ -822,16 +848,35 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
+     * Enters a library_images element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryImages(final Attributes attributes)
+    {
+        this.imageLibrary = new ImageLibrary();
+        final String name = attributes.getValue("name");
+        final String id = attributes.getValue("id");
+        if (name != null) this.imageLibrary.setName(name);
+        if (id != null) this.imageLibrary.setId(id);
+        enterElement(ParserMode.LIBRARY_IMAGES);
+    }
+
+
+    /**
      * Enters a image element.
      *
      * @param attributes
      *            The element attributes
      */
 
-    public void enterImage(final Attributes attributes)
+    private void enterImage(final Attributes attributes)
     {
         final String id = attributes.getValue("id");
-        this.image = new Image(id);
+        this.image = new Image();
+        if (id != null) this.image.setId(id);
         enterElement(ParserMode.IMAGE);
     }
 
@@ -840,10 +885,10 @@ public class ColladaHandler extends DefaultHandler
      * Enters image init_from element.
      */
 
-    private void enterImageInitFrom()
+    private void enterImageInitFromRef()
     {
         this.stringBuilder = new StringBuilder();
-        enterElement(ParserMode.IMAGE_INIT_FROM);
+        enterElement(ParserMode.IMAGE_INIT_FROM_REF);
     }
 
 
@@ -851,12 +896,12 @@ public class ColladaHandler extends DefaultHandler
      * Leaves image init_from element.
      */
 
-    private void leaveImageInitFrom()
+    private void leaveImageInitFromRef()
     {
         final String text = this.stringBuilder.toString();
         try
         {
-            this.image.setURI(new URI(text));
+            this.image.setSource(new ImageSource(new URI(text)));
         }
         catch (final URISyntaxException e)
         {
@@ -873,9 +918,38 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveImage()
     {
-        this.document.getLibraryImages().add(this.image);
+        this.imageLibrary.getImages().add(this.image);
         this.image = null;
         leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_images element.
+     */
+
+    private void leaveLibraryImages()
+    {
+        this.document.getImageLibraries().add(this.imageLibrary);
+        this.imageLibrary = null;
+    }
+
+
+    /**
+     * Enters a library_images element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryMaterials(final Attributes attributes)
+    {
+        this.materialLibrary = new MaterialLibrary();
+        final String name = attributes.getValue("name");
+        final String id = attributes.getValue("id");
+        if (name != null) this.materialLibrary.setName(name);
+        if (id != null) this.materialLibrary.setId(id);
+        enterElement(ParserMode.LIBRARY_MATERIALS);
     }
 
 
@@ -886,10 +960,11 @@ public class ColladaHandler extends DefaultHandler
      *            The element attributes
      */
 
-    public void enterMaterial(final Attributes attributes)
+    private void enterMaterial(final Attributes attributes)
     {
-        final String id = attributes.getValue("id");
-        this.material = new ColladaMaterial(id);
+        this.materialBuilder = new MaterialBuilder();
+        this.materialBuilder.setId(attributes.getValue("id"));
+        this.materialBuilder.setName(attributes.getValue("name"));
         enterElement(ParserMode.MATERIAL);
     }
 
@@ -901,20 +976,26 @@ public class ColladaHandler extends DefaultHandler
      *            The element attributes
      */
 
-    public void enterInstanceEffect(final Attributes attributes)
+    private void enterInstanceEffect(final Attributes attributes)
     {
-        final String url = attributes.getValue("url");
-        try
-        {
-            this.material.setEffectURI(new URI(url));
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(url + " is not a valid effect URI: " + e,
-                    e);
-        }
-        this.stringBuilder = null;
+        this.effectInstanceBuilder = new EffectInstanceBuilder();
+        this.effectInstanceBuilder.setUrl(new URI(attributes.getValue("url")));
+        this.effectInstanceBuilder.setSid(attributes.getValue("sid"));
+        this.effectInstanceBuilder.setName(attributes.getValue("name"));
         enterElement(ParserMode.INSTANCE_EFFECT);
+    }
+
+
+    /**
+     * Leaves a instance_effect element.
+     */
+
+    private void leaveInstanceEffect()
+    {
+        this.materialBuilder.setEffectInstance(this.effectInstanceBuilder
+                .build());
+        this.effectInstanceBuilder = null;
+        leaveElement();
     }
 
 
@@ -924,9 +1005,20 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveMaterial()
     {
-        this.document.getLibraryMaterials().add(this.material);
-        this.material = null;
+        this.materialLibrary.getMaterials().add(this.materialBuilder.build());
+        this.materialBuilder = null;
         leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_materials element.
+     */
+
+    private void leaveLibraryMaterials()
+    {
+        this.document.getMaterialLibraries().add(this.materialLibrary);
+        this.materialLibrary = null;
     }
 
 
@@ -951,7 +1043,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterProfileCommon()
     {
-        this.commonProfile = new CommonProfile();
+        this.commonProfile = new CommonEffectProfile();
         enterElement(ParserMode.PROFILE_COMMON);
     }
 
@@ -1000,7 +1092,7 @@ public class ColladaHandler extends DefaultHandler
     private void leaveSurfaceInitFrom()
     {
         ((SurfaceParam) this.profileParam).setImageId(this.stringBuilder
-            .toString());
+                .toString());
         this.stringBuilder = null;
         leaveElement();
     }
@@ -1036,7 +1128,7 @@ public class ColladaHandler extends DefaultHandler
     private void leaveSampler2DSource()
     {
         ((Sampler2DParam) this.profileParam).setSource(this.stringBuilder
-            .toString());
+                .toString());
         this.stringBuilder = null;
         leaveElement();
     }
@@ -1060,7 +1152,7 @@ public class ColladaHandler extends DefaultHandler
     private void leaveSampler2DMinFilter()
     {
         ((Sampler2DParam) this.profileParam).setMinFilter(Filter
-            .valueOf(this.stringBuilder.toString()));
+                .valueOf(this.stringBuilder.toString()));
         this.stringBuilder = null;
         leaveElement();
     }
@@ -1084,7 +1176,7 @@ public class ColladaHandler extends DefaultHandler
     private void leaveSampler2DMagFilter()
     {
         ((Sampler2DParam) this.profileParam).setMagFilter(Filter
-            .valueOf(this.stringBuilder.toString()));
+                .valueOf(this.stringBuilder.toString()));
         this.stringBuilder = null;
         leaveElement();
     }
@@ -1149,8 +1241,8 @@ public class ColladaHandler extends DefaultHandler
                 "\\s+");
         final ColladaColor color = new ColladaColor(Float.parseFloat(parts[0]),
             Float
-                .parseFloat(parts[1]), Float.parseFloat(parts[2]), Float
-                .parseFloat(parts[3]));
+                    .parseFloat(parts[1]), Float.parseFloat(parts[2]), Float
+                    .parseFloat(parts[3]));
         this.colorOrTexture = new ColorOrTexture(color);
         this.stringBuilder = null;
         leaveElement();
@@ -1472,7 +1564,7 @@ public class ColladaHandler extends DefaultHandler
     private void enterParam(final Attributes attributes)
     {
         final ParamType type = ParamType.valueOf(attributes.getValue("type")
-            .toUpperCase());
+                .toUpperCase());
         this.accessor.getParams().add(new Param(type));
     }
 
