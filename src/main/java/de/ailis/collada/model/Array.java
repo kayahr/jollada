@@ -42,15 +42,6 @@ public abstract class Array extends Element implements Identifiable
 
 
     /**
-     * Returns the data.
-     *
-     * @return The data.
-     */
-
-    public abstract Object getData();
-
-
-    /**
      * Returns the ID.
      *
      * @return The ID. May be null if not set.

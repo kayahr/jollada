@@ -7,26 +7,13 @@ package de.ailis.collada.model;
 
 
 /**
- * Array with SIDREF elements.
+ * Base class for geometric elements.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class SidRefArray extends StringArray
+public abstract class Geometric extends Element
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
-
-
-    /**
-     * Constructor.
-     *
-     * @param count
-     *            The data size.
-     */
-
-    public SidRefArray(final int count)
-    {
-        super(count);
-    }
 }

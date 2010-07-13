@@ -181,19 +181,21 @@ public abstract class Element implements Serializable
      * Updates the ID. Must be called from the setId methods of
      * identifiable model classes.
      *
-     * @param id
+     * @param newId
      *            The ID to set. Null to unset.
      */
 
-    protected final void updateId(final String id)
+    protected final void updateId(final String newId)
     {
-        if ((id == null && this.id != null)
-            || (id != null && !id.equals(this.id)))
-        {
-            if (this.document != null) this.document.unregister(this);
-            this.id = id;
-            if (this.document != null) this.document.register(this);
-        }
+        // Do nothing if id is null and stays null
+        if (newId == null && this.id == null) return;
+
+        // Do nothing if id is not changed
+        if (newId != null && newId.equals(this.id)) return;
+
+        if (this.document != null) this.document.unregister(this);
+        this.id = newId;
+        if (this.document != null) this.document.register(this);
     }
 
 

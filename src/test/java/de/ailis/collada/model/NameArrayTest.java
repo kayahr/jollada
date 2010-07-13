@@ -52,20 +52,20 @@ public class NameArrayTest
     public void testSetCount()
     {
         final NameArray array = new NameArray(4);
-        array.getData()[0] = "a";
-        array.getData()[1] = "b";
-        array.getData()[2] = "c";
-        array.getData()[3] = "d";
+        array.setValue(0, "1");
+        array.setValue(1, "2");
+        array.setValue(2, "3");
+        array.setValue(3, "4");
         array.setCount(6);
         assertEquals(6, array.getCount());
-        assertEquals("a", array.getData()[0]);
-        assertEquals("b", array.getData()[1]);
-        assertEquals("c", array.getData()[2]);
-        assertEquals("d", array.getData()[3]);
+        assertEquals("1", array.getValue(0));
+        assertEquals("2", array.getValue(1));
+        assertEquals("3", array.getValue(2));
+        assertEquals("4", array.getValue(3));
         array.setCount(2);
         assertEquals(2, array.getCount());
-        assertEquals("a", array.getData()[0]);
-        assertEquals("b", array.getData()[1]);
+        assertEquals("1", array.getValue(0));
+        assertEquals("2", array.getValue(1));
     }
 
 
@@ -78,7 +78,7 @@ public class NameArrayTest
     {
         final NameArray array = new NameArray(4);
         assertNull(array.getName());
-       array.setName("foo");
+        array.setName("foo");
         assertEquals("foo", array.getName());
         array.setName(null);
         assertNull(array.getName());
@@ -98,5 +98,80 @@ public class NameArrayTest
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());
+    }
+
+
+    /**
+     * Tests getting values.
+     */
+
+    @Test
+    public void testGetValues()
+    {
+        final NameArray array = new NameArray(4);
+        array.setValue(0, "1");
+        array.setValue(1, "2");
+        array.setValue(2, "3");
+        array.setValue(3, "4");
+
+        // Test getting copy of values
+        String[] values = array.getValues();
+        assertEquals("1", values[0]);
+        assertEquals("2", values[1]);
+        assertEquals("3", values[2]);
+        assertEquals("4", values[3]);
+
+        // Test filling array with values
+        values = new String[4];
+        array.getValues(values);
+        assertEquals("1", values[0]);
+        assertEquals("2", values[1]);
+        assertEquals("3", values[2]);
+        assertEquals("4", values[3]);
+
+        // Test getting subset of array
+        values = new String[4];
+        array.getValues(1, 2, values);
+        assertEquals("2", values[0]);
+        assertEquals("3", values[1]);
+        assertNull(values[2]);
+        assertNull(values[3]);
+
+        // Test getting subset of array and writing to specific offset
+        values = new String[4];
+        array.getValues(1, 2, values, 1);
+        assertNull(values[0]);
+        assertEquals("2", values[1]);
+        assertEquals("3", values[2]);
+        assertNull(values[3]);
+    }
+
+
+    /**
+     * Tests setting values.
+     */
+
+    @Test
+    public void testSetValues()
+    {
+        final NameArray array = new NameArray(4);
+        final String[] values = new String[] { "1", "2", "3", "4" };
+        array.setValues(values);
+        assertEquals("1", array.getValue(0));
+        assertEquals("2", array.getValue(1));
+        assertEquals("3", array.getValue(2));
+        assertEquals("4", array.getValue(3));
+
+        array.setValues(1, 2, values);
+        assertEquals("1", array.getValue(0));
+        assertEquals("1", array.getValue(1));
+        assertEquals("2", array.getValue(2));
+        assertEquals("4", array.getValue(3));
+
+        array.setValues(1, 2, values, 1);
+        assertEquals("1", array.getValue(0));
+        assertEquals("2", array.getValue(1));
+        assertEquals("3", array.getValue(2));
+        assertEquals("4", array.getValue(3));
     }
 }

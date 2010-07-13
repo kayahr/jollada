@@ -30,6 +30,10 @@ public final class Document extends Element implements AssetElement
     /** The asset-management information. */
     private final Asset asset = new Asset();
 
+    /** The list of geometry libraries. */
+    private final GeometryLibraries geometryLibraries = new GeometryLibraries(
+        this);
+
     /** The list of visual scene libraries. */
     private final VisualSceneLibraries visualSceneLibraries =
             new VisualSceneLibraries(this);
@@ -81,7 +85,7 @@ public final class Document extends Element implements AssetElement
 
 
         final String id = element.id;
-        if (id != null) if (this.idMap.put(id, element) != null)
+        if (id != null && this.idMap.put(id, element) != null)
             throw new InternalError(
                 "Element with id '" + id + "' already registered");
     }
@@ -100,7 +104,7 @@ public final class Document extends Element implements AssetElement
             throw new IllegalArgumentException("element must not be null");
 
         final String id = element.id;
-        if (id != null) if (this.idMap.remove(id) == null)
+        if (id != null && this.idMap.remove(id) == null)
             throw new InternalError(
                 "Element with id '" + id + "' not registered");
     }
@@ -155,12 +159,23 @@ public final class Document extends Element implements AssetElement
 
 
     /**
+     * Returns the list of geometry libraries.
+     *
+     * @return The list of geometry libraries. Never null. May be empty.
+     */
+
+    public GeometryLibraries getGeometryLibraries()
+    {
+        return this.geometryLibraries;
+    }
+
+    /**
      * Returns the list of visual scene libraries.
      *
      * @return The list of visual scene libraries. Never null. May be empty.
      */
 
-    public Elements<VisualSceneLibrary> getVisualSceneLibraries()
+    public VisualSceneLibraries getVisualSceneLibraries()
     {
         return this.visualSceneLibraries;
     }

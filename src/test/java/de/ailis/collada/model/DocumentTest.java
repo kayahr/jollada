@@ -52,6 +52,7 @@ public class DocumentTest
         assertNull(document.getBase());
         assertNotNull(document.getAsset());
         assertEquals(0, document.getVisualSceneLibraries().size());
+        assertEquals(0, document.getGeometryLibraries().size());
         assertNull(document.getScene());
     }
 

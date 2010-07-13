@@ -6,7 +6,7 @@
 package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -54,21 +54,20 @@ public class BoolArrayTest
     public void testSetCount()
     {
         final BoolArray array = new BoolArray(4);
-        array.getData()[0] = true;
-        array.getData()[1] = true;
-        array.getData()[2] = true;
-        array.getData()[3] = true;
+        array.setValue(0, true);
+        array.setValue(1, true);
+        array.setValue(2, true);
+        array.setValue(3, true);
         array.setCount(6);
         assertEquals(6, array.getCount());
-        assertNotNull(((Array) array).getData());
-        assertTrue(array.getData()[0]);
-        assertTrue(array.getData()[1]);
-        assertTrue(array.getData()[2]);
-        assertTrue(array.getData()[3]);
+        assertTrue(array.getValue(0));
+        assertTrue(array.getValue(1));
+        assertTrue(array.getValue(2));
+        assertTrue(array.getValue(3));
         array.setCount(2);
         assertEquals(2, array.getCount());
-        assertTrue(array.getData()[0]);
-        assertTrue(array.getData()[1]);
+        assertTrue(array.getValue(0));
+        assertTrue(array.getValue(1));
     }
 
 
@@ -101,5 +100,80 @@ public class BoolArrayTest
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());
+    }
+
+
+    /**
+     * Tests getting values.
+     */
+
+    @Test
+    public void testGetValues()
+    {
+        final BoolArray array = new BoolArray(4);
+        array.setValue(0, true);
+        array.setValue(1, true);
+        array.setValue(2, true);
+        array.setValue(3, true);
+
+        // Test getting copy of values
+        boolean[] values = array.getValues();
+        assertTrue(values[0]);
+        assertTrue(values[1]);
+        assertTrue(values[2]);
+        assertTrue(values[3]);
+
+        // Test filling array with values
+        values = new boolean[4];
+        array.getValues(values);
+        assertTrue(values[0]);
+        assertTrue(values[1]);
+        assertTrue(values[2]);
+        assertTrue(values[3]);
+
+        // Test getting subset of array
+        values = new boolean[4];
+        array.getValues(1, 2, values);
+        assertTrue(values[0]);
+        assertTrue(values[1]);
+        assertFalse(values[2]);
+        assertFalse(values[3]);
+
+        // Test getting subset of array and writing to specific offset
+        values = new boolean[4];
+        array.getValues(1, 2, values, 1);
+        assertFalse(values[0]);
+        assertTrue(values[1]);
+        assertTrue(values[2]);
+        assertFalse(values[3]);
+    }
+
+
+    /**
+     * Tests setting values.
+     */
+
+    @Test
+    public void testSetValues()
+    {
+        final BoolArray array = new BoolArray(4);
+        final boolean[] values = new boolean[] { true, false, true, false };
+        array.setValues(values);
+        assertTrue(array.getValue(0));
+        assertFalse(array.getValue(1));
+        assertTrue(array.getValue(2));
+        assertFalse(array.getValue(3));
+
+        array.setValues(1, 2, values);
+        assertTrue(array.getValue(0));
+        assertTrue(array.getValue(1));
+        assertFalse(array.getValue(2));
+        assertFalse(array.getValue(3));
+
+        array.setValues(1, 2, values, 1);
+        assertTrue(array.getValue(0));
+        assertFalse(array.getValue(1));
+        assertTrue(array.getValue(2));
+        assertFalse(array.getValue(3));
     }
 }

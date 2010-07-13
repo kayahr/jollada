@@ -7,12 +7,12 @@ package de.ailis.collada.model;
 
 
 /**
- * Array with SIDREF elements.
+ * List of geometry libraries.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class SidRefArray extends StringArray
+public final class GeometryLibraries extends Elements<GeometryLibrary>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -21,12 +21,12 @@ public final class SidRefArray extends StringArray
     /**
      * Constructor.
      *
-     * @param count
-     *            The data size.
+     * @param parent
+     *            The parent element.
      */
 
-    public SidRefArray(final int count)
+    GeometryLibraries(final Element parent)
     {
-        super(count);
+        super(parent);
     }
 }

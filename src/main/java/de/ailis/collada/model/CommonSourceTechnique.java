@@ -22,6 +22,19 @@ public final class CommonSourceTechnique extends Element
 
 
     /**
+     * Constructs a new common source technique with the specified accessor.
+     *
+     * @param accessor
+     *            The accessor. Must not be null.
+     */
+
+    public CommonSourceTechnique(final Accessor accessor)
+    {
+        setAccessor(accessor);
+    }
+
+
+    /**
      * Returns the accessor.
      *
      * @return The accessor. Never null.
@@ -30,5 +43,20 @@ public final class CommonSourceTechnique extends Element
     public Accessor getAccessor()
     {
         return this.accessor;
+    }
+
+
+    /**
+     * Sets the accessor.
+     *
+     * @param accessor
+     *            The accessor to set. Must not be null.
+     */
+
+    public void setAccessor(final Accessor accessor)
+    {
+        if (accessor == null)
+            throw new IllegalArgumentException("accessor must be set");
+        this.accessor = accessor;
     }
 }

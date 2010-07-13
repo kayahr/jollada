@@ -72,6 +72,7 @@ public class NodeTest
         assertNull(node.getId());
     }
 
+
     /**
      * Tests the name.
      */

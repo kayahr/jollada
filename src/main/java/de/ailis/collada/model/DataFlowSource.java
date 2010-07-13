@@ -160,7 +160,7 @@ public final class DataFlowSource extends Element implements Identifiable,
      * @return The common source technique. May be null if not set.
      */
 
-    public CommonSourceTechnique getCommonSourceTechnique()
+    public CommonSourceTechnique getCommonTechnique()
     {
         return this.commonTechnique;
     }
@@ -173,11 +173,13 @@ public final class DataFlowSource extends Element implements Identifiable,
      *            The common source technique to set. Null to unset.
      */
 
-    public void setArray(final CommonSourceTechnique commonTechnique)
+    public void setCommonTechnique(
+        final CommonSourceTechnique commonTechnique)
     {
         if (commonTechnique != this.commonTechnique)
         {
-            if (this.commonTechnique != null) removeChild(this.commonTechnique);
+            if (this.commonTechnique != null)
+                removeChild(this.commonTechnique);
             this.commonTechnique = commonTechnique;
             if (commonTechnique != null) addChild(commonTechnique);
         }

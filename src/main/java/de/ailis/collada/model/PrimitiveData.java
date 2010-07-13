@@ -7,119 +7,57 @@ package de.ailis.collada.model;
 
 
 /**
- * Array with long integer (64bit) elements.
+ * The data defining a primitive.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class IntArray extends Array
+public final class PrimitiveData
 {
-    /** The default maximum value. */
-    public static final long DEFAULT_MAX_INCLUSIVE = 0x7fffffff;
-
-    /** The default maximum value. */
-    public static final long DEFAULT_MIN_INCLUSIVE = -0x80000000;
-
-    /** Serial version UID. */
-    private static final long serialVersionUID = 1L;
-
     /** The data. */
-    private long[] data;
-
-    /** The maximum value that can be present in the array. */
-    private long maxInclusive = DEFAULT_MAX_INCLUSIVE;
-
-    /** The minimum value that can be present in the array. */
-    private long minInclusive = DEFAULT_MIN_INCLUSIVE;
+    private int[] data;
 
 
     /**
      * Constructor.
      *
-     * @param count
+     * @param size
      *            The data size.
      */
 
-    public IntArray(final int count)
+    public PrimitiveData(final int size)
     {
-        if (count < 0)
-            throw new IllegalArgumentException("count must be >= 0");
-        this.data = new long[count];
+        if (size < 0)
+            throw new IllegalArgumentException("size must be >= 0");
+        this.data = new int[size];
     }
 
 
     /**
-     * @see de.ailis.collada.model.Array#getCount()
+     * Returns the size of the data.
+     *
+     * @return The data size.
      */
 
-    @Override
-    public int getCount()
+    public int getSize()
     {
         return this.data.length;
     }
 
 
     /**
-     * @see de.ailis.collada.model.Array#setCount(int)
+     * Sets the data size. The old data is padded or truncated to the new size.
+     *
+     * @param size
+     *            The new data size to set.
      */
 
-    @Override
-    public void setCount(final int count)
+    public void setSize(final int size)
     {
-        final long[] oldData = this.data;
-        this.data = new long[count];
+        final int[] oldData = this.data;
+        this.data = new int[size];
         System.arraycopy(oldData, 0, this.data, 0, Math
-                .min(count, oldData.length));
-    }
-
-
-    /**
-     * Returns the maximum value that can be present in the array.
-     *
-     * @return The maximum value.
-     */
-
-    public long getMaxInclusive()
-    {
-        return this.maxInclusive;
-    }
-
-
-    /**
-     * Returns the minimum value that can be present in the array.
-     *
-     * @return The minimum value.
-     */
-
-    public long getMinInclusive()
-    {
-        return this.minInclusive;
-    }
-
-
-    /**
-     * Sets the maximum value that can be present in the array.
-     *
-     * @param maxInclusive
-     *            The maximum value to set
-     */
-
-    public void setMaxInclusive(final long maxInclusive)
-    {
-        this.maxInclusive = maxInclusive;
-    }
-
-
-    /**
-     * Sets the minimum value that can be present in the array.
-     *
-     * @param minInclusive
-     *            The minimum value to set
-     */
-
-    public void setMinInclusive(final long minInclusive)
-    {
-        this.minInclusive = minInclusive;
+                .min(size, oldData.length));
     }
 
 
@@ -137,7 +75,7 @@ public final class IntArray extends Array
      */
 
     public void getValues(final int srcOffset, final int length,
-        final long[] values,
+        final int[] values,
         final int dstOffset)
     {
         System.arraycopy(this.data, srcOffset, values, dstOffset, length);
@@ -156,7 +94,7 @@ public final class IntArray extends Array
      */
 
     public void getValues(final int srcOffset, final int length,
-        final long[] values)
+        final int[] values)
     {
         getValues(srcOffset, length, values, 0);
     }
@@ -169,7 +107,7 @@ public final class IntArray extends Array
      *            The destination array
      */
 
-    public void getValues(final long[] dest)
+    public void getValues(final int[] dest)
     {
         getValues(0, Math.min(this.data.length, dest.length), dest);
     }
@@ -183,7 +121,7 @@ public final class IntArray extends Array
      * @return The value.
      */
 
-    public long getValue(final int index)
+    public int getValue(final int index)
     {
         return this.data[index];
     }
@@ -195,7 +133,7 @@ public final class IntArray extends Array
      * @return The copy of the array values.
      */
 
-    public long[] getValues()
+    public int[] getValues()
     {
         return this.data.clone();
     }
@@ -215,7 +153,7 @@ public final class IntArray extends Array
      */
 
     public void setValues(final int offset, final int length,
-        final long[] values, final int srcOffset)
+        final int[] values, final int srcOffset)
     {
         System.arraycopy(values, srcOffset, this.data, offset, length);
     }
@@ -233,7 +171,7 @@ public final class IntArray extends Array
      */
 
     public void setValues(final int offset, final int length,
-        final long[] values)
+        final int[] values)
     {
         setValues(offset, length, values, 0);
     }
@@ -247,7 +185,7 @@ public final class IntArray extends Array
      *            The values to set
      */
 
-    public void setValues(final long[] values)
+    public void setValues(final int[] values)
     {
         setValues(0, Math.min(values.length, this.data.length), values);
     }
@@ -262,7 +200,7 @@ public final class IntArray extends Array
      *            The value to set.
      */
 
-    public void setValue(final int index, final long value)
+    public void setValue(final int index, final int value)
     {
         this.data[index] = value;
     }

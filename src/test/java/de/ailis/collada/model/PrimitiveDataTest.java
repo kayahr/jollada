@@ -6,18 +6,17 @@
 package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
 
 /**
- * Tests the IntArray class.
+ * Tests the PrimitiveData class.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class IntArrayTest
+public class PrimitiveDataTest
 {
     /**
      * Tests the constructor.
@@ -26,12 +25,8 @@ public class IntArrayTest
     @Test
     public void testConstructor()
     {
-        final IntArray array = new IntArray(16);
-        assertEquals(16, array.getCount());
-        assertNull(array.getId());
-        assertNull(array.getName());
-        assertEquals(0x7fffffff, array.getMaxInclusive());
-        assertEquals(-0x80000000, array.getMinInclusive());
+        final PrimitiveData array = new PrimitiveData(16);
+        assertEquals(16, array.getSize());
     }
 
 
@@ -40,92 +35,34 @@ public class IntArrayTest
      */
 
     @Test(expected = IllegalArgumentException.class)
-    public void testConstructorNegativeCount()
+    public void testConstructorNegativeSize()
     {
-        new IntArray(-1).toString();
+        new PrimitiveData(-1).toString();
     }
 
 
     /**
-     * Tests the setCount() method.
+     * Tests the setSize() method.
      */
 
     @Test
-    public void testSetCount()
+    public void testSetSize()
     {
-        final IntArray array = new IntArray(4);
+        final PrimitiveData array = new PrimitiveData(4);
         array.setValue(0, 1);
         array.setValue(1, 2);
         array.setValue(2, 3);
         array.setValue(3, 4);
-        array.setCount(6);
-        assertEquals(6, array.getCount());
+        array.setSize(6);
+        assertEquals(6, array.getSize());
         assertEquals(1, array.getValue(0));
         assertEquals(2, array.getValue(1));
         assertEquals(3, array.getValue(2));
         assertEquals(4, array.getValue(3));
-        array.setCount(2);
-        assertEquals(2, array.getCount());
+        array.setSize(2);
+        assertEquals(2, array.getSize());
         assertEquals(1, array.getValue(0));
         assertEquals(2, array.getValue(1));
-    }
-
-
-    /**
-     * Tests the name.
-     */
-
-    @Test
-    public void testName()
-    {
-        final IntArray array = new IntArray(4);
-        assertNull(array.getName());
-        array.setName("foo");
-        assertEquals("foo", array.getName());
-        array.setName(null);
-        assertNull(array.getName());
-    }
-
-
-    /**
-     * Tests the ID.
-     */
-
-    @Test
-    public void testId()
-    {
-        final IntArray array = new IntArray(4);
-        assertNull(array.getId());
-        array.setId("foo");
-        assertEquals("foo", array.getId());
-        array.setId(null);
-        assertNull(array.getId());
-    }
-
-
-    /**
-     * Tests the minInclusive.
-     */
-
-    @Test
-    public void testSetMinInclusive()
-    {
-        final IntArray array = new IntArray(4);
-        array.setMinInclusive(-0x800000000L);
-        assertEquals(-0x800000000L, array.getMinInclusive());
-    }
-
-
-    /**
-     * Tests the maxInclusive.
-     */
-
-    @Test
-    public void testSetMaxInclusive()
-    {
-        final IntArray array = new IntArray(4);
-        array.setMaxInclusive(0x800000000L);
-        assertEquals(0x800000000L, array.getMaxInclusive());
     }
 
 
@@ -136,21 +73,21 @@ public class IntArrayTest
     @Test
     public void testGetValues()
     {
-        final IntArray array = new IntArray(4);
+        final PrimitiveData array = new PrimitiveData(4);
         array.setValue(0, 1);
         array.setValue(1, 2);
         array.setValue(2, 3);
         array.setValue(3, 4);
 
         // Test getting copy of values
-        long[] values = array.getValues();
+        int[] values = array.getValues();
         assertEquals(1, values[0]);
         assertEquals(2, values[1]);
         assertEquals(3, values[2]);
         assertEquals(4, values[3]);
 
         // Test filling array with values
-        values = new long[4];
+        values = new int[4];
         array.getValues(values);
         assertEquals(1, values[0]);
         assertEquals(2, values[1]);
@@ -158,7 +95,7 @@ public class IntArrayTest
         assertEquals(4, values[3]);
 
         // Test getting subset of array
-        values = new long[4];
+        values = new int[4];
         array.getValues(1, 2, values);
         assertEquals(2, values[0]);
         assertEquals(3, values[1]);
@@ -166,7 +103,7 @@ public class IntArrayTest
         assertEquals(0, values[3]);
 
         // Test getting subset of array and writing to specific offset
-        values = new long[4];
+        values = new int[4];
         array.getValues(1, 2, values, 1);
         assertEquals(0, values[0]);
         assertEquals(2, values[1]);
@@ -182,8 +119,8 @@ public class IntArrayTest
     @Test
     public void testSetValues()
     {
-        final IntArray array = new IntArray(4);
-        final long[] values = new long[] { 1, 2, 3, 4 };
+        final PrimitiveData array = new PrimitiveData(4);
+        final int[] values = new int[] { 1, 2, 3, 4 };
         array.setValues(values);
         assertEquals(1, array.getValue(0));
         assertEquals(2, array.getValue(1));

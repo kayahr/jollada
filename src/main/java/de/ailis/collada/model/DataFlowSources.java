@@ -7,12 +7,12 @@ package de.ailis.collada.model;
 
 
 /**
- * Array with SIDREF elements.
+ * List of data flow sources.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class SidRefArray extends StringArray
+public final class DataFlowSources extends Elements<DataFlowSource>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -21,12 +21,12 @@ public final class SidRefArray extends StringArray
     /**
      * Constructor.
      *
-     * @param count
-     *            The data size.
+     * @param parent
+     *            The parent element. Must not be null.
      */
 
-    public SidRefArray(final int count)
+    DataFlowSources(final Element parent)
     {
-        super(count);
+        super(parent);
     }
 }
