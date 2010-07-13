@@ -35,15 +35,13 @@ public final class LookAtTransform extends Transformation
      *
      * @param eye
      *            The eye position to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public LookAtTransform setEye(final Vector3f eye)
+    public void setEye(final Vector3f eye)
     {
         if (eye == null)
             throw new IllegalArgumentException("eye must not be null");
         this.eye.set(eye);
-        return this;
     }
 
 
@@ -64,15 +62,13 @@ public final class LookAtTransform extends Transformation
      *
      * @param interest
      *            The interest point position to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public LookAtTransform setInterest(final Vector3f interest)
+    public void setInterest(final Vector3f interest)
     {
         if (interest == null)
             throw new IllegalArgumentException("interest must not be null");
         this.interest.set(interest);
-        return this;
     }
 
 
@@ -93,15 +89,13 @@ public final class LookAtTransform extends Transformation
      *
      * @param up
      *            The up direction. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public LookAtTransform setUp(final Vector3f up)
+    public void setUp(final Vector3f up)
     {
         if (up == null)
             throw new IllegalArgumentException("up must not be null");
         this.up.set(up);
-        return this;
     }
 
 

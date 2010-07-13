@@ -32,15 +32,13 @@ public final class RotateTransform extends Transformation
      *
      * @param axis
      *            The rotation axis to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public RotateTransform setAxis(final Vector3f axis)
+    public void setAxis(final Vector3f axis)
     {
         if (axis == null)
             throw new IllegalArgumentException("axis must not be null");
         this.axis.set(axis);
-        return this;
     }
 
 
@@ -73,12 +71,10 @@ public final class RotateTransform extends Transformation
      *
      * @param angle
      *            The rotation angle in degrees to set.
-     * @return This transform for chaining.
      */
 
-    public RotateTransform setAngle(final float angle)
+    public void setAngle(final float angle)
     {
         this.angle = angle;
-        return this;
     }
 }

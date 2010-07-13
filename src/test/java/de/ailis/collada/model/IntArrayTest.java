@@ -7,7 +7,6 @@ package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -59,7 +58,7 @@ public class IntArrayTest
         array.getData()[1] = 2;
         array.getData()[2] = 3;
         array.getData()[3] = 4;
-        assertSame(array, array.setCount(6));
+        array.setCount(6);
         assertEquals(6, array.getCount());
         assertEquals(1, array.getData()[0]);
         assertEquals(2, array.getData()[1]);
@@ -81,7 +80,7 @@ public class IntArrayTest
     {
         final IntArray array = new IntArray(4);
         assertNull(array.getName());
-        assertSame(array, array.setName("foo"));
+        array.setName("foo");
         assertEquals("foo", array.getName());
         array.setName(null);
         assertNull(array.getName());
@@ -97,7 +96,7 @@ public class IntArrayTest
     {
         final IntArray array = new IntArray(4);
         assertNull(array.getId());
-        assertSame(array, ((Identifiable) array).setId("foo"));
+        array.setId("foo");
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());
@@ -112,7 +111,7 @@ public class IntArrayTest
     public void testSetMinInclusive()
     {
         final IntArray array = new IntArray(4);
-        assertSame(array, array.setMinInclusive(-0x800000000L));
+        array.setMinInclusive(-0x800000000L);
         assertEquals(-0x800000000L, array.getMinInclusive());
     }
 
@@ -125,7 +124,7 @@ public class IntArrayTest
     public void testSetMaxInclusive()
     {
         final IntArray array = new IntArray(4);
-        assertSame(array, array.setMaxInclusive(0x800000000L));
+        array.setMaxInclusive(0x800000000L);
         assertEquals(0x800000000L, array.getMaxInclusive());
     }
 }

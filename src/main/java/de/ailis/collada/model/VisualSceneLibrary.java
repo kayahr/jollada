@@ -44,13 +44,11 @@ public final class VisualSceneLibrary extends Element implements AssetElement,
      *
      * @param asset
      *            The asset-management information to set. Null to unset.
-     * @return This visual scene library for chaining.
      */
 
-    public VisualSceneLibrary setAsset(final Asset asset)
+    public void setAsset(final Asset asset)
     {
         this.asset = asset;
-        return this;
     }
 
 
@@ -63,7 +61,7 @@ public final class VisualSceneLibrary extends Element implements AssetElement,
     @Override
     public String getId()
     {
-        return super.getId();
+        return this.id;
     }
 
 
@@ -72,14 +70,12 @@ public final class VisualSceneLibrary extends Element implements AssetElement,
      *
      * @param id
      *            The id to set. Null to unset.
-     * @return This visual scene library for chaining.
      */
 
     @Override
-    public VisualSceneLibrary setId(final String id)
+    public void setId(final String id)
     {
-        super.setId(id);
-        return this;
+        super.updateId(id);
     }
 
 
@@ -100,13 +96,11 @@ public final class VisualSceneLibrary extends Element implements AssetElement,
      *
      * @param name
      *            The name to set. Null to unset.
-     * @return This visual scene library for chaining.
      */
 
-    public VisualSceneLibrary setName(final String name)
+    public void setName(final String name)
     {
         this.name = name;
-        return this;
     }
 
 

@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -45,11 +44,11 @@ public class MatrixTransformTest
     public void testSid()
     {
         final MatrixTransform transform = new MatrixTransform();
-        assertNull(transform.getId());
-        assertSame(transform, ((ScopeIdentifiable) transform).setSid("foo"));
+        assertNull(transform.getSid());
+        transform.setSid("foo");
         assertEquals("foo", transform.getSid());
-        transform.setId(null);
-        assertNull(transform.getId());
+        transform.setSid(null);
+        assertNull(transform.getSid());
     }
 
 
@@ -64,7 +63,7 @@ public class MatrixTransformTest
         assertTrue(transform.getMatrix().isIdentity());
         final ImmutableMatrix4f translation = new ImmutableMatrix4f(0, 1, 2, 3,
             4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        assertSame(transform, transform.setMatrix(translation));
+        transform.setMatrix(translation);
         assertEquals(translation, new ImmutableMatrix4f(transform.getMatrix()));
     }
 

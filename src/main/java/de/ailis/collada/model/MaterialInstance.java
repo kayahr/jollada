@@ -67,15 +67,13 @@ public final class MaterialInstance extends Element implements
      *
      * @param symbol
      *            The symbol to set. Must not be null.
-     * @return This material instance for chaining.
      */
 
-    public MaterialInstance setSymbol(final String symbol)
+    public void setSymbol(final String symbol)
     {
         if (symbol == null)
             throw new IllegalArgumentException("symbol must not be null");
         this.symbol = symbol;
-        return this;
     }
 
 
@@ -96,15 +94,13 @@ public final class MaterialInstance extends Element implements
      *
      * @param target
      *            The target material URI to set. Must not be null.
-     * @return This material instance for chaining.
      */
 
-    public MaterialInstance setTarget(final URI target)
+    public void setTarget(final URI target)
     {
         if (target == null)
             throw new IllegalArgumentException("target must not be null");
         this.target = target;
-        return this;
     }
 
 
@@ -126,14 +122,12 @@ public final class MaterialInstance extends Element implements
      *
      * @param sid
      *            The scope ID to set. Null to unset.
-     * @return This material instance for chaining.
      */
 
     @Override
-    public MaterialInstance setSid(final String sid)
+    public void setSid(final String sid)
     {
         this.sid = sid;
-        return this;
     }
 
 
@@ -154,12 +148,10 @@ public final class MaterialInstance extends Element implements
      *
      * @param name
      *            The name to set. Null to unset.
-     * @return This material instance for chaining.
      */
 
-    public MaterialInstance setName(final String name)
+    public void setName(final String name)
     {
         this.name = name;
-        return this;
     }
 }

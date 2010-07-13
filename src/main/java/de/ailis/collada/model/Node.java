@@ -74,10 +74,9 @@ public final class Node extends Element implements ScopeIdentifiable,
      */
 
     @Override
-    public Node setSid(final String sid)
+    public void setSid(final String sid)
     {
         this.sid = sid;
-        return this;
     }
 
 
@@ -88,7 +87,7 @@ public final class Node extends Element implements ScopeIdentifiable,
     @Override
     public String getId()
     {
-        return super.getId();
+        return this.id;
     }
 
 
@@ -97,10 +96,9 @@ public final class Node extends Element implements ScopeIdentifiable,
      */
 
     @Override
-    public Node setId(final String id)
+    public void setId(final String id)
     {
-        super.setId(id);
-        return this;
+        super.updateId(id);
     }
 
 
@@ -121,13 +119,11 @@ public final class Node extends Element implements ScopeIdentifiable,
      *
      * @param name
      *            The node name to set. Null to unset.
-     * @return This node for chaining.
      */
 
-    public Node setName(final String name)
+    public void setName(final String name)
     {
         this.name = name;
-        return this;
     }
 
 
@@ -148,15 +144,13 @@ public final class Node extends Element implements ScopeIdentifiable,
      *
      * @param type
      *            The node type to set. Must not be null.
-     * @return This node for chaining.
      */
 
-    public Node setType(final NodeType type)
+    public void setType(final NodeType type)
     {
         if (type == null)
             throw new IllegalArgumentException("type must not be null");
         this.type = type;
-        return this;
     }
 
 
@@ -202,13 +196,11 @@ public final class Node extends Element implements ScopeIdentifiable,
      *
      * @param asset
      *            The asset-management information to set. Null to unset.
-     * @return This node for chaining.
      */
 
-    public Node setAsset(final Asset asset)
+    public void setAsset(final Asset asset)
     {
         this.asset = asset;
-        return this;
     }
 
 

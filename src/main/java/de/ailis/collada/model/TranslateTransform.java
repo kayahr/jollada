@@ -29,15 +29,13 @@ public final class TranslateTransform extends Transformation
      *
      * @param translation
      *            The translation to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public TranslateTransform setTranslation(final Vector3f translation)
+    public void setTranslation(final Vector3f translation)
     {
         if (translation == null)
             throw new IllegalArgumentException("translation must not be null");
         this.translation.set(translation);
-        return this;
     }
 
 

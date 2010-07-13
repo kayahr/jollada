@@ -7,7 +7,6 @@ package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -51,11 +50,11 @@ public class LightInstanceTest
     public void testSid() throws URISyntaxException
     {
         final LightInstance instance = new LightInstance(new URI("foo"));
-        assertNull(instance.getId());
-        assertSame(instance, ((ScopeIdentifiable) instance).setSid("foo"));
+        assertNull(instance.getSid());
+        instance.setSid("foo");
         assertEquals("foo", instance.getSid());
-        instance.setId(null);
-        assertNull(instance.getId());
+        instance.setSid(null);
+        assertNull(instance.getSid());
     }
 
     /**
@@ -70,7 +69,7 @@ public class LightInstanceTest
     {
         final LightInstance instance = new LightInstance(new URI("foo"));
         assertNull(instance.getName());
-        assertSame(instance, instance.setName("foo"));
+        instance.setName("foo");
         assertEquals("foo", instance.getName());
         instance.setName(null);
         assertNull(instance.getName());
@@ -89,7 +88,7 @@ public class LightInstanceTest
     {
         final LightInstance instance = new LightInstance(new URI("foo"));
         assertEquals(new URI("foo"), instance.getUrl());
-        assertSame(instance, instance.setUrl(new URI("bar")));
+        instance.setUrl(new URI("bar"));
         assertEquals(new URI("bar"), instance.getUrl());
     }
 

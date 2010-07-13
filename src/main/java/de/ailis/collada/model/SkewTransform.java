@@ -36,15 +36,13 @@ public final class SkewTransform extends Transformation
      *
      * @param rotationAxis
      *            The rotation axis to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public SkewTransform setRotationAxis(final Vector3f rotationAxis)
+    public void setRotationAxis(final Vector3f rotationAxis)
     {
         if (rotationAxis == null)
             throw new IllegalArgumentException("rotationAxis must not be null");
         this.rotationAxis.set(rotationAxis);
-        return this;
     }
 
 
@@ -65,16 +63,14 @@ public final class SkewTransform extends Transformation
      *
      * @param translationAxis
      *            The translation axis to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public SkewTransform setTranslationAxis(final Vector3f translationAxis)
+    public void setTranslationAxis(final Vector3f translationAxis)
     {
         if (translationAxis == null)
             throw new IllegalArgumentException(
                 "translationAxis must not be null");
         this.translationAxis.set(translationAxis);
-        return this;
     }
 
 
@@ -107,12 +103,10 @@ public final class SkewTransform extends Transformation
      *
      * @param angle
      *            The rotation angle in degrees to set.
-     * @return This transform for chaining.
      */
 
-    public SkewTransform setAngle(final float angle)
+    public void setAngle(final float angle)
     {
         this.angle = angle;
-        return this;
     }
 }

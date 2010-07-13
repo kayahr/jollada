@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -48,11 +47,11 @@ public class LookAtTransformTest
     public void testSid()
     {
         final LookAtTransform transform = new LookAtTransform();
-        assertNull(transform.getId());
-        assertSame(transform, ((ScopeIdentifiable) transform).setSid("foo"));
+        assertNull(transform.getSid());
+        transform.setSid("foo");
         assertEquals("foo", transform.getSid());
-        transform.setId(null);
-        assertNull(transform.getId());
+        transform.setSid(null);
+        assertNull(transform.getSid());
     }
 
 
@@ -66,7 +65,7 @@ public class LookAtTransformTest
         final LookAtTransform transform = new LookAtTransform();
         assertTrue(transform.getEye().isNull());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setEye(translation));
+       transform.setEye(translation);
         assertEquals(translation.getX(), transform.getEye().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getEye().getY(),
@@ -97,7 +96,7 @@ public class LookAtTransformTest
         final LookAtTransform transform = new LookAtTransform();
         assertEquals(new MutableVector3f(0, 0, -1), transform.getInterest());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setInterest(translation));
+       transform.setInterest(translation);
         assertEquals(translation.getX(), transform.getInterest().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getInterest().getY(),
@@ -128,7 +127,7 @@ public class LookAtTransformTest
         final LookAtTransform transform = new LookAtTransform();
         assertEquals(new MutableVector3f(0, 1, 0), transform.getUp());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setUp(translation));
+        transform.setUp(translation);
         assertEquals(translation.getX(), transform.getUp().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getUp().getY(),

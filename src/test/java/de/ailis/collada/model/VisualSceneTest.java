@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -45,7 +44,7 @@ public class VisualSceneTest
     {
         final VisualScene scene = new VisualScene();
         assertNull(scene.getId());
-        assertSame(scene, ((Identifiable) scene).setId("foo"));
+        scene.setId("foo");
         assertEquals("foo", scene.getId());
         scene.setId(null);
         assertNull(scene.getId());
@@ -61,7 +60,7 @@ public class VisualSceneTest
     {
         final VisualScene scene = new VisualScene();
         assertNull(scene.getName());
-        assertSame(scene, scene.setName("foo"));
+        scene.setName("foo");
         assertEquals("foo", scene.getName());
         scene.setName(null);
         assertNull(scene.getName());
@@ -77,7 +76,7 @@ public class VisualSceneTest
     {
         final VisualScene scene = new VisualScene();
         assertNull(scene.getAsset());
-        assertSame(scene, scene.setAsset(new Asset()));
+        scene.setAsset(new Asset());
         assertNotNull(scene.getAsset());
         scene.setAsset(null);
         assertNull(scene.getAsset());

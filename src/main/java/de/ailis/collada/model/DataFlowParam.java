@@ -61,14 +61,12 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      *
      * @param sid
      *            The scope ID to set. Null to unset.
-     * @return This param for chaining.
      */
 
     @Override
-    public DataFlowParam setSid(final String sid)
+    public void setSid(final String sid)
     {
         this.sid = sid;
-        return this;
     }
 
 
@@ -89,13 +87,11 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      *
      * @param name
      *            The parameter name to set. Null to unset.
-     * @return This param for chaining.
      */
 
-    public DataFlowParam setName(final String name)
+    public void setName(final String name)
     {
         this.name = name;
-        return this;
     }
 
 
@@ -116,15 +112,13 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      *
      * @param type
      *            The data type to set. Must not be null.
-     * @return This param for chaining.
      */
 
-    public DataFlowParam setType(final DataType type)
+    public void setType(final DataType type)
     {
         if (type == null)
             throw new IllegalArgumentException("type must not be null");
         this.type = type;
-        return this;
     }
 
 
@@ -145,12 +139,10 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      *
      * @param semantic
      *            The semantic to set. Null to unset.
-     * @return This param for chaining.
      */
 
-    public DataFlowParam setSemantic(final String semantic)
+    public void setSemantic(final String semantic)
     {
         this.semantic = semantic;
-        return this;
     }
 }

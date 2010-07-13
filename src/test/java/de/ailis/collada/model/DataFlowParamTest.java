@@ -7,7 +7,6 @@ package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -54,11 +53,11 @@ public class DataFlowParamTest
     public void testSid()
     {
         final DataFlowParam param = new DataFlowParam(DataType.INT);
-        assertNull(param.getId());
-        assertSame(param, ((ScopeIdentifiable) param).setSid("foo"));
+        assertNull(param.getSid());
+        param.setSid("foo");
         assertEquals("foo", param.getSid());
-        param.setId(null);
-        assertNull(param.getId());
+        param.setSid(null);
+        assertNull(param.getSid());
     }
 
 
@@ -71,7 +70,7 @@ public class DataFlowParamTest
     {
         final DataFlowParam param = new DataFlowParam(DataType.INT);
         assertNull(param.getName());
-        assertSame(param, param.setName("foo"));
+        param.setName("foo");
         assertEquals("foo", param.getName());
         param.setName(null);
         assertNull(param.getName());
@@ -87,7 +86,7 @@ public class DataFlowParamTest
     {
         final DataFlowParam param = new DataFlowParam(DataType.INT);
         assertNull(param.getSemantic());
-        assertSame(param, param.setSemantic("foo"));
+        param.setSemantic("foo");
         assertEquals("foo", param.getSemantic());
         param.setSemantic(null);
         assertNull(param.getSemantic());
@@ -102,7 +101,7 @@ public class DataFlowParamTest
     public void testType()
     {
         final DataFlowParam param = new DataFlowParam(DataType.INT);
-        assertSame(param, param.setType(DataType.FLOAT));
+        param.setType(DataType.FLOAT);
         assertEquals(DataType.FLOAT, param.getType());
     }
 

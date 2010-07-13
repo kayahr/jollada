@@ -52,13 +52,12 @@ public final class BoolArray extends Array
      */
 
     @Override
-    public BoolArray setCount(final int count)
+    public void setCount(final int count)
     {
         final boolean[] oldData = this.data;
         this.data = new boolean[count];
         System.arraycopy(oldData, 0, this.data, 0, Math
                 .min(count, oldData.length));
-        return this;
     }
 
 
@@ -70,29 +69,5 @@ public final class BoolArray extends Array
     public boolean[] getData()
     {
         return this.data;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setId(java.lang.String)
-     */
-
-    @Override
-    public BoolArray setId(final String id)
-    {
-        super.setId(id);
-        return this;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setName(java.lang.String)
-     */
-
-    @Override
-    public BoolArray setName(final String name)
-    {
-        super.setName(name);
-        return this;
     }
 }

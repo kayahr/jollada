@@ -7,7 +7,6 @@ package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -57,7 +56,7 @@ public class SidRefArrayTest
         array.getData()[1] = "b";
         array.getData()[2] = "c";
         array.getData()[3] = "d";
-        assertSame(array, array.setCount(6));
+        array.setCount(6);
         assertEquals(6, array.getCount());
         assertEquals("a", array.getData()[0]);
         assertEquals("b", array.getData()[1]);
@@ -79,7 +78,7 @@ public class SidRefArrayTest
     {
         final SidRefArray array = new SidRefArray(4);
         assertNull(array.getName());
-        assertSame(array, array.setName("foo"));
+        array.setName("foo");
         assertEquals("foo", array.getName());
         array.setName(null);
         assertNull(array.getName());
@@ -95,7 +94,7 @@ public class SidRefArrayTest
     {
         final SidRefArray array = new SidRefArray(4);
         assertNull(array.getId());
-        assertSame(array, ((Identifiable) array).setId("foo"));
+        array.setId("foo");
         array.setId("foo");
         assertEquals("foo", array.getId());
         array.setId(null);

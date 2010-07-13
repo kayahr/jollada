@@ -9,7 +9,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -99,7 +98,9 @@ public class AssetTest
     public void testContributor()
     {
         final Asset asset = new Asset();
-        asset.getContributors().add(new Contributor().setAuthor("it's me"));
+        final Contributor contributor = new Contributor();
+        contributor.setAuthor("it's me");
+        asset.getContributors().add(contributor);
         assertEquals(1, asset.getContributors().size());
         asset.getContributors().clear();
         assertEquals(0, asset.getContributors().size());
@@ -114,7 +115,7 @@ public class AssetTest
     public void testCreated()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setCreated(12345678));
+        asset.setCreated(12345678);
         assertEquals(12345678, asset.getCreated());
     }
 
@@ -127,7 +128,7 @@ public class AssetTest
     public void testModified()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setModified(12345678));
+        asset.setModified(12345678);
         assertEquals(12345678, asset.getModified());
     }
 
@@ -140,8 +141,7 @@ public class AssetTest
     public void testGeographicLocation()
     {
         final Asset asset = new Asset();
-        assertSame(asset,
-            asset.setGeographicLocation(new GeographicLocation(1, 2, 3)));
+        asset.setGeographicLocation(new GeographicLocation(1, 2, 3));
         assertEquals(new GeographicLocation(1, 2, 3),
             asset.getGeographicLocation());
     }
@@ -170,7 +170,7 @@ public class AssetTest
     public void testRevision()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setRevision("REVISION"));
+        asset.setRevision("REVISION");
         assertEquals("REVISION", asset.getRevision());
     }
 
@@ -183,7 +183,7 @@ public class AssetTest
     public void testSubject()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setSubject("SUBJECT"));
+        asset.setSubject("SUBJECT");
         assertEquals("SUBJECT", asset.getSubject());
     }
 
@@ -196,7 +196,7 @@ public class AssetTest
     public void testTitle()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setTitle("TITLE"));
+        asset.setTitle("TITLE");
         assertEquals("TITLE", asset.getTitle());
     }
 
@@ -209,7 +209,7 @@ public class AssetTest
     public void testUnit()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setUnit(new Unit(2, "meters")));
+        asset.setUnit(new Unit(2, "meters"));
         assertEquals(new Unit(2, "meters"), asset.getUnit());
     }
 
@@ -233,7 +233,7 @@ public class AssetTest
     public void testUpAxis()
     {
         final Asset asset = new Asset();
-        assertSame(asset, asset.setUpAxis(UpAxis.X_UP));
+        asset.setUpAxis(UpAxis.X_UP);
         assertEquals(UpAxis.X_UP, asset.getUpAxis());
     }
 

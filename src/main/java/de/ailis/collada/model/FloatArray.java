@@ -70,13 +70,12 @@ public final class FloatArray extends Array
      */
 
     @Override
-    public FloatArray setCount(final int count)
+    public void setCount(final int count)
     {
         final double[] oldData = this.data;
         this.data = new double[count];
         System.arraycopy(oldData, 0, this.data, 0, Math
                 .min(count, oldData.length));
-        return this;
     }
 
 
@@ -88,30 +87,6 @@ public final class FloatArray extends Array
     public double[] getData()
     {
         return this.data;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setId(java.lang.String)
-     */
-
-    @Override
-    public FloatArray setId(final String id)
-    {
-        super.setId(id);
-        return this;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setName(java.lang.String)
-     */
-
-    @Override
-    public FloatArray setName(final String name)
-    {
-        super.setName(name);
-        return this;
     }
 
 
@@ -147,16 +122,14 @@ public final class FloatArray extends Array
      *
      * @param digits
      *            The number of significant decimal digits.
-     * @return This array for chaining.
      */
 
-    public FloatArray setDigits(final int digits)
+    public void setDigits(final int digits)
     {
         if (digits < 0 || digits > 0x7fff)
             throw new IllegalArgumentException(
                 "Digits out of range [0..0x7fff]");
         this.digits = digits;
-        return this;
     }
 
 
@@ -166,15 +139,13 @@ public final class FloatArray extends Array
      *
      * @param magnitude
      *            The largest exponent.
-     * @return This array for chaining.
      */
 
-    public FloatArray setMagnitude(final int magnitude)
+    public void setMagnitude(final int magnitude)
     {
         if (magnitude > 0x7fff || magnitude < 0)
             throw new IllegalArgumentException(
                 "Magnitude out of range [0..0x7fff]");
         this.magnitude = magnitude;
-        return this;
     }
 }

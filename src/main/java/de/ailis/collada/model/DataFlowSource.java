@@ -62,13 +62,11 @@ public final class DataFlowSource extends Element implements Identifiable,
      *
      * @param asset
      *            The asset-management information to set. Null to unset.
-     * @return This source for chaining.
      */
 
-    public DataFlowSource setAsset(final Asset asset)
+    public void setAsset(final Asset asset)
     {
         this.asset = asset;
-        return this;
     }
 
 
@@ -77,16 +75,14 @@ public final class DataFlowSource extends Element implements Identifiable,
      *
      * @param id
      *            The ID to set. Must not be null.
-     * @return This source for chaining.
      */
 
     @Override
-    public DataFlowSource setId(final String id)
+    public void setId(final String id)
     {
         if (id == null)
             throw new IllegalArgumentException("id must not be null");
-        super.setId(id);
-        return this;
+        super.updateId(id);
     }
 
 
@@ -99,7 +95,7 @@ public final class DataFlowSource extends Element implements Identifiable,
     @Override
     public String getId()
     {
-        return super.getId();
+        return this.id;
     }
 
 
@@ -120,13 +116,11 @@ public final class DataFlowSource extends Element implements Identifiable,
      *
      * @param name
      *            The name to set. Null to unset.
-     * @return This source for chaining.
      */
 
-    public DataFlowSource setName(final String name)
+    public void setName(final String name)
     {
         this.name = name;
-        return this;
     }
 
 
@@ -147,10 +141,9 @@ public final class DataFlowSource extends Element implements Identifiable,
      *
      * @param array
      *            The array to set. Null to unset.
-     * @return This source for chaining.
      */
 
-    public DataFlowSource setArray(final Array array)
+    public void setArray(final Array array)
     {
         if (array != this.array)
         {
@@ -158,7 +151,6 @@ public final class DataFlowSource extends Element implements Identifiable,
             this.array = array;
             if (array != null) addChild(array);
         }
-        return this;
     }
 
 
@@ -179,10 +171,9 @@ public final class DataFlowSource extends Element implements Identifiable,
      *
      * @param commonTechnique
      *            The common source technique to set. Null to unset.
-     * @return This source for chaining.
      */
 
-    public DataFlowSource setArray(final CommonSourceTechnique commonTechnique)
+    public void setArray(final CommonSourceTechnique commonTechnique)
     {
         if (commonTechnique != this.commonTechnique)
         {
@@ -190,6 +181,5 @@ public final class DataFlowSource extends Element implements Identifiable,
             this.commonTechnique = commonTechnique;
             if (commonTechnique != null) addChild(commonTechnique);
         }
-        return this;
     }
 }

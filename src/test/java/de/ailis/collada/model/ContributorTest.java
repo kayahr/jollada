@@ -9,7 +9,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -243,7 +242,7 @@ public class ContributorTest
     public void testAuthor()
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor, contributor.setAuthor("AUTHOR"));
+        contributor.setAuthor("AUTHOR");
         assertEquals("AUTHOR", contributor.getAuthor());
     }
 
@@ -256,7 +255,7 @@ public class ContributorTest
     public void testAuthorEMail()
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor, contributor.setAuthorEMail("EMAIL"));
+        contributor.setAuthorEMail("EMAIL");
         assertEquals("EMAIL", contributor.getAuthorEMail());
     }
 
@@ -269,7 +268,7 @@ public class ContributorTest
     public void testAuthoringTool()
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor, contributor.setAuthoringTool("TOOL"));
+        contributor.setAuthoringTool("TOOL");
         assertEquals("TOOL", contributor.getAuthoringTool());
     }
 
@@ -285,8 +284,7 @@ public class ContributorTest
     public void testAuthorWebsite() throws URISyntaxException
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor,
-            contributor.setAuthorWebsite(new URI("WEBSITE")));
+        contributor.setAuthorWebsite(new URI("WEBSITE"));
         assertEquals(new URI("WEBSITE"), contributor.getAuthorWebsite());
     }
 
@@ -299,7 +297,7 @@ public class ContributorTest
     public void testComments()
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor, contributor.setComments("COMMENTS"));
+        contributor.setComments("COMMENTS");
         assertEquals("COMMENTS", contributor.getComments());
     }
 
@@ -312,7 +310,7 @@ public class ContributorTest
     public void testCopyright()
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor, contributor.setCopyright("COPYRIGHT"));
+        contributor.setCopyright("COPYRIGHT");
         assertEquals("COPYRIGHT", contributor.getCopyright());
     }
 
@@ -328,7 +326,7 @@ public class ContributorTest
     public void testSourceData() throws URISyntaxException
     {
         final Contributor contributor = new Contributor();
-        assertSame(contributor, contributor.setSourceData(new URI("SOURCE")));
+        contributor.setSourceData(new URI("SOURCE"));
         assertEquals(new URI("SOURCE"), contributor.getSourceData());
     }
 }

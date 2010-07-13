@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -51,7 +50,7 @@ public class NodeTest
     {
         final Node node = new Node();
         assertNull(node.getId());
-        assertSame(node, ((Identifiable) node).setId("foo"));
+        node.setId("foo");
         assertEquals("foo", node.getId());
         node.setId(null);
         assertNull(node.getId());
@@ -67,7 +66,7 @@ public class NodeTest
     {
         final Node node = new Node();
         assertNull(node.getId());
-        assertSame(node, ((ScopeIdentifiable) node).setSid("foo"));
+        node.setSid("foo");
         assertEquals("foo", node.getSid());
         node.setId(null);
         assertNull(node.getId());
@@ -82,7 +81,7 @@ public class NodeTest
     {
         final Node node = new Node();
         assertNull(node.getName());
-        assertSame(node, node.setName("foo"));
+        node.setName("foo");
         assertEquals("foo", node.getName());
         node.setName(null);
         assertNull(node.getName());
@@ -98,7 +97,7 @@ public class NodeTest
     {
         final Node node = new Node();
         assertNull(node.getAsset());
-        assertSame(node, node.setAsset(new Asset()));
+        node.setAsset(new Asset());
         assertNotNull(node.getAsset());
         node.setAsset(null);
         assertNull(node.getAsset());
@@ -113,7 +112,7 @@ public class NodeTest
     public void testType()
     {
         final Node node = new Node();
-        assertSame(node, node.setType(NodeType.JOINT));
+        node.setType(NodeType.JOINT);
         assertEquals(NodeType.JOINT, node.getType());
     }
 

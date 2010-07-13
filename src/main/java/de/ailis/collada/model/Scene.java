@@ -38,10 +38,9 @@ public final class Scene extends Element
      *
      * @param visualSceneInstance
      *            The visual scene instance to set.
-     * @return This scene for chaining.
      */
 
-    public Scene setVisualSceneInstance(
+    public void setVisualSceneInstance(
         final VisualSceneInstance visualSceneInstance)
     {
         if (visualSceneInstance != this.visualSceneInstance)
@@ -62,6 +61,5 @@ public final class Scene extends Element
 
             this.visualSceneInstance = visualSceneInstance;
         }
-        return this;
     }
 }

@@ -52,13 +52,12 @@ public final class IdRefArray extends Array
      */
 
     @Override
-    public IdRefArray setCount(final int count)
+    public void setCount(final int count)
     {
         final String[] oldData = this.data;
         this.data = new String[count];
         System.arraycopy(oldData, 0, this.data, 0, Math
                 .min(count, oldData.length));
-        return this;
     }
 
 
@@ -71,29 +70,4 @@ public final class IdRefArray extends Array
     {
         return this.data;
     }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setId(java.lang.String)
-     */
-
-    @Override
-    public IdRefArray setId(final String id)
-    {
-        super.setId(id);
-        return this;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setName(java.lang.String)
-     */
-
-    @Override
-    public IdRefArray setName(final String name)
-    {
-        super.setName(name);
-        return this;
-    }
-
 }

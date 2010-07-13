@@ -78,7 +78,7 @@ public class DocumentTest
     public void testBase() throws URISyntaxException
     {
         final Document document = new Document();
-        assertSame(document, document.setBase(new URI("BASE")));
+        document.setBase(new URI("BASE"));
         assertEquals(new URI("BASE"), document.getBase());
         document.setBase(null);
         assertNull(document.getBase());
@@ -95,7 +95,7 @@ public class DocumentTest
         final Document document = new Document();
         final Scene scene = new Scene();
         assertNull(scene.getDocument());
-        assertSame(document, document.setScene(scene));
+        document.setScene(scene);
         assertSame(document, scene.getDocument());
         assertNotNull(document.getScene());
         document.setScene(null);

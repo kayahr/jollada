@@ -178,14 +178,14 @@ public abstract class Element implements Serializable
 
 
     /**
-     * Sets the ID.
+     * Updates the ID. Must be called from the setId methods of
+     * identifiable model classes.
      *
      * @param id
      *            The ID to set. Null to unset.
-     * @return This element for chaining.
      */
 
-    protected Element setId(final String id)
+    protected final void updateId(final String id)
     {
         if ((id == null && this.id != null)
             || (id != null && !id.equals(this.id)))
@@ -194,19 +194,6 @@ public abstract class Element implements Serializable
             this.id = id;
             if (this.document != null) this.document.register(this);
         }
-        return this;
-    }
-
-
-    /**
-     * Returns the element id.
-     *
-     * @return The element id
-     */
-
-    String getId()
-    {
-        return this.id;
     }
 
 

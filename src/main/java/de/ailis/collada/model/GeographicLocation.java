@@ -91,13 +91,11 @@ public final class GeographicLocation implements Serializable
      *
      * @param longitude
      *            The longitude to set.
-     * @return This geographic location for chaining.
      */
 
-    public GeographicLocation setLongitude(final float longitude)
+    public void setLongitude(final float longitude)
     {
         this.longitude = longitude;
-        return this;
     }
 
 
@@ -118,13 +116,11 @@ public final class GeographicLocation implements Serializable
      *
      * @param latitude
      *            The latitude to set.
-     * @return This geographic location for chaining.
      */
 
-    public GeographicLocation setLatitude(final float latitude)
+    public void setLatitude(final float latitude)
     {
         this.latitude = latitude;
-        return this;
     }
 
 
@@ -145,13 +141,11 @@ public final class GeographicLocation implements Serializable
      *
      * @param altitude
      *            The altitude to set.
-     * @return This geographic location for chaining.
      */
 
-    public GeographicLocation setAltitude(final float altitude)
+    public void setAltitude(final float altitude)
     {
         setAltitude(altitude, AltitudeMode.RELATIVE_TO_GROUND);
-        return this;
     }
 
 
@@ -162,15 +156,13 @@ public final class GeographicLocation implements Serializable
      *            The altitude to set.
      * @param mode
      *            The altitude mode. Must not be null.
-     * @return This geographic location for chaining.
      */
 
-    public GeographicLocation setAltitude(final float altitude,
+    public void setAltitude(final float altitude,
         final AltitudeMode mode)
     {
         this.altitude = altitude;
         setAltitudeMode(mode);
-        return this;
     }
 
 
@@ -191,15 +183,13 @@ public final class GeographicLocation implements Serializable
      *
      * @param altitudeMode
      *            The altitude mode to set. Must not be null.
-     * @return This geographic location for chaining.
      */
 
-    public GeographicLocation setAltitudeMode(final AltitudeMode altitudeMode)
+    public void setAltitudeMode(final AltitudeMode altitudeMode)
     {
         if (altitudeMode == null)
             throw new IllegalArgumentException("altitudeMode must not be null");
         this.altitudeMode = altitudeMode;
-        return this;
     }
 
 

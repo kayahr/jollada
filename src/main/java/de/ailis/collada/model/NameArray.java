@@ -52,13 +52,12 @@ public final class NameArray extends Array
      */
 
     @Override
-    public NameArray setCount(final int count)
+    public void setCount(final int count)
     {
         final String[] oldData = this.data;
         this.data = new String[count];
         System.arraycopy(oldData, 0, this.data, 0, Math
                 .min(count, oldData.length));
-        return this;
     }
 
 
@@ -70,29 +69,5 @@ public final class NameArray extends Array
     public String[] getData()
     {
         return this.data;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setId(java.lang.String)
-     */
-
-    @Override
-    public NameArray setId(final String id)
-    {
-        super.setId(id);
-        return this;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setName(java.lang.String)
-     */
-
-    @Override
-    public NameArray setName(final String name)
-    {
-        super.setName(name);
-        return this;
     }
 }

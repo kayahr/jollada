@@ -36,10 +36,9 @@ public abstract class Array extends Element implements Identifiable
      *
      * @param count
      *            The new data size
-     * @return This array for chaining.
      */
 
-    public abstract Array setCount(final int count);
+    public abstract void setCount(final int count);
 
 
     /**
@@ -60,7 +59,7 @@ public abstract class Array extends Element implements Identifiable
     @Override
     public final String getId()
     {
-        return super.getId();
+        return this.id;
     }
 
 
@@ -69,14 +68,12 @@ public abstract class Array extends Element implements Identifiable
      *
      * @param id
      *            The ID to set. Null to unset.
-     * @return The ID for chaining.
      */
 
     @Override
-    public Element setId(final String id)
+    public final void setId(final String id)
     {
-        super.setId(id);
-        return this;
+        super.updateId(id);
     }
 
 
@@ -97,12 +94,10 @@ public abstract class Array extends Element implements Identifiable
      *
      * @param name
      *            The name to set. Null to unset.
-     * @return This array for chaining.
      */
 
-    public Array setName(final String name)
+    public final void setName(final String name)
     {
         this.name = name;
-        return this;
     }
 }

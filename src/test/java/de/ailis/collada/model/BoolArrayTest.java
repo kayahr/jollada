@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -59,7 +58,7 @@ public class BoolArrayTest
         array.getData()[1] = true;
         array.getData()[2] = true;
         array.getData()[3] = true;
-        assertSame(array, ((Array) array).setCount(6));
+        array.setCount(6);
         assertEquals(6, array.getCount());
         assertNotNull(((Array) array).getData());
         assertTrue(array.getData()[0]);
@@ -82,7 +81,7 @@ public class BoolArrayTest
     {
         final BoolArray array = new BoolArray(4);
         assertNull(array.getName());
-        assertSame(array, ((Array) array).setName("foo"));
+        array.setName("foo");
         assertEquals("foo", array.getName());
         array.setName(null);
         assertNull(array.getName());
@@ -98,7 +97,7 @@ public class BoolArrayTest
     {
         final BoolArray array = new BoolArray(4);
         assertNull(array.getId());
-        assertSame(array, ((Element) array).setId("foo"));
+        array.setId("foo");
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());

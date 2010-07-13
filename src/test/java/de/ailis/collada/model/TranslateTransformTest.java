@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -45,11 +44,11 @@ public class TranslateTransformTest
     public void testSid()
     {
         final TranslateTransform transform = new TranslateTransform();
-        assertNull(transform.getId());
-        assertSame(transform, ((ScopeIdentifiable) transform).setSid("foo"));
+        assertNull(transform.getSid());
+        transform.setSid("foo");
         assertEquals("foo", transform.getSid());
-        transform.setId(null);
-        assertNull(transform.getId());
+        transform.setSid(null);
+        assertNull(transform.getSid());
     }
 
 
@@ -63,7 +62,7 @@ public class TranslateTransformTest
         final TranslateTransform transform = new TranslateTransform();
         assertTrue(transform.getTranslation().isNull());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setTranslation(translation));
+        transform.setTranslation(translation);
         assertEquals(translation.getX(), transform.getTranslation().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getTranslation().getY(),

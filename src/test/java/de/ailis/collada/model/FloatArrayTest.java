@@ -7,7 +7,6 @@ package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -59,7 +58,7 @@ public class FloatArrayTest
         array.getData()[1] = 2;
         array.getData()[2] = 3;
         array.getData()[3] = 4;
-        assertSame(array, array.setCount(6));
+        array.setCount(6);
         assertEquals(6, array.getCount());
         assertEquals(1, array.getData()[0], 0.001f);
         assertEquals(2, array.getData()[1], 0.001f);
@@ -81,7 +80,7 @@ public class FloatArrayTest
     {
         final FloatArray array = new FloatArray(4);
         assertNull(array.getName());
-        assertSame(array, array.setName("foo"));
+        array.setName("foo");
         assertEquals("foo", array.getName());
         array.setName(null);
         assertNull(array.getName());
@@ -97,7 +96,7 @@ public class FloatArrayTest
     {
         final FloatArray array = new FloatArray(4);
         assertNull(array.getId());
-        assertSame(array, ((Identifiable) array).setId("foo"));
+        array.setId("foo");
         assertEquals("foo", array.getId());
         array.setId(null);
         assertNull(array.getId());
@@ -112,7 +111,7 @@ public class FloatArrayTest
     public void testSetDigits()
     {
         final FloatArray array = new FloatArray(4);
-        assertSame(array, array.setDigits(3));
+        array.setDigits(3);
         assertEquals(3, array.getDigits());
     }
 
@@ -125,7 +124,7 @@ public class FloatArrayTest
     public void testSetMagnitude()
     {
         final FloatArray array = new FloatArray(4);
-        assertSame(array, array.setMagnitude(40));
+        array.setMagnitude(40);
         assertEquals(40, array.getMagnitude());
     }
 

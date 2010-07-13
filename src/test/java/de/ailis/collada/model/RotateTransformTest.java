@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -46,11 +45,11 @@ public class RotateTransformTest
     public void testSid()
     {
         final RotateTransform transform = new RotateTransform();
-        assertNull(transform.getId());
-        assertSame(transform, ((ScopeIdentifiable) transform).setSid("foo"));
+        assertNull(transform.getSid());
+        transform.setSid("foo");
         assertEquals("foo", transform.getSid());
-        transform.setId(null);
-        assertNull(transform.getId());
+        transform.setSid(null);
+        assertNull(transform.getSid());
     }
 
 
@@ -63,7 +62,7 @@ public class RotateTransformTest
     {
         final RotateTransform transform = new RotateTransform();
         assertEquals(0, transform.getAngle(), 0.001f);
-        assertSame(transform, transform.setAngle(1));
+        transform.setAngle(1);
         assertEquals(1, transform.getAngle(), 0.001f);
     }
 
@@ -78,7 +77,7 @@ public class RotateTransformTest
         final RotateTransform transform = new RotateTransform();
         assertTrue(transform.getAxis().isNull());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setAxis(translation));
+        transform.setAxis(translation);
         assertEquals(translation.getX(), transform.getAxis().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getAxis().getY(),

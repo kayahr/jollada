@@ -64,13 +64,12 @@ public final class IntArray extends Array
      */
 
     @Override
-    public IntArray setCount(final int count)
+    public void setCount(final int count)
     {
         final long[] oldData = this.data;
         this.data = new long[count];
         System.arraycopy(oldData, 0, this.data, 0, Math
                 .min(count, oldData.length));
-        return this;
     }
 
 
@@ -82,30 +81,6 @@ public final class IntArray extends Array
     public long[] getData()
     {
         return this.data;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setId(java.lang.String)
-     */
-
-    @Override
-    public IntArray setId(final String id)
-    {
-        super.setId(id);
-        return this;
-    }
-
-
-    /**
-     * @see de.ailis.collada.model.Array#setName(java.lang.String)
-     */
-
-    @Override
-    public IntArray setName(final String name)
-    {
-        super.setName(name);
-        return this;
     }
 
 
@@ -138,13 +113,11 @@ public final class IntArray extends Array
      *
      * @param maxInclusive
      *            The maximum value to set
-     * @return This array for chaining.
      */
 
-    public IntArray setMaxInclusive(final long maxInclusive)
+    public void setMaxInclusive(final long maxInclusive)
     {
         this.maxInclusive = maxInclusive;
-        return this;
     }
 
 
@@ -153,12 +126,10 @@ public final class IntArray extends Array
      *
      * @param minInclusive
      *            The minimum value to set
-     * @return This array for chaining.
      */
 
-    public IntArray setMinInclusive(final long minInclusive)
+    public void setMinInclusive(final long minInclusive)
     {
         this.minInclusive = minInclusive;
-        return this;
     }
 }

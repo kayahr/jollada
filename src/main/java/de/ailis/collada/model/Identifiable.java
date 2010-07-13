@@ -29,8 +29,7 @@ public interface Identifiable
      * @param id
      *            The id to set. Must not be null for elements which require an
      *            ID.
-     * @return The element for chaining.
      */
 
-    Element setId(String id);
+    void setId(String id);
 }

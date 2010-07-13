@@ -9,7 +9,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -127,7 +126,7 @@ public class GeographicLocationTest
     public void testLongitude()
     {
         final GeographicLocation location = new GeographicLocation(1, 2, 3);
-        assertSame(location, location.setLongitude(10));
+        location.setLongitude(10);
         assertEquals(10, location.getLongitude(), 0.0001f);
     }
 
@@ -140,7 +139,7 @@ public class GeographicLocationTest
     public void testLatitude()
     {
         final GeographicLocation location = new GeographicLocation(1, 2, 3);
-        assertSame(location, location.setLatitude(10));
+        location.setLatitude(10);
         assertEquals(10, location.getLatitude(), 0.0001f);
     }
 
@@ -153,7 +152,7 @@ public class GeographicLocationTest
     public void testAltitude()
     {
         final GeographicLocation location = new GeographicLocation(1, 2, 3);
-        assertSame(location, location.setAltitude(10));
+        location.setAltitude(10);
         assertEquals(10, location.getAltitude(), 0.0001f);
     }
 
@@ -167,8 +166,7 @@ public class GeographicLocationTest
     {
         final GeographicLocation location = new GeographicLocation(1, 2, 3,
             AltitudeMode.ABSOLUTE);
-        assertSame(location,
-            location.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND));
+        location.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
         assertEquals(AltitudeMode.RELATIVE_TO_GROUND,
             location.getAltitudeMode());
     }
@@ -183,8 +181,7 @@ public class GeographicLocationTest
     {
         final GeographicLocation location = new GeographicLocation(1, 2, 3,
             AltitudeMode.ABSOLUTE);
-        assertSame(location,
-            location.setAltitude(10, AltitudeMode.RELATIVE_TO_GROUND));
+        location.setAltitude(10, AltitudeMode.RELATIVE_TO_GROUND);
         assertEquals(10, location.getAltitude(), 0.0001f);
         assertEquals(AltitudeMode.RELATIVE_TO_GROUND,
             location.getAltitudeMode());

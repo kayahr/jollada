@@ -40,13 +40,11 @@ public abstract class Transformation extends Element implements
      *
      * @param sid
      *            The scope ID to set. Null to unset.
-     * @return This transformation for chaining.
      */
 
     @Override
-    public Transformation setSid(final String sid)
+    public final void setSid(final String sid)
     {
         this.sid = sid;
-        return this;
     }
 }

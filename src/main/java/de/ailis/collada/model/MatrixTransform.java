@@ -29,15 +29,13 @@ public final class MatrixTransform extends Transformation
      *
      * @param matrix
      *            The matrix to set. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public MatrixTransform setMatrix(final Matrix4f matrix)
+    public void setMatrix(final Matrix4f matrix)
     {
         if (matrix == null)
             throw new IllegalArgumentException("matrix must not be null");
         this.matrix.set(matrix);
-        return this;
     }
 
 

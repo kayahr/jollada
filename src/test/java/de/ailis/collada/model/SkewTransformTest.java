@@ -8,7 +8,6 @@ package de.ailis.collada.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -47,11 +46,11 @@ public class SkewTransformTest
     public void testSid()
     {
         final SkewTransform transform = new SkewTransform();
-        assertNull(transform.getId());
-        assertSame(transform, ((ScopeIdentifiable) transform).setSid("foo"));
+        assertNull(transform.getSid());
+        transform.setSid("foo");
         assertEquals("foo", transform.getSid());
-        transform.setId(null);
-        assertNull(transform.getId());
+        transform.setSid(null);
+        assertNull(transform.getSid());
     }
 
 
@@ -64,7 +63,7 @@ public class SkewTransformTest
     {
         final SkewTransform transform = new SkewTransform();
         assertEquals(0, transform.getAngle(), 0.001f);
-        assertSame(transform, transform.setAngle(1));
+        transform.setAngle(1);
         assertEquals(1, transform.getAngle(), 0.001f);
     }
 
@@ -79,7 +78,7 @@ public class SkewTransformTest
         final SkewTransform transform = new SkewTransform();
         assertTrue(transform.getRotationAxis().isNull());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setRotationAxis(translation));
+        transform.setRotationAxis(translation);
         assertEquals(translation.getX(), transform.getRotationAxis().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getRotationAxis().getY(),
@@ -110,7 +109,7 @@ public class SkewTransformTest
         final SkewTransform transform = new SkewTransform();
         assertTrue(transform.getTranslationAxis().isNull());
         final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-        assertSame(transform, transform.setTranslationAxis(translation));
+        transform.setTranslationAxis(translation);
         assertEquals(translation.getX(), transform.getTranslationAxis().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getTranslationAxis().getY(),

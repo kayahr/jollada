@@ -29,15 +29,13 @@ public final class ScaleTransform extends Transformation
      *
      * @param scaling
      *            The scaling. Must not be null.
-     * @return This transform for chaining.
      */
 
-    public ScaleTransform setScaling(final Vector3f scaling)
+    public void setScaling(final Vector3f scaling)
     {
         if (scaling == null)
             throw new IllegalArgumentException("scaling must not be null");
         this.scaling.set(scaling);
-        return this;
     }
 
 

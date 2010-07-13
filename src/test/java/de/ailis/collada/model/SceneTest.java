@@ -49,7 +49,7 @@ public class SceneTest
         final VisualSceneInstance instance = new VisualSceneInstance(
             new URI("foo"));
         assertNull(instance.getScene());
-        assertSame(scene, scene.setVisualSceneInstance(instance));
+        scene.setVisualSceneInstance(instance);
         assertSame(scene, instance.getScene());
         assertSame(instance, scene.getVisualSceneInstance());
         assertNotNull(scene.getVisualSceneInstance());

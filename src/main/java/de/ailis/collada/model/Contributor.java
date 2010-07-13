@@ -102,13 +102,11 @@ public final class Contributor implements Serializable
      *
      * @param author
      *            The author's name to set. Null to unset.
-     * @return This contributor for chaining.
      */
 
-    public Contributor setAuthor(final String author)
+    public void setAuthor(final String author)
     {
         this.author = author;
-        return this;
     }
 
 
@@ -129,13 +127,11 @@ public final class Contributor implements Serializable
      *
      * @param authorEMail
      *            The author's E-Mail address to set. Null to unset.
-     * @return This contributor for chaining.
      */
 
-    public Contributor setAuthorEMail(final String authorEMail)
+    public void setAuthorEMail(final String authorEMail)
     {
         this.authorEMail = authorEMail;
-        return this;
     }
 
 
@@ -156,13 +152,11 @@ public final class Contributor implements Serializable
      *
      * @param authorWebsite
      *            The author's website to set. Null to unset
-     * @return This contributor for chaining.
      */
 
-    public Contributor setAuthorWebsite(final URI authorWebsite)
+    public void setAuthorWebsite(final URI authorWebsite)
     {
         this.authorWebsite = authorWebsite;
-        return this;
     }
 
 
@@ -183,13 +177,11 @@ public final class Contributor implements Serializable
      *
      * @param authoringTool
      *            The name of the authoring tool to set. Null to unset.
-     * @return This contributor for chaining.
      */
 
-    public Contributor setAuthoringTool(final String authoringTool)
+    public void setAuthoringTool(final String authoringTool)
     {
         this.authoringTool = authoringTool;
-        return this;
     }
 
 
@@ -210,13 +202,11 @@ public final class Contributor implements Serializable
      *
      * @param comments
      *            The comments to set. Null to unset.
-     * @return This contributor for chaining.
      */
 
-    public Contributor setComments(final String comments)
+    public void setComments(final String comments)
     {
         this.comments = comments;
-        return this;
     }
 
 
@@ -237,13 +227,11 @@ public final class Contributor implements Serializable
      *
      * @param copyright
      *            The copyright to set. Null to unset
-     * @return This contributor for chaining.
      */
 
-    public Contributor setCopyright(final String copyright)
+    public void setCopyright(final String copyright)
     {
         this.copyright = copyright;
-        return this;
     }
 
 
@@ -264,13 +252,11 @@ public final class Contributor implements Serializable
      *
      * @param sourceData
      *            The source data URI to set. Null to unset.
-     * @return This contributor for chaining.
      */
 
-    public Contributor setSourceData(final URI sourceData)
+    public void setSourceData(final URI sourceData)
     {
         this.sourceData = sourceData;
-        return this;
     }
 
 

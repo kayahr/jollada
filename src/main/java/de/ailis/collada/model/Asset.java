@@ -148,13 +148,11 @@ public final class Asset implements Serializable
      *
      * @param created
      *            The creation time stamp to set.
-     * @return This asset for chaining.
      */
 
-    public Asset setCreated(final long created)
+    public void setCreated(final long created)
     {
         this.created = created;
-        return this;
     }
 
 
@@ -175,13 +173,11 @@ public final class Asset implements Serializable
      *
      * @param modified
      *            The last modification time stamp to set.
-     * @return This asset for chaining.
      */
 
-    public Asset setModified(final long modified)
+    public void setModified(final long modified)
     {
         this.modified = modified;
-        return this;
     }
 
 
@@ -214,14 +210,12 @@ public final class Asset implements Serializable
      *
      * @param geographicLocation
      *            The geographic location to set. Null to unset.
-     * @return This asset for chaining.
      */
 
-    public Asset setGeographicLocation(
+    public void setGeographicLocation(
         final GeographicLocation geographicLocation)
     {
         this.geographicLocation = geographicLocation;
-        return this;
     }
 
 
@@ -254,13 +248,11 @@ public final class Asset implements Serializable
      *
      * @param revision
      *            The revision to set. Null to unset.
-     * @return This asset for chaining.
      */
 
-    public Asset setRevision(final String revision)
+    public void setRevision(final String revision)
     {
         this.revision = revision;
-        return this;
     }
 
 
@@ -281,13 +273,11 @@ public final class Asset implements Serializable
      *
      * @param subject
      *            The subject to set. Null to unset.
-     * @return This asset for chaining.
      */
 
-    public Asset setSubject(final String subject)
+    public void setSubject(final String subject)
     {
         this.subject = subject;
-        return this;
     }
 
 
@@ -308,13 +298,11 @@ public final class Asset implements Serializable
      *
      * @param title
      *            The title to set. Null to unset.
-     * @return This asset for chaining.
      */
 
-    public Asset setTitle(final String title)
+    public void setTitle(final String title)
     {
         this.title = title;
-        return this;
     }
 
 
@@ -335,15 +323,13 @@ public final class Asset implements Serializable
      *
      * @param unit
      *            The unit of distance to set. Most not be null.
-     * @return This asset for chaining.
      */
 
-    public Asset setUnit(final Unit unit)
+    public void setUnit(final Unit unit)
     {
         if (unit == null)
             throw new IllegalArgumentException("unit must not be null");
         this.unit = unit;
-        return this;
     }
 
 
@@ -364,15 +350,13 @@ public final class Asset implements Serializable
      *
      * @param upAxis
      *            The coordinate system orientation to set. Most nut be null.
-     * @return This asset for chaining.
      */
 
-    public Asset setUpAxis(final UpAxis upAxis)
+    public void setUpAxis(final UpAxis upAxis)
     {
         if (upAxis == null)
             throw new IllegalArgumentException("upAxis must not be null");
         this.upAxis = upAxis;
-        return this;
     }
 
 

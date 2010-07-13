@@ -7,7 +7,6 @@ package de.ailis.collada.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -82,11 +81,11 @@ public class MaterialInstanceTest
     {
         final MaterialInstance instance = new MaterialInstance("SYMBOL",
             new URI("foo"));
-        assertNull(instance.getId());
-        assertSame(instance, ((ScopeIdentifiable) instance).setSid("foo"));
+        assertNull(instance.getSid());
+        instance.setSid("foo");
         assertEquals("foo", instance.getSid());
-        instance.setId(null);
-        assertNull(instance.getId());
+        instance.setSid(null);
+        assertNull(instance.getSid());
     }
 
 
@@ -103,7 +102,7 @@ public class MaterialInstanceTest
         final MaterialInstance instance = new MaterialInstance("SYMBOL",
             new URI("foo"));
         assertNull(instance.getName());
-        assertSame(instance, instance.setName("foo"));
+        instance.setName("foo");
         assertEquals("foo", instance.getName());
         instance.setName(null);
         assertNull(instance.getName());
@@ -123,7 +122,7 @@ public class MaterialInstanceTest
         final MaterialInstance instance = new MaterialInstance("SYMBOL",
             new URI("foo"));
         assertEquals(new URI("foo"), instance.getTarget());
-        assertSame(instance, instance.setTarget(new URI("bar")));
+        instance.setTarget(new URI("bar"));
         assertEquals(new URI("bar"), instance.getTarget());
     }
 
@@ -155,7 +154,7 @@ public class MaterialInstanceTest
         final MaterialInstance instance = new MaterialInstance("SYMBOL",
             new URI("foo"));
         assertEquals("SYMBOL", instance.getSymbol());
-        assertSame(instance, instance.setSymbol("foo"));
+        instance.setSymbol("foo");
         assertEquals("foo", instance.getSymbol());
     }
 
