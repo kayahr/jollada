@@ -183,7 +183,7 @@
         </extra>
       </profile_COMMON>
       <profile_COMMON id="common-profile-2">      
-        <technique sid="technique">
+        <technique id="effect-profile-2-common-technique" sid="technique">
           <phong />
         </technique>        
       </profile_COMMON>
@@ -212,4 +212,15 @@
       </profile_COMMON>
     </effect>  
   </library_effects>
+  
+  <library_cameras>
+    <camera id="camera-1" name="Camera 1">
+      <optics>
+        <technique_common>
+          <
+        </technique_common>
+      </optics>
+    </camera>
+    
+  </library_cameras>
 </COLLADA>

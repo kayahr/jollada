@@ -72,7 +72,7 @@ public class ColladaReaderTest
     private Document readDocument(final String filename) throws IOException
     {
         final InputStream stream = getClass().getClassLoader()
-            .getResourceAsStream(filename);
+                .getResourceAsStream(filename);
         if (stream == null)
             throw new IOException("File not found: " + filename);
         try
@@ -223,7 +223,7 @@ public class ColladaReaderTest
 
         // Check common effect technique
         final CommonEffectTechnique commonEffectTechnique = commonEffectProfile
-            .getTechnique();
+                .getTechnique();
         assertEquals("effect-1-common-technique", commonEffectTechnique.getId());
         assertEquals("technique", commonEffectTechnique.getSid());
         assertSame(doc, commonEffectTechnique.getDocument());
@@ -259,7 +259,8 @@ public class ColladaReaderTest
         assertEquals(0.2f, color.getGreen(), 0.001);
         assertEquals(0.3f, color.getBlue(), 0.001);
         assertEquals(0.4f, color.getAlpha(), 0.001);
-        final Texture texture = ((PhongShader) shader).getDiffuse().getTexture();
+        final Texture texture = ((PhongShader) shader).getDiffuse()
+                .getTexture();
         assertEquals("TEXCOORD", texture.getTexcoord());
         assertEquals("TEXTURE", texture.getTexture());
         color = ((PhongShader) shader).getSpecular().getColor();
