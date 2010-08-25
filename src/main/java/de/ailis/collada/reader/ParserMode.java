@@ -226,11 +226,20 @@ enum ParserMode {
     /** Parser is in perspective element */
     PERSPECTIVE("perspective"),
 
+    /** Parser is in orthographic element */
+    ORTHOGRAPHIC("orthographic"),
+
     /** Parser is in xfov element */
     XFOV("xfov"),
 
     /** Parser is in yfov element */
     YFOV("yfov"),
+
+    /** Parser is in xmag element */
+    XMAG("xmag"),
+
+    /** Parser is in ymag element */
+    YMAG("ymag"),
 
     /** Parser is in aspect_Ratio element */
     ASPECT_RATIO("aspect_ratio"),

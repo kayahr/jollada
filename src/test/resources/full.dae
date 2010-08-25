@@ -213,14 +213,45 @@
     </effect>  
   </library_effects>
   
-  <library_cameras>
+  <library_cameras id="camera-lib-1" name="Camera Library 1">
     <camera id="camera-1" name="Camera 1">
       <optics>
         <technique_common>
-          <
+          <orthographic>
+            <xmag sid="camera-1-xmag">256</xmag>
+            <ymag sid="camera-1-ymag">320</ymag>
+            <znear sid="camera-1-znear">0.1</znear>
+            <zfar sid="camera-1-zfar">100.5</zfar>
+          </orthographic>
         </technique_common>
       </optics>
     </camera>
-    
+    <camera id="camera-2" name="Camera 2">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="camera-2-xfov">512</xfov>
+            <aspect_ratio sid="camera-2-ar">1.5</aspect_ratio>
+            <znear sid="camera-2-znear">0.2</znear>
+            <zfar sid="camera-2-zfar">200.5</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
   </library_cameras>
+  
+  <library_cameras>
+    <camera id="camera-3">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov>0</xfov>
+            <aspect_ratio>1</aspect_ratio>
+            <znear>2</znear>
+            <zfar>3</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
+  </library_cameras>  
 </COLLADA>

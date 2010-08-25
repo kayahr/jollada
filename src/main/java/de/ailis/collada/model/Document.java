@@ -41,6 +41,10 @@ public final class Document extends Element implements AssetElement
     private final EffectLibraries effectLibraries =
             new EffectLibraries(this);
 
+    /** The list of camera libraries. */
+    private final CameraLibraries cameraLibraries =
+            new CameraLibraries(this);
+
     /** The list of geometry libraries. */
     private final GeometryLibraries geometryLibraries = new GeometryLibraries(
         this);
@@ -196,12 +200,24 @@ public final class Document extends Element implements AssetElement
     /**
      * Returns the list of effect libraries.
      *
-     * @return The list of effectl libraries. Never null. May be empty.
+     * @return The list of effect libraries. Never null. May be empty.
      */
 
     public EffectLibraries getEffectLibraries()
     {
         return this.effectLibraries;
+    }
+
+
+    /**
+     * Returns the list of camera libraries.
+     *
+     * @return The list of camera libraries. Never null. May be empty.
+     */
+
+    public CameraLibraries getCameraLibraries()
+    {
+        return this.cameraLibraries;
     }
 
 

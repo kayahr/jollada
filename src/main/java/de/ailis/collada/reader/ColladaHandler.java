@@ -15,6 +15,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import de.ailis.collada.builders.CameraBuilder;
 import de.ailis.collada.builders.CommonEffectProfileBuilder;
 import de.ailis.collada.builders.CommonEffectTechniqueBuilder;
 import de.ailis.collada.builders.CommonNewParamBuilder;
@@ -23,8 +24,12 @@ import de.ailis.collada.builders.GeometryBuilder;
 import de.ailis.collada.builders.ImageSourceBuilder;
 import de.ailis.collada.builders.MaterialBuilder;
 import de.ailis.collada.builders.MeshBuilder;
+import de.ailis.collada.builders.OrthographicBuilder;
+import de.ailis.collada.builders.PerspectiveBuilder;
+import de.ailis.collada.builders.ProjectionBuilder;
 import de.ailis.collada.builders.TrianglesBuilder;
 import de.ailis.collada.model.Accessor;
+import de.ailis.collada.model.CameraLibrary;
 import de.ailis.collada.model.ColorAttribute;
 import de.ailis.collada.model.CommonSourceTechnique;
 import de.ailis.collada.model.DataFlowParam;
@@ -251,6 +256,16 @@ public class ColladaHandler extends DefaultHandler
 
     private CommonEffectTechniqueBuilder commonTechniqueBuilder;
 
+    private CameraBuilder cameraBuilder;
+
+    private PerspectiveBuilder perspectiveBuilder;
+
+    private ProjectionBuilder projectionBuilder;
+
+    private CameraLibrary cameraLibrary;
+
+    private OrthographicBuilder orthographicBuilder;
+
 
     /**
      * Constructs a new parser.
@@ -294,13 +309,13 @@ public class ColladaHandler extends DefaultHandler
                     else if (localName.equals("library_effects"))
                         enterLibraryEffects(attributes);
                     else if (localName.equals("library_geometries"))
-                        enterElement(ParserMode.LIBRARY_GEOMETRIES);
+                        enterLibraryGeometries(attributes);
+                    else if (localName.equals("library_cameras"))
+                        enterLibraryCameras(attributes);
                     else if (localName.equals("library_animations"))
                         enterElement(ParserMode.LIBRARY_ANIMATIONS);
                     else if (localName.equals("library_lights"))
                         enterElement(ParserMode.LIBRARY_LIGHTS);
-                    else if (localName.equals("library_cameras"))
-                        enterElement(ParserMode.LIBRARY_CAMERAS);
                     else if (localName.equals("library_visual_scenes"))
                         enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
                     // else if (localName.equals("scene")) enterScene();
@@ -524,36 +539,45 @@ public class ColladaHandler extends DefaultHandler
                 // enterFalloffAngle();
                 // break;
                 //
-                // case LIBRARY_CAMERAS:
-                // if (localName.equals("camera")) enterCamera(attributes);
-                // break;
-                //
-                // case CAMERA:
-                // if (localName.equals("optics"))
-                // enterElement(ParserMode.OPTICS);
-                // break;
-                //
-                // case OPTICS:
-                // if (localName.equals("technique_common"))
-                // enterElement(ParserMode.OPTICS_TECHNIQUE_COMMON);
-                // break;
-                //
-                // case OPTICS_TECHNIQUE_COMMON:
-                // if (localName.equals("perspective")) enterPerspective();
-                // break;
-                //
-                // case PERSPECTIVE:
-                // if (localName.equals("xfov"))
-                // enterPerspectiveValue(ParserMode.XFOV);
-                // else if (localName.equals("yfov"))
-                // enterPerspectiveValue(ParserMode.YFOV);
-                // else if (localName.equals("aspect_ratio"))
-                // enterPerspectiveValue(ParserMode.ASPECT_RATIO);
-                // else if (localName.equals("znear"))
-                // enterPerspectiveValue(ParserMode.ZNEAR);
-                // else if (localName.equals("zfar"))
-                // enterPerspectiveValue(ParserMode.ZFAR);
-                // break;
+                case LIBRARY_CAMERAS:
+                    if (localName.equals("camera")) enterCamera(attributes);
+                    break;
+
+                case CAMERA:
+                    if (localName.equals("optics"))
+                        enterElement(ParserMode.OPTICS);
+                    break;
+
+                case OPTICS:
+                    if (localName.equals("technique_common"))
+                        enterElement(ParserMode.OPTICS_TECHNIQUE_COMMON);
+                    break;
+
+                case OPTICS_TECHNIQUE_COMMON:
+                    if (localName.equals("perspective"))
+                        enterPerspective();
+                    else if (localName.equals("orthographic"))
+                        enterOrthographic();
+                    break;
+
+                case PERSPECTIVE:
+                case ORTHOGRAPHIC:
+                    if (localName.equals("xfov"))
+                        enterProjectionValue(ParserMode.XFOV, attributes);
+                    else if (localName.equals("yfov"))
+                        enterProjectionValue(ParserMode.YFOV, attributes);
+                    else if (localName.equals("xmag"))
+                        enterProjectionValue(ParserMode.XMAG, attributes);
+                    else if (localName.equals("ymag"))
+                        enterProjectionValue(ParserMode.YMAG, attributes);
+                    else if (localName.equals("aspect_ratio"))
+                        enterProjectionValue(ParserMode.ASPECT_RATIO,
+                            attributes);
+                    else if (localName.equals("znear"))
+                        enterProjectionValue(ParserMode.ZNEAR, attributes);
+                    else if (localName.equals("zfar"))
+                        enterProjectionValue(ParserMode.ZFAR, attributes);
+                    break;
                 //
                 // case LIBRARY_VISUAL_SCENES:
                 // if (localName.equals("visual_scene"))
@@ -788,33 +812,47 @@ public class ColladaHandler extends DefaultHandler
             // leaveLight();
             // break;
             //
-            // case CAMERA:
-            // leaveCamera();
-            // break;
-            //
-            // case XFOV:
-            // leaveXfov();
-            // break;
-            //
-            // case YFOV:
-            // leaveYfov();
-            // break;
-            //
-            // case ASPECT_RATIO:
-            // leaveAspectRatio();
-            // break;
-            //
-            // case ZFAR:
-            // leaveZfar();
-            // break;
-            //
-            // case ZNEAR:
-            // leaveZnear();
-            // break;
-            //
-            // case OPTICS:
-            // leaveOptics();
-            // break;
+            case XFOV:
+                leaveXfov();
+                break;
+
+            case YFOV:
+                leaveYfov();
+                break;
+
+            case XMAG:
+                leaveXMag();
+                break;
+
+            case YMAG:
+                leaveYMag();
+                break;
+
+            case ASPECT_RATIO:
+                leaveAspectRatio();
+                break;
+
+            case ZFAR:
+                leaveZfar();
+                break;
+
+            case ZNEAR:
+                leaveZnear();
+                break;
+
+            case PERSPECTIVE:
+            case ORTHOGRAPHIC:
+                leaveProjection();
+                break;
+
+            case CAMERA:
+                leaveCamera();
+                break;
+
+            case LIBRARY_CAMERAS:
+                leaveLibraryCameras();
+                break;
+
             //
             // case INSTANCE_MATERIAL:
             // leaveInstanceMaterial();
@@ -874,6 +912,8 @@ public class ColladaHandler extends DefaultHandler
         {
             case XFOV:
             case YFOV:
+            case XMAG:
+            case YMAG:
             case ASPECT_RATIO:
             case ZNEAR:
             case ZFAR:
@@ -1243,7 +1283,7 @@ public class ColladaHandler extends DefaultHandler
     private void leaveFloatParam()
     {
         final double value = Double.parseDouble(this.stringBuilder.toString()
-            .trim());
+                .trim());
         this.stringBuilder = null;
         this.profileParam = new FloatParam(value);
         leaveElement();
@@ -1390,7 +1430,7 @@ public class ColladaHandler extends DefaultHandler
         this.commonNewParamBuilder.setParameter(this.profileParam);
         this.profileParam = null;
         this.commonEffectProfileBuilder.getParams()
-            .add(this.commonNewParamBuilder.build());
+                .add(this.commonNewParamBuilder.build());
         this.commonNewParamBuilder = null;
         leaveElement();
     }
@@ -1543,7 +1583,7 @@ public class ColladaHandler extends DefaultHandler
     private void leaveFloat()
     {
         final double value = Double.parseDouble(this.stringBuilder.toString()
-            .trim());
+                .trim());
         this.stringBuilder = null;
         this.floatValue.setValue(value);
         this.floatAttrib = new FloatAttribute(this.floatValue);
@@ -1603,7 +1643,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveTechniqueCommon()
     {
-        this.commonEffectProfileBuilder.setTechnique(this.commonTechniqueBuilder.build());
+        this.commonEffectProfileBuilder
+                .setTechnique(this.commonTechniqueBuilder.build());
         this.commonTechniqueBuilder = null;
         leaveElement();
     }
@@ -1713,7 +1754,6 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterFloatArray(final Attributes attributes)
     {
-        final String id = attributes.getValue("id");
         final int count = Integer.parseInt(attributes.getValue("count"));
         final FloatArray array = this.floatArray = new FloatArray(count);
         final String digits = attributes.getValue("digits");
@@ -1762,7 +1802,6 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterNameArray(final Attributes attributes)
     {
-        final String id = attributes.getValue("id");
         final int count = Integer.parseInt(attributes.getValue("count"));
         final NameArray array = this.nameArray = new NameArray(count);
         this.floatArray.setId(attributes.getValue("id"));
@@ -1934,7 +1973,7 @@ public class ColladaHandler extends DefaultHandler
     {
         this.trianglesBuilder = new TrianglesBuilder();
         this.trianglesBuilder.setCount(Integer.parseInt(attributes
-            .getValue("count")));
+                .getValue("count")));
         this.trianglesBuilder.setMaterial(attributes.getValue("material"));
         this.trianglesBuilder.setName(attributes.getValue("name"));
 
@@ -2373,134 +2412,224 @@ public class ColladaHandler extends DefaultHandler
     // }
     //
     //
-    // /**
-    // * Enters a camera element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterCamera(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // this.camera = new ColladaCamera(id);
-    // enterElement(ParserMode.CAMERA);
-    // }
-    //
-    //
-    // /**
-    // * Enters perspective element
-    // */
-    //
-    // private void enterPerspective()
-    // {
-    // this.optic = this.perspectiveOptic = new PerspectiveOptic();
-    // enterElement(ParserMode.PERSPECTIVE);
-    // }
-    //
-    //
-    // /**
-    // * Enters a perspective value element.
-    // *
-    // * @param mode
-    // * The next parser mode
-    // */
-    //
-    // private void enterPerspectiveValue(final ParserMode mode)
-    // {
-    // this.stringBuilder = new StringBuilder();
-    // enterElement(mode);
-    // }
-    //
-    //
-    // /**
-    // * Leaves xfov element.
-    // */
-    //
-    // private void leaveXfov()
-    // {
-    // this.perspectiveOptic.setXfov(Float.parseFloat(this.stringBuilder
-    // .toString().trim()));
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves yfov element.
-    // */
-    //
-    // private void leaveYfov()
-    // {
-    // this.perspectiveOptic.setYfov(Float.parseFloat(this.stringBuilder
-    // .toString().trim()));
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves aspect_ratio element.
-    // */
-    //
-    // private void leaveAspectRatio()
-    // {
-    // this.perspectiveOptic.setAspectRatio(Float
-    // .parseFloat(this.stringBuilder.toString().trim()));
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves znear element.
-    // */
-    //
-    // private void leaveZnear()
-    // {
-    // this.perspectiveOptic.setZnear(Float.parseFloat(this.stringBuilder
-    // .toString().trim()));
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves zfar element.
-    // */
-    //
-    // private void leaveZfar()
-    // {
-    // this.perspectiveOptic.setZfar(Float.parseFloat(this.stringBuilder
-    // .toString().trim()));
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves optics element
-    // */
-    //
-    // private void leaveOptics()
-    // {
-    // this.camera.setOptic(this.optic);
-    // this.optic = null;
-    // this.perspectiveOptic = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves a camera element.
-    // */
-    //
-    // private void leaveCamera()
-    // {
-    // this.document.getLibraryCameras().add(this.camera);
-    // this.camera = null;
-    // leaveElement();
-    // }
+
+
+    /**
+     * Enters a library_cameras element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryCameras(final Attributes attributes)
+    {
+        this.cameraLibrary = new CameraLibrary();
+        this.cameraLibrary.setName(attributes.getValue("name"));
+        this.cameraLibrary.setId(attributes.getValue("id"));
+        enterElement(ParserMode.LIBRARY_CAMERAS);
+    }
+
+
+    /**
+     * Enters a camera element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterCamera(final Attributes attributes)
+    {
+        this.cameraBuilder = new CameraBuilder();
+        this.cameraBuilder.setId(attributes.getValue("id"));
+        this.cameraBuilder.setName(attributes.getValue("name"));
+        enterElement(ParserMode.CAMERA);
+    }
+
+
+    /**
+     * Enters perspective element
+     */
+
+    private void enterPerspective()
+    {
+        this.perspectiveBuilder = new PerspectiveBuilder();
+        this.projectionBuilder = this.perspectiveBuilder;
+        enterElement(ParserMode.PERSPECTIVE);
+    }
+
+
+    /**
+     * Enters perspective element
+     */
+
+    private void enterOrthographic()
+    {
+        this.orthographicBuilder = new OrthographicBuilder();
+        this.projectionBuilder = this.orthographicBuilder;
+        enterElement(ParserMode.ORTHOGRAPHIC);
+    }
+
+
+    /**
+     * Enters a perspective value element.
+     *
+     * @param mode
+     *            The next parser mode
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterProjectionValue(final ParserMode mode,
+        final Attributes attributes)
+    {
+        this.floatValue = new FloatValue(0);
+        this.floatValue.setSid(attributes.getValue("sid"));
+        this.stringBuilder = new StringBuilder();
+        enterElement(mode);
+    }
+
+
+    /**
+     * Leaves xfov element.
+     */
+
+    private void leaveXfov()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.perspectiveBuilder.setXFov(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves yfov element.
+     */
+
+    private void leaveYfov()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.perspectiveBuilder.setYFov(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves xmag element.
+     */
+
+    private void leaveXMag()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.orthographicBuilder.setXMag(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves ymag element.
+     */
+
+    private void leaveYMag()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.orthographicBuilder.setYMag(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves aspect_ratio element.
+     */
+
+    private void leaveAspectRatio()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.projectionBuilder.setAspectRatio(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves znear element.
+     */
+
+    private void leaveZnear()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.projectionBuilder.setZNear(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves zfar element.
+     */
+
+    private void leaveZfar()
+    {
+        this.floatValue.setValue(Double.parseDouble(this.stringBuilder
+                .toString().trim()));
+        this.projectionBuilder.setZFar(this.floatValue);
+        this.stringBuilder = null;
+        this.floatValue = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves perspective or orthographic element.
+     */
+
+    private void leaveProjection()
+    {
+        this.cameraBuilder.setProjection(this.projectionBuilder.build());
+        this.perspectiveBuilder = null;
+        this.orthographicBuilder = null;
+        this.projectionBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a camera element.
+     */
+
+    private void leaveCamera()
+    {
+        this.cameraLibrary.getCameras().add(this.cameraBuilder.build());
+        this.cameraBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_cameras element.
+     */
+
+    private void leaveLibraryCameras()
+    {
+        this.document.getCameraLibraries().add(this.cameraLibrary);
+        this.cameraLibrary = null;
+        leaveElement();
+    }
 
 
     // /**
