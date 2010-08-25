@@ -5,7 +5,7 @@
   <parent>
     <artifactId>maven-java</artifactId>
     <groupId>de.ailis.maven</groupId>
-    <version>6</version>
+    <version>7</version>
   </parent>   
   
   <groupId>de.ailis.jollada</groupId>
