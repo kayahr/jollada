@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema"
+  version="1.5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.collada.org/2008/03/COLLADASchema http://www.khronos.org/files/collada_schema_1_5">
+  <asset>
+    <contributor>
+      <author>AUTHOR</author>
+      <author_email>author@email.tld</author_email>
+      <author_website>AUTHOR_WEBSITE</author_website>
+      <authoring_tool>AUTHORING_TOOL</authoring_tool>
+      <comments>SOME COMMENTS</comments>
+      <copyright>COPYRIGHT</copyright>
+      <source_data>http://SOURCE/DATA</source_data>
+    </contributor>
+    <coverage>
+      <geographic_location>
+        <longitude>1</longitude>
+        <latitude>2</latitude>
+        <altitude mode="absolute">3</altitude>
+      </geographic_location>
+    </coverage>
+    <created>2001-02-03T04:05:06Z</created>
+    <keywords>KEYWORD1 KEYWORD2</keywords>
+    <modified>2002-03-04T05:06:07Z</modified>
+    <revision>REVISION</revision>
+    <subject>SUBJECT</subject>
+    <title>TITLE</title>
+    <unit meter="2.0" name="meters" />
+    <up_axis>Z_UP</up_axis>
+    <extra id="rootAssetExtra" name="Root asset extra" type="rootAssetExtraType">
+      <asset>
+        <created>2003-02-03T04:05:06Z</created>
+        <modified>2004-03-04T05:06:07Z</modified>
+      </asset>
+      <technique profile="EXTRA">
+        <rootExtra attrib="1">
+          <child1>test</child1>
+          <child2 test="true" />
+        </rootExtra>
+      </technique>
+    </extra>
+  </asset>
+  <library_images id="image-lib-1" name="Image Library 1">
+    <asset>
+      <created>2000-01-01T00:00:01Z</created>
+      <modified>2000-01-01T00:00:02Z</modified>
+    </asset>
+    <image id="image-1" name="Image 1" sid="img-1">
+      <asset>
+        <created>2000-01-01T00:00:03Z</created>
+        <modified>2000-01-01T00:00:04Z</modified>
+      </asset>
+      <init_from mips_generate="false">
+        <ref>test.jpeg</ref>
+      </init_from>
+      <extra id="image-1-extra">
+        <technique profile="EXTRA"></technique>
+      </extra>
+    </image>
+    <image>
+      <init_from>
+        <ref>test2.jpeg</ref>
+      </init_from>
+    </image>
+    <extra id="image-lib-1-extra">
+      <technique profile="EXTRA"></technique>
+    </extra>
+  </library_images>
+
+  <library_images>
+    <image>
+      <init_from>
+        <ref>test3.jpeg</ref>
+      </init_from>
+    </image>
+  </library_images>
+
+  <library_materials id="material-lib-1" name="Material Library 1">
+    <asset>
+      <created>2000-01-01T00:01:00Z</created>
+      <modified>2000-01-01T00:01:01Z</modified>
+    </asset>
+    <material id="material-1" name="Material 1">
+      <asset>
+        <created>2000-01-01T00:01:02Z</created>
+        <modified>2000-01-01T00:01:03Z</modified>
+      </asset>
+      <instance_effect url="#effect-1" sid="mat-1-inst"
+        name="Material 1 Instance Effect">
+        <extra id="material-1-instance-effect-extra">
+          <technique profile="EXTRA"></technique>
+        </extra>
+      </instance_effect>
+      <extra id="material-1-extra">
+        <technique profile="EXTRA"></technique>
+      </extra>
+    </material>
+    <material>
+      <instance_effect url="#effect-2" />
+    </material>
+    <extra id="material-lib-1-extra">
+      <technique profile="EXTRA"></technique>
+    </extra>
+  </library_materials>
+
+  <library_materials id="material-lib-2" name="Material Library 2">
+    <material>
+      <instance_effect url="#effect-3" />
+    </material>
+  </library_materials>
+
+  <library_effects id="effect-lib-1" name="Effect Library 1">
+    <asset>
+      <created>2000-01-01T00:02:00Z</created>
+      <modified>2000-01-01T00:02:01Z</modified>
+    </asset>
+    <effect id="effect-1" name="Effect 1">
+      <asset>
+        <created>2000-01-01T00:02:02Z</created>
+        <modified>2000-01-01T00:02:03Z</modified>
+      </asset>
+      <newparam sid="effect-1-newparam-1">
+        <float>12.3</float>
+      </newparam>
+      <newparam sid="effect-1-newparam-2">
+        <bool2>true false</bool2>
+      </newparam>
+      <profile_COMMON id="common-profile-1">
+        <asset>
+          <created>2000-01-01T00:02:04Z</created>
+          <modified>2000-01-01T00:02:05Z</modified>
+        </asset>
+        <newparam sid="common-newparam-1">
+          <semantic>SEMANTIC-1</semantic>        
+          <float>1.23</float>
+        </newparam>
+        <newparam sid="common-newparam-2">
+          <semantic>SEMANTIC-2</semantic>        
+          <sampler2D>
+            <wrap_s>BORDER</wrap_s>
+            <wrap_t>CLAMP</wrap_t>
+            <minfilter>NEAREST</minfilter>
+            <magfilter>LINEAR</magfilter>
+          </sampler2D>        
+        </newparam>
+        <technique id="effect-1-common-technique" sid="technique">
+          <asset>
+            <created>2000-01-01T00:02:06Z</created>
+            <modified>2000-01-01T00:02:07Z</modified>
+          </asset>
+          <phong>
+            <emission>
+              <color sid="emission-color">0.5 0.6 0.7 0.8</color>
+            </emission>
+            <ambient>
+              <color sid="ambient-color">0.1 0.2 0.3 0.4</color>
+            </ambient>
+            <diffuse>
+              <texture texcoord="TEXCOORD" texture="TEXTURE"></texture>
+            </diffuse>
+            <specular>
+              <color sid="specular-color">0.4 0.3 0.2 0.1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess-value">0.95</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective-color">0.9 0.8 0.7 0.6</color>
+            </reflective>
+            <reflectivity><float sid="reflectivity-value">0.8</float></reflectivity>
+            <transparent>
+              <color sid="transparent-color">0.1 0.8 0.2 0.6</color>
+            </transparent>
+            <transparency><float sid="transparency-value">0.7</float></transparency>
+            <index_of_refraction><float sid="index_of_refraction-value">20</float></index_of_refraction>
+          </phong>
+          <extra id="effect-1-common-profile-1-technique-extra">
+            <technique profile="EXTRA"></technique>
+          </extra>
+        </technique>
+        <extra id="effect-1-common-profile-1-extra">
+          <technique profile="EXTRA"></technique>
+        </extra>
+      </profile_COMMON>
+      <profile_COMMON id="common-profile-2">      
+        <technique sid="technique">
+          <phong />
+        </technique>        
+      </profile_COMMON>
+      <extra id="effect-1-extra">
+        <technique profile="EXTRA"></technique>
+      </extra>
+    </effect>
+    <effect id="effect-2">
+      <profile_COMMON>      
+        <technique sid="technique">
+          <phong />
+        </technique>        
+      </profile_COMMON>
+    </effect>
+    <extra id="effect-lib-1-extra">
+      <technique profile="EXTRA"></technique>
+    </extra>
+  </library_effects>
+  
+  <library_effects>
+    <effect id="effect-3">
+      <profile_COMMON>      
+        <technique sid="technique">
+          <phong />
+        </technique>        
+      </profile_COMMON>
+    </effect>  
+  </library_effects>
+</COLLADA>

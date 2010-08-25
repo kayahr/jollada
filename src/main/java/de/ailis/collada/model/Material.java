@@ -143,6 +143,11 @@ public final class Material extends Element implements Identifiable,
         if (effectInstance == null)
             throw new IllegalArgumentException(
                 "effectInstance must not be null");
-        this.effectInstance = effectInstance;
+        if (effectInstance != this.effectInstance)
+        {
+            if (this.effectInstance != null) removeChild(this.effectInstance);
+            this.effectInstance = effectInstance;
+            addChild(effectInstance);
+        }
     }
 }

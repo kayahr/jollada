@@ -7,7 +7,7 @@ package de.ailis.collada.model;
 
 
 /**
- * A effecte.
+ * A effect.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
@@ -24,8 +24,8 @@ public final class Effect extends Element implements Identifiable,
     /** Asset-management information. */
     private Asset asset;
 
-    /** The common profile. */
-    private CommonEffectProfile commonProfile;
+    /** The effect profiles. */
+    private final EffectProfiles profiles = new EffectProfiles(this);
 
 
     /**
@@ -122,26 +122,13 @@ public final class Effect extends Element implements Identifiable,
 
 
     /**
-     * Returns the common profile.
+     * Returns the list of effect profiles.
      *
-     * @return The common profile. May be null if not set.
+     * @return The list of effect profiles. Never null.
      */
 
-    public CommonEffectProfile getCommonProfile()
+    public EffectProfiles getProfiles()
     {
-        return this.commonProfile;
-    }
-
-
-    /**
-     * Sets the common profile.
-     *
-     * @param commonProfile
-     *            The common profile to set. Null to unset.
-     */
-
-    public void setCommonProfile(final CommonEffectProfile commonProfile)
-    {
-        this.commonProfile = commonProfile;
+        return this.profiles;
     }
 }

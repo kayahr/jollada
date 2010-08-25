@@ -37,6 +37,10 @@ public final class Document extends Element implements AssetElement
     private final MaterialLibraries materialLibraries =
             new MaterialLibraries(this);
 
+    /** The list of effect libraries. */
+    private final EffectLibraries effectLibraries =
+            new EffectLibraries(this);
+
     /** The list of geometry libraries. */
     private final GeometryLibraries geometryLibraries = new GeometryLibraries(
         this);
@@ -186,6 +190,18 @@ public final class Document extends Element implements AssetElement
     public MaterialLibraries getMaterialLibraries()
     {
         return this.materialLibraries;
+    }
+
+
+    /**
+     * Returns the list of effect libraries.
+     *
+     * @return The list of effectl libraries. Never null. May be empty.
+     */
+
+    public EffectLibraries getEffectLibraries()
+    {
+        return this.effectLibraries;
     }
 
 

@@ -70,6 +70,12 @@ enum ParserMode {
     /** Parser is in sampler 2D magfilter element */
     SAMPLER2D_MAGFILTER("magfilter"),
 
+    /** Parser is in sampler 2D wrap_s element */
+    SAMPLER2D_WRAP_S("wrap_s"),
+
+    /** Parser is in sampler 2D wrap_t element */
+    SAMPLER2D_WRAP_T("wrap_t"),
+
     /** Parser is in technique element */
     TECHNIQUE_COMMON("technique"),
 
@@ -268,14 +274,23 @@ enum ParserMode {
     /** Parser is in instance_light element */
     INSTANCE_LIGHT("instance_light"),
 
-    /** Parser is in instance camera element */
+    /** Parser is in instance camera element. */
     INSTANCE_CAMERA("instance_camera"),
 
-    /** Parser is in scene element */
+    /** Parser is in scene element. */
     SCENE("scene"),
 
-    /** Parser is in instance_visual_scene element */
-    INSTANCE_VISUAL_SCENE("instance_visual_scene");
+    /** Parser is in instance_visual_scene element. */
+    INSTANCE_VISUAL_SCENE("instance_visual_scene"),
+
+    /** Parser is in EXTRA element. */
+    EXTRA("extra"),
+
+    /** Parser is in a float param. */
+    FLOAT_PARAM("float"),
+
+    /** Parser is in param semantic element. */
+    PARAM_SEMANTIC("semantic");
 
 
     /** The tag name */

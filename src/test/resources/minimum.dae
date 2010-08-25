@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.collada.org/2008/03/COLLADASchema http://www.khronos.org/files/collada_schema_1_5">
+  <asset>
+    <created>2001-02-03T04:05:06Z</created>
+    <modified>2002-03-04T05:06:07Z</modified>
+  </asset>
+</COLLADA>

@@ -12,17 +12,16 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class CommonEffectProfile extends Element implements Identifiable,
-        AssetElement
+public final class CommonEffectProfile extends EffectProfile
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** Asset-management information. */
-    private Asset asset;
-
     /** The effect technique. */
     private CommonEffectTechnique technique;
+
+    /** The parameters */
+    private final CommonNewParams params = new CommonNewParams(this);
 
 
     /**
@@ -35,61 +34,6 @@ public final class CommonEffectProfile extends Element implements Identifiable,
     public CommonEffectProfile(final CommonEffectTechnique technique)
     {
         setTechnique(technique);
-    }
-
-
-    /**
-     * Returns the id.
-     *
-     * @return The id. Never null.
-     */
-
-    @Override
-    public String getId()
-    {
-        return this.id;
-    }
-
-
-    /**
-     * Sets the id.
-     *
-     * @param id
-     *            The id to set. Must not be null.
-     */
-
-    @Override
-    public void setId(final String id)
-    {
-        if (id == null)
-            throw new IllegalArgumentException("id must not be null");
-        super.updateId(id);
-    }
-
-
-    /**
-     * Returns the asset-management information.
-     *
-     * @return The asset-management information. May be null if not set.
-     */
-
-    @Override
-    public Asset getAsset()
-    {
-        return this.asset;
-    }
-
-
-    /**
-     * Sets the asset-management information.
-     *
-     * @param asset
-     *            The asset-management information to set. Null to unset.
-     */
-
-    public void setAsset(final Asset asset)
-    {
-        this.asset = asset;
     }
 
 
@@ -116,6 +60,23 @@ public final class CommonEffectProfile extends Element implements Identifiable,
     {
         if (technique == null)
             throw new IllegalArgumentException("technique must not be null");
-        this.technique = technique;
+        if (technique != this.technique)
+        {
+            if (this.technique != null) removeChild(this.technique);
+            this.technique = technique;
+            addChild(technique);
+        }
+    }
+
+
+    /**
+     * Returns the list of parameters.
+     *
+     * @return The list of parameters. Never null. May be empty.
+     */
+
+    public CommonNewParams getParams()
+    {
+        return this.params;
     }
 }

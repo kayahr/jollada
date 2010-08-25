@@ -57,6 +57,7 @@ public class CameraInstanceTest
         assertNull(instance.getSid());
     }
 
+
     /**
      * Tests the name.
      *

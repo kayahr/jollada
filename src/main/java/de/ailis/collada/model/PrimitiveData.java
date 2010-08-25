@@ -5,6 +5,8 @@
 
 package de.ailis.collada.model;
 
+import java.util.Collection;
+
 
 /**
  * The data defining a primitive.
@@ -188,6 +190,26 @@ public final class PrimitiveData
     public void setValues(final int[] values)
     {
         setValues(0, Math.min(values.length, this.data.length), values);
+    }
+
+
+    /**
+     * Sets the values. The whole specified source array is copied into the data
+     * array beginning at index 0.
+     *
+     * @param values
+     *            The values to set
+     */
+
+    public void setValues(final Collection<? extends Number> values)
+    {
+        int i = 0;
+        final int max = this.data.length;
+        for (final Number value: values)
+        {
+            if (i >= max) break;
+            this.data[i++] = value.intValue();
+        }
     }
 
 

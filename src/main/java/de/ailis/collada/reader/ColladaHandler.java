@@ -15,22 +15,49 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.ParamType;
-
+import de.ailis.collada.builders.CommonEffectProfileBuilder;
+import de.ailis.collada.builders.CommonEffectTechniqueBuilder;
+import de.ailis.collada.builders.CommonNewParamBuilder;
 import de.ailis.collada.builders.EffectInstanceBuilder;
+import de.ailis.collada.builders.GeometryBuilder;
+import de.ailis.collada.builders.ImageSourceBuilder;
 import de.ailis.collada.builders.MaterialBuilder;
+import de.ailis.collada.builders.MeshBuilder;
+import de.ailis.collada.builders.TrianglesBuilder;
+import de.ailis.collada.model.Accessor;
+import de.ailis.collada.model.ColorAttribute;
+import de.ailis.collada.model.CommonSourceTechnique;
+import de.ailis.collada.model.DataFlowParam;
+import de.ailis.collada.model.DataFlowSource;
+import de.ailis.collada.model.DataType;
 import de.ailis.collada.model.Document;
+import de.ailis.collada.model.Effect;
+import de.ailis.collada.model.EffectLibrary;
+import de.ailis.collada.model.Filter;
+import de.ailis.collada.model.FloatArray;
+import de.ailis.collada.model.FloatAttribute;
+import de.ailis.collada.model.FloatParam;
+import de.ailis.collada.model.FloatValue;
 import de.ailis.collada.model.Geometry;
+import de.ailis.collada.model.GeometryLibrary;
 import de.ailis.collada.model.Image;
 import de.ailis.collada.model.ImageLibrary;
-import de.ailis.collada.model.ImageSource;
 import de.ailis.collada.model.MaterialLibrary;
+import de.ailis.collada.model.NameArray;
+import de.ailis.collada.model.Param;
+import de.ailis.collada.model.PhongShader;
+import de.ailis.collada.model.PrimitiveData;
 import de.ailis.collada.model.Primitives;
+import de.ailis.collada.model.RGBAColor;
+import de.ailis.collada.model.Sampler2DParam;
+import de.ailis.collada.model.Shader;
 import de.ailis.collada.model.SharedInput;
+import de.ailis.collada.model.Texture;
 import de.ailis.collada.model.Triangles;
 import de.ailis.collada.model.UnsharedInput;
 import de.ailis.collada.model.Vertices;
 import de.ailis.collada.model.VisualScene;
+import de.ailis.collada.model.Wrap;
 
 
 /**
@@ -56,44 +83,41 @@ public class ColladaHandler extends DefaultHandler
     /** The current image */
     private Image image;
 
-    /** The current material */
-    private ColladaMaterial material;
+    //
+    // /** The current material */
+    // private ColladaMaterial material;
 
     /** The current effect */
     private Effect effect;
 
-    /** The current common profile */
-    private CommonEffectProfile commonProfile;
-
-    /** The current common technique */
-    private CommonTechnique commonTechnique;
-
     /** The current phong shading information */
-    private Phong phong;
+    private PhongShader phong;
 
     /** The current shading information */
-    private Shading shading;
+    private Shader shading;
 
     /** The current color or texture */
-    private ColorOrTexture colorOrTexture;
+    private ColorAttribute colorOrTexture;
 
     /** The current geometry id */
     private String geometryId;
 
-    /** The current mesh */
-    private ColladaMesh mesh;
+    //
+    // /** The current mesh */
+    // private ColladaMesh mesh;
 
     /** The current geometry */
     private Geometry geometry;
 
-    /** The current data source */
-    private DataSource dataSource;
-
-    /** The current sampler */
-    private ColladaSampler sampler;
-
-    /** The current data array */
-    private DataArray dataArray;
+    //
+    // /** The current data source */
+    // private DataFlowSource dataSource;
+    //
+    // /** The current sampler */
+    // private ColladaSampler sampler;
+    //
+    // /** The current data array */
+    // private DataArray dataArray;
 
     /** The chunk float reader */
     private ChunkFloatReader chunkFloatReader;
@@ -107,8 +131,9 @@ public class ColladaHandler extends DefaultHandler
     /** The current vertices */
     private Vertices vertices;
 
-    /** The current polygons */
-    private Polygons polygons;
+    //
+    // /** The current polygons */
+    // private Polygons polygons;
 
     /** The current primitives */
     private Primitives primitives;
@@ -128,62 +153,65 @@ public class ColladaHandler extends DefaultHandler
     /** The current light id */
     private String lightId;
 
-    /** The current light */
-    private ColladaLight light;
-
-    /** The current camera */
-    private ColladaCamera camera;
-
-    /** The current optic */
-    private Optic optic;
-
-    /** The current perspective optic */
-    private PerspectiveOptic perspectiveOptic;
+    //
+    // /** The current light */
+    // private ColladaLight light;
+    //
+    // /** The current camera */
+    // private ColladaCamera camera;
+    //
+    // /** The current optic */
+    // private Optic optic;
+    //
+    // /** The current perspective optic */
+    // private PerspectiveOptic perspectiveOptic;
 
     /** The current visual scene */
     private VisualScene visualScene;
 
-    /** The node stack */
-    private Stack<Node> nodeStack;
-
-    /** The current node */
-    private Node node;
+    //
+    // /** The node stack */
+    // private Stack<Node> nodeStack;
+    //
+    // /** The current node */
+    // private Node node;
 
     /** The current accessor */
     private Accessor accessor;
 
-    /** The animation stack */
-    private Stack<ColladaAnimation> animationStack;
-
-    /** The current animation */
-    private ColladaAnimation animation;
-
-    /** The current matrix transformation */
-    private MatrixTransformation matrixTransformation;
-
-    /** The current translate transformation */
-    private TranslateTransformation translateTransformation;
-
-    /** The current instance geometry */
-    private InstanceGeometry instanceGeometry;
-
-    /** The current instance material */
-    private InstanceMaterial instanceMaterial;
-
-    /** The current instance geometry */
-    private InstanceLight instanceLight;
-
-    /** The current instance camera */
-    private InstanceCamera instanceCamera;
-
-    /** The current scene */
-    private ColladaScene scene;
+    //
+    // /** The animation stack */
+    // private Stack<ColladaAnimation> animationStack;
+    //
+    // /** The current animation */
+    // private ColladaAnimation animation;
+    //
+    // /** The current matrix transformation */
+    // private MatrixTransformation matrixTransformation;
+    //
+    // /** The current translate transformation */
+    // private TranslateTransformation translateTransformation;
+    //
+    // /** The current instance geometry */
+    // private InstanceGeometry instanceGeometry;
+    //
+    // /** The current instance material */
+    // private InstanceMaterial instanceMaterial;
+    //
+    // /** The current instance geometry */
+    // private InstanceLight instanceLight;
+    //
+    // /** The current instance camera */
+    // private InstanceCamera instanceCamera;
+    //
+    // /** The current scene */
+    // private ColladaScene scene;
 
     /** The current parameter id */
     private String paramId;
 
     /** The current profile param */
-    private ProfileParam profileParam;
+    private Param profileParam;
 
     private ImageLibrary imageLibrary;
 
@@ -192,6 +220,36 @@ public class ColladaHandler extends DefaultHandler
     private MaterialBuilder materialBuilder;
 
     private EffectInstanceBuilder effectInstanceBuilder;
+
+    private CommonEffectProfileBuilder commonEffectProfileBuilder;
+
+    private CommonNewParamBuilder commonNewParamBuilder;
+
+    private RGBAColor rgbaColor;
+
+    private FloatValue floatValue;
+
+    private FloatAttribute floatAttrib;
+
+    private EffectLibrary effectLibrary;
+
+    private GeometryLibrary geometryLibrary;
+
+    private GeometryBuilder geometryBuilder;
+
+    private MeshBuilder meshBuilder;
+
+    private FloatArray floatArray;
+
+    private NameArray nameArray;
+
+    private TrianglesBuilder trianglesBuilder;
+
+    private DataFlowSource dataSource;
+
+    private ImageSourceBuilder imageSourceBuilder;
+
+    private CommonEffectTechniqueBuilder commonTechniqueBuilder;
 
 
     /**
@@ -213,322 +271,343 @@ public class ColladaHandler extends DefaultHandler
             final String qName, final Attributes attributes)
             throws SAXException
     {
-        switch (this.mode)
+        try
         {
-            case ROOT:
-                if (localName.equals("Document"))
-                    enterElement(ParserMode.COLLADA);
-                break;
+            if (localName.equals("extra"))
+            {
+                enterElement(ParserMode.EXTRA);
+                return;
+            }
 
-            case COLLADA:
-                if (localName.equals("library_images"))
-                    enterLibraryImages(attributes);
-                else if (localName.equals("library_materials"))
-                    enterLibraryMaterials(attributes);
-                else if (localName.equals("library_effects"))
-                    enterElement(ParserMode.LIBRARY_EFFECTS);
-                else if (localName.equals("library_geometries"))
-                    enterElement(ParserMode.LIBRARY_GEOMETRIES);
-                else if (localName.equals("library_animations"))
-                    enterElement(ParserMode.LIBRARY_ANIMATIONS);
-                else if (localName.equals("library_lights"))
-                    enterElement(ParserMode.LIBRARY_LIGHTS);
-                else if (localName.equals("library_cameras"))
-                    enterElement(ParserMode.LIBRARY_CAMERAS);
-                else if (localName.equals("library_visual_scenes"))
-                    enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
-                else if (localName.equals("scene")) enterScene();
-                break;
+            switch (this.mode)
+            {
+                case ROOT:
+                    if (localName.equals("COLLADA"))
+                        enterElement(ParserMode.COLLADA);
+                    break;
 
-            case LIBRARY_IMAGES:
-                if (localName.equals("image")) enterImage(attributes);
-                break;
+                case COLLADA:
+                    if (localName.equals("library_images"))
+                        enterLibraryImages(attributes);
+                    else if (localName.equals("library_materials"))
+                        enterLibraryMaterials(attributes);
+                    else if (localName.equals("library_effects"))
+                        enterLibraryEffects(attributes);
+                    else if (localName.equals("library_geometries"))
+                        enterElement(ParserMode.LIBRARY_GEOMETRIES);
+                    else if (localName.equals("library_animations"))
+                        enterElement(ParserMode.LIBRARY_ANIMATIONS);
+                    else if (localName.equals("library_lights"))
+                        enterElement(ParserMode.LIBRARY_LIGHTS);
+                    else if (localName.equals("library_cameras"))
+                        enterElement(ParserMode.LIBRARY_CAMERAS);
+                    else if (localName.equals("library_visual_scenes"))
+                        enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
+                    // else if (localName.equals("scene")) enterScene();
+                    break;
 
-            case IMAGE:
-                if (localName.equals("init_from"))
-                    enterElement(ParserMode.IMAGE_INIT_FROM);
-                break;
+                case LIBRARY_IMAGES:
+                    if (localName.equals("image")) enterImage(attributes);
+                    break;
 
-            case IMAGE_INIT_FROM:
-                if (localName.equals("ref")) enterImageInitFromRef();
-                break;
+                case IMAGE:
+                    if (localName.equals("init_from"))
+                        enterImageInitFrom(attributes);
+                    break;
 
-            case LIBRARY_MATERIALS:
-                if (localName.equals("material")) enterMaterial(attributes);
-                break;
+                case IMAGE_INIT_FROM:
+                    if (localName.equals("ref")) enterImageInitFromRef();
+                    break;
 
-            case MATERIAL:
-                if (localName.equals("instance_effect"))
-                    enterInstanceEffect(attributes);
-                break;
+                case LIBRARY_MATERIALS:
+                    if (localName.equals("material"))
+                        enterMaterial(attributes);
+                    break;
 
-            case LIBRARY_EFFECTS:
-                if (localName.equals("effect")) enterEffect(attributes);
-                break;
+                case MATERIAL:
+                    if (localName.equals("instance_effect"))
+                        enterInstanceEffect(attributes);
+                    break;
 
-            case EFFECT:
-                if (localName.equals("profile_COMMON")) enterProfileCommon();
-                break;
+                case LIBRARY_EFFECTS:
+                    if (localName.equals("effect")) enterEffect(attributes);
+                    break;
 
-            case PROFILE_COMMON:
-                if (localName.equals("technique"))
-                    enterTechniqueCommon(attributes);
-                else if (localName.equals("newparam"))
-                    enterNewParam(attributes);
-                break;
+                case EFFECT:
+                    if (localName.equals("profile_COMMON"))
+                        enterProfileCommon(attributes);
+                    break;
 
-            case NEWPARAM:
-                if (localName.equals("sampler2D"))
-                    enterSampler2D();
-                else if (localName.equals("surface"))
-                    enterSurface();
-                break;
+                case PROFILE_COMMON:
+                    if (localName.equals("technique"))
+                        enterTechniqueCommon(attributes);
+                    else if (localName.equals("newparam"))
+                        enterCommonNewParam(attributes);
+                    break;
 
-            case SURFACE:
-                if (localName.equals("init_from"))
-                    enterSurfaceInitFrom();
-                break;
+                case NEWPARAM:
+                    if (localName.equals("sampler2D"))
+                        enterSampler2DParam();
+                    else if (localName.equals("float"))
+                        enterFloatParam();
+                    else if (localName.equals("semantic"))
+                        enterParamSemantic();
+                    break;
 
-            case SAMPLER2D:
-                if (localName.equals("source"))
-                    enterSampler2DSource();
-                else if (localName.equals("minfilter"))
-                    enterSampler2DMinFilter();
-                else if (localName.equals("magfilter"))
-                    enterSampler2DMagFilter();
-                break;
+                case SAMPLER2D:
+                    if (localName.equals("minfilter"))
+                        enterSampler2DMinFilter();
+                    else if (localName.equals("magfilter"))
+                        enterSampler2DMagFilter();
+                    else if (localName.equals("wrap_s"))
+                        enterSampler2DWrapS();
+                    else if (localName.equals("wrap_t"))
+                        enterSampler2DWrapT();
+                    break;
 
-            case TECHNIQUE_COMMON:
-                if (localName.equals("phong")) enterPhong();
-                break;
+                case TECHNIQUE_COMMON:
+                    if (localName.equals("phong")) enterPhong();
+                    break;
 
-            case PHONG:
-                if (localName.equals("emission"))
-                    enterElement(ParserMode.EMISSION);
-                else if (localName.equals("ambient"))
-                    enterElement(ParserMode.AMBIENT);
-                else if (localName.equals("diffuse"))
-                    enterElement(ParserMode.DIFFUSE);
-                else if (localName.equals("specular"))
-                    enterElement(ParserMode.SPECULAR);
-                else if (localName.equals("reflective"))
-                    enterElement(ParserMode.REFLECTIVE);
-                else if (localName.equals("transparent"))
-                    enterElement(ParserMode.TRANSPARENT);
-                else if (localName.equals("reflectivity"))
-                    enterElement(ParserMode.REFLECTIVITY);
-                else if (localName.equals("shininess"))
-                    enterElement(ParserMode.SHININESS);
-                else if (localName.equals("transparency"))
-                    enterElement(ParserMode.TRANSPARENCY);
-                else if (localName.equals("index_of_refraction"))
-                    enterElement(ParserMode.INDEX_OF_REFRACTION);
-                break;
+                case PHONG:
+                    if (localName.equals("emission"))
+                        enterElement(ParserMode.EMISSION);
+                    else if (localName.equals("ambient"))
+                        enterElement(ParserMode.AMBIENT);
+                    else if (localName.equals("diffuse"))
+                        enterElement(ParserMode.DIFFUSE);
+                    else if (localName.equals("specular"))
+                        enterElement(ParserMode.SPECULAR);
+                    else if (localName.equals("reflective"))
+                        enterElement(ParserMode.REFLECTIVE);
+                    else if (localName.equals("transparent"))
+                        enterElement(ParserMode.TRANSPARENT);
+                    else if (localName.equals("reflectivity"))
+                        enterElement(ParserMode.REFLECTIVITY);
+                    else if (localName.equals("shininess"))
+                        enterElement(ParserMode.SHININESS);
+                    else if (localName.equals("transparency"))
+                        enterElement(ParserMode.TRANSPARENCY);
+                    else if (localName.equals("index_of_refraction"))
+                        enterElement(ParserMode.INDEX_OF_REFRACTION);
+                    break;
 
-            case REFLECTIVITY:
-            case TRANSPARENCY:
-            case SHININESS:
-            case INDEX_OF_REFRACTION:
-                if (localName.equals("float")) enterFloat();
-                break;
+                case REFLECTIVITY:
+                case TRANSPARENCY:
+                case SHININESS:
+                case INDEX_OF_REFRACTION:
+                    if (localName.equals("float")) enterFloat(attributes);
+                    break;
 
-            case EMISSION:
-            case AMBIENT:
-            case DIFFUSE:
-            case SPECULAR:
-            case REFLECTIVE:
-            case TRANSPARENT:
-                if (localName.equals("color"))
-                    enterShadingColor();
-                else if (localName.equals("texture")) enterTexture(attributes);
-                break;
+                case EMISSION:
+                case AMBIENT:
+                case DIFFUSE:
+                case SPECULAR:
+                case REFLECTIVE:
+                case TRANSPARENT:
+                    if (localName.equals("color"))
+                        enterShadingColor(attributes);
+                    else if (localName.equals("texture"))
+                        enterTexture(attributes);
+                    break;
 
-            case LIBRARY_GEOMETRIES:
-                if (localName.equals("geometry")) enterGeometry(attributes);
-                break;
+                case LIBRARY_GEOMETRIES:
+                    if (localName.equals("geometry"))
+                        enterGeometry(attributes);
+                    break;
 
-            case GEOMETRY:
-                if (localName.equals("mesh")) enterMesh();
-                break;
+                case GEOMETRY:
+                    if (localName.equals("mesh")) enterMesh();
+                    break;
 
-            case MESH:
-                if (localName.equals("source"))
-                    enterMeshDataSource(attributes);
-                else if (localName.equals("vertices"))
-                    enterVertices(attributes);
-                else if (localName.equals("polygons"))
-                    enterPolygons(attributes);
-                else if (localName.equals("triangles"))
-                    enterTriangles(attributes);
-                break;
+                case MESH:
+                    if (localName.equals("source"))
+                        enterMeshDataSource(attributes);
+                    else if (localName.equals("vertices"))
+                        enterVertices(attributes);
+                    /*
+                     * else if (localName.equals("polygons"))
+                     * enterPolygons(attributes);
+                     */
+                    else if (localName.equals("triangles"))
+                        enterTriangles(attributes);
+                    break;
 
-            case MESH_DATA_SOURCE:
-            case ANIMATION_DATA_SOURCE:
-                if (localName.equals("float_array"))
-                    enterFloatArray(attributes);
-                else if (localName.equals("Name_array"))
-                    enterNameArray(attributes);
-                if (localName.equals("technique_common"))
-                    enterElement(ParserMode.SOURCE_TECHNIQUE_COMMON);
-                break;
+                case MESH_DATA_SOURCE:
+                case ANIMATION_DATA_SOURCE:
+                    if (localName.equals("float_array"))
+                        enterFloatArray(attributes);
+                    else if (localName.equals("Name_array"))
+                        enterNameArray(attributes);
+                    if (localName.equals("technique_common"))
+                        enterElement(ParserMode.SOURCE_TECHNIQUE_COMMON);
+                    break;
 
-            case SOURCE_TECHNIQUE_COMMON:
-                if (localName.equals("accessor"))
-                    enterAccessor(attributes);
-                break;
+                case SOURCE_TECHNIQUE_COMMON:
+                    if (localName.equals("accessor"))
+                        enterAccessor(attributes);
+                    break;
 
-            case ACCESSOR:
-                if (localName.equals("param"))
-                    enterParam(attributes);
-                break;
+                case ACCESSOR:
+                    if (localName.equals("param"))
+                        enterParam(attributes);
+                    break;
 
-            case VERTICES:
-                if (localName.equals("input")) enterVerticesInput(attributes);
-                break;
+                case VERTICES:
+                    if (localName.equals("input"))
+                        enterVerticesInput(attributes);
+                    break;
 
-            case POLYGONS:
-                if (localName.equals("p"))
-                    enterPolygonsP();
-                else if (localName.equals("input"))
-                    enterPrimitivesInput(attributes);
-                break;
+                case POLYGONS:
+                    if (localName.equals("p"))
+                        enterPolygonsP();
+                    else if (localName.equals("input"))
+                        enterPrimitivesInput(attributes);
+                    break;
 
-            case TRIANGLES:
-                if (localName.equals("p"))
-                    enterElement(ParserMode.TRIANGLES_P);
-                else if (localName.equals("input"))
-                    enterPrimitivesInput(attributes);
-                break;
+                case TRIANGLES:
+                    if (localName.equals("p"))
+                        enterElement(ParserMode.TRIANGLES_P);
+                    else if (localName.equals("input"))
+                        enterPrimitivesInput(attributes);
+                    break;
 
-            case LIBRARY_ANIMATIONS:
-                if (localName.equals("animation")) enterAnimation(attributes);
-                break;
+                // case LIBRARY_ANIMATIONS:
+                // if (localName.equals("animation"))
+                // enterAnimation(attributes);
+                // break;
+                //
+                // case ANIMATION:
+                // if (localName.equals("source"))
+                // enterAnimationDataSource(attributes);
+                // else if (localName.equals("animation"))
+                // enterAnimation(attributes);
+                // else if (localName.equals("sampler"))
+                // enterSampler(attributes);
+                // else if (localName.equals("channel"))
+                // enterChannel(attributes);
+                // break;
+                //
+                // case SAMPLER:
+                // if (localName.equals("input")) enterSamplerInput(attributes);
+                // break;
+                //
+                // case LIBRARY_LIGHTS:
+                // if (localName.equals("light")) enterLight(attributes);
+                // break;
+                //
+                // case LIGHT:
+                // if (localName.equals("technique_common"))
+                // enterElement(ParserMode.LIGHT_TECHNIQUE_COMMON);
+                // break;
+                //
+                // case LIGHT_TECHNIQUE_COMMON:
+                // if (localName.equals("directional"))
+                // enterDirectional();
+                // else if (localName.equals("point"))
+                // enterPoint();
+                // else if (localName.equals("ambient"))
+                // enterAmbient();
+                // else if (localName.equals("spot")) enterSpot();
+                // break;
+                //
+                // case LIGHT_AMBIENT:
+                // case LIGHT_POINT:
+                // case LIGHT_DIRECTIONAL:
+                // if (localName.equals("color")) enterLightColor();
+                // break;
+                //
+                // case LIGHT_SPOT:
+                // if (localName.equals("color"))
+                // enterLightColor();
+                // else if (localName.equals("falloff_angle"))
+                // enterFalloffAngle();
+                // break;
+                //
+                // case LIBRARY_CAMERAS:
+                // if (localName.equals("camera")) enterCamera(attributes);
+                // break;
+                //
+                // case CAMERA:
+                // if (localName.equals("optics"))
+                // enterElement(ParserMode.OPTICS);
+                // break;
+                //
+                // case OPTICS:
+                // if (localName.equals("technique_common"))
+                // enterElement(ParserMode.OPTICS_TECHNIQUE_COMMON);
+                // break;
+                //
+                // case OPTICS_TECHNIQUE_COMMON:
+                // if (localName.equals("perspective")) enterPerspective();
+                // break;
+                //
+                // case PERSPECTIVE:
+                // if (localName.equals("xfov"))
+                // enterPerspectiveValue(ParserMode.XFOV);
+                // else if (localName.equals("yfov"))
+                // enterPerspectiveValue(ParserMode.YFOV);
+                // else if (localName.equals("aspect_ratio"))
+                // enterPerspectiveValue(ParserMode.ASPECT_RATIO);
+                // else if (localName.equals("znear"))
+                // enterPerspectiveValue(ParserMode.ZNEAR);
+                // else if (localName.equals("zfar"))
+                // enterPerspectiveValue(ParserMode.ZFAR);
+                // break;
+                //
+                // case LIBRARY_VISUAL_SCENES:
+                // if (localName.equals("visual_scene"))
+                // enterVisualScene(attributes);
+                // break;
+                //
+                // case VISUAL_SCENE:
+                // if (localName.equals("node"))
+                // enterVisualSceneNode(attributes);
+                // break;
+                //
+                // case NODE:
+                // case VISUAL_SCENE_NODE:
+                // if (localName.equals("matrix"))
+                // enterMatrix();
+                // else if (localName.equals("translate"))
+                // enterTranslate();
+                // else if (localName.equals("node"))
+                // enterNode(attributes);
+                // else if (localName.equals("instance_geometry"))
+                // enterInstanceGeometry(attributes);
+                // else if (localName.equals("instance_light"))
+                // enterInstanceLight(attributes);
+                // else if (localName.equals("instance_camera"))
+                // enterInstanceCamera(attributes);
+                // break;
+                //
+                // case INSTANCE_GEOMETRY:
+                // if (localName.equals("bind_material"))
+                // enterElement(ParserMode.BIND_MATERIAL);
+                // break;
+                //
+                // case BIND_MATERIAL:
+                // if (localName.equals("technique_common"))
+                // enterElement(ParserMode.BIND_MATERIAL_TECHNIQUE_COMMON);
+                // break;
+                //
+                // case BIND_MATERIAL_TECHNIQUE_COMMON:
+                // if (localName.equals("instance_material"))
+                // enterInstanceMaterial(attributes);
+                // break;
+                //
+                // case SCENE:
+                // if (localName.equals("instance_visual_scene"))
+                // enterInstanceVisualScene(attributes);
+                // break;
 
-            case ANIMATION:
-                if (localName.equals("source"))
-                    enterAnimationDataSource(attributes);
-                else if (localName.equals("animation"))
-                    enterAnimation(attributes);
-                else if (localName.equals("sampler"))
-                    enterSampler(attributes);
-                else if (localName.equals("channel"))
-                    enterChannel(attributes);
-                break;
-
-            case SAMPLER:
-                if (localName.equals("input")) enterSamplerInput(attributes);
-                break;
-
-            case LIBRARY_LIGHTS:
-                if (localName.equals("light")) enterLight(attributes);
-                break;
-
-            case LIGHT:
-                if (localName.equals("technique_common"))
-                    enterElement(ParserMode.LIGHT_TECHNIQUE_COMMON);
-                break;
-
-            case LIGHT_TECHNIQUE_COMMON:
-                if (localName.equals("directional"))
-                    enterDirectional();
-                else if (localName.equals("point"))
-                    enterPoint();
-                else if (localName.equals("ambient"))
-                    enterAmbient();
-                else if (localName.equals("spot")) enterSpot();
-                break;
-
-            case LIGHT_AMBIENT:
-            case LIGHT_POINT:
-            case LIGHT_DIRECTIONAL:
-                if (localName.equals("color")) enterLightColor();
-                break;
-
-            case LIGHT_SPOT:
-                if (localName.equals("color"))
-                    enterLightColor();
-                else if (localName.equals("falloff_angle"))
-                    enterFalloffAngle();
-                break;
-
-            case LIBRARY_CAMERAS:
-                if (localName.equals("camera")) enterCamera(attributes);
-                break;
-
-            case CAMERA:
-                if (localName.equals("optics"))
-                    enterElement(ParserMode.OPTICS);
-                break;
-
-            case OPTICS:
-                if (localName.equals("technique_common"))
-                    enterElement(ParserMode.OPTICS_TECHNIQUE_COMMON);
-                break;
-
-            case OPTICS_TECHNIQUE_COMMON:
-                if (localName.equals("perspective")) enterPerspective();
-                break;
-
-            case PERSPECTIVE:
-                if (localName.equals("xfov"))
-                    enterPerspectiveValue(ParserMode.XFOV);
-                else if (localName.equals("yfov"))
-                    enterPerspectiveValue(ParserMode.YFOV);
-                else if (localName.equals("aspect_ratio"))
-                    enterPerspectiveValue(ParserMode.ASPECT_RATIO);
-                else if (localName.equals("znear"))
-                    enterPerspectiveValue(ParserMode.ZNEAR);
-                else if (localName.equals("zfar"))
-                    enterPerspectiveValue(ParserMode.ZFAR);
-                break;
-
-            case LIBRARY_VISUAL_SCENES:
-                if (localName.equals("visual_scene"))
-                    enterVisualScene(attributes);
-                break;
-
-            case VISUAL_SCENE:
-                if (localName.equals("node")) enterVisualSceneNode(attributes);
-                break;
-
-            case NODE:
-            case VISUAL_SCENE_NODE:
-                if (localName.equals("matrix"))
-                    enterMatrix();
-                else if (localName.equals("translate"))
-                    enterTranslate();
-                else if (localName.equals("node"))
-                    enterNode(attributes);
-                else if (localName.equals("instance_geometry"))
-                    enterInstanceGeometry(attributes);
-                else if (localName.equals("instance_light"))
-                    enterInstanceLight(attributes);
-                else if (localName.equals("instance_camera"))
-                    enterInstanceCamera(attributes);
-                break;
-
-            case INSTANCE_GEOMETRY:
-                if (localName.equals("bind_material"))
-                    enterElement(ParserMode.BIND_MATERIAL);
-                break;
-
-            case BIND_MATERIAL:
-                if (localName.equals("technique_common"))
-                    enterElement(ParserMode.BIND_MATERIAL_TECHNIQUE_COMMON);
-                break;
-
-            case BIND_MATERIAL_TECHNIQUE_COMMON:
-                if (localName.equals("instance_material"))
-                    enterInstanceMaterial(attributes);
-                break;
-
-            case SCENE:
-                if (localName.equals("instance_visual_scene"))
-                    enterInstanceVisualScene(attributes);
-                break;
-
-            default:
-                // Ignored
+                default:
+                    // Ignored
+            }
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(e.toString(), e);
         }
     }
 
@@ -549,12 +628,20 @@ public class ColladaHandler extends DefaultHandler
                 leaveImageInitFromRef();
                 break;
 
+            case IMAGE_INIT_FROM:
+                leaveImageInitFrom();
+                break;
+
             case IMAGE:
                 leaveImage();
                 break;
 
             case LIBRARY_IMAGES:
                 leaveLibraryImages();
+                break;
+
+            case INSTANCE_EFFECT:
+                leaveInstanceEffect();
                 break;
 
             case MATERIAL:
@@ -569,11 +656,15 @@ public class ColladaHandler extends DefaultHandler
                 leaveShadingColor();
                 break;
 
+            case FLOAT:
+                leaveFloat();
+                break;
+
             case SHININESS:
             case REFLECTIVITY:
             case TRANSPARENCY:
             case INDEX_OF_REFRACTION:
-                leaveShadingFloat();
+                leaveFloatOrParam();
                 break;
 
             case EMISSION:
@@ -593,6 +684,14 @@ public class ColladaHandler extends DefaultHandler
                 leaveTechniqueCommon();
                 break;
 
+            case SAMPLER2D_WRAP_S:
+                leaveSampler2DWrapS();
+                break;
+
+            case SAMPLER2D_WRAP_T:
+                leaveSampler2DWrapT();
+                break;
+
             case SAMPLER2D_MAGFILTER:
                 leaveSampler2DMagFilter();
                 break;
@@ -601,12 +700,12 @@ public class ColladaHandler extends DefaultHandler
                 leaveSampler2DMinFilter();
                 break;
 
-            case SAMPLER2D_SOURCE:
-                leaveSampler2DSource();
+            case FLOAT_PARAM:
+                leaveFloatParam();
                 break;
 
-            case SURFACE_INIT_FROM:
-                leaveSurfaceInitFrom();
+            case PARAM_SEMANTIC:
+                leaveParamSemantic();
                 break;
 
             case NEWPARAM:
@@ -619,6 +718,10 @@ public class ColladaHandler extends DefaultHandler
 
             case EFFECT:
                 leaveEffect();
+                break;
+
+            case LIBRARY_EFFECTS:
+                leaveLibraryEffects();
                 break;
 
             case FLOAT_ARRAY:
@@ -649,9 +752,9 @@ public class ColladaHandler extends DefaultHandler
                 leavePolygonsP();
                 break;
 
-            case POLYGONS:
-                leavePolygons();
-                break;
+            // case POLYGONS:
+            // leavePolygons();
+            // break;
 
             case MESH:
                 leaveMesh();
@@ -661,97 +764,97 @@ public class ColladaHandler extends DefaultHandler
                 leaveGeometry();
                 break;
 
-            case ANIMATION_DATA_SOURCE:
-                leaveAnimationDataSource();
-                break;
-
-            case SAMPLER:
-                leaveSampler();
-                break;
-
-            case ANIMATION:
-                leaveAnimation();
-                break;
-
-            case LIGHT_COLOR:
-                leaveLightColor();
-                break;
-
-            case FALLOFF_ANGLE:
-                leaveFalloffAngle();
-                break;
-
-            case LIGHT:
-                leaveLight();
-                break;
-
-            case CAMERA:
-                leaveCamera();
-                break;
-
-            case XFOV:
-                leaveXfov();
-                break;
-
-            case YFOV:
-                leaveYfov();
-                break;
-
-            case ASPECT_RATIO:
-                leaveAspectRatio();
-                break;
-
-            case ZFAR:
-                leaveZfar();
-                break;
-
-            case ZNEAR:
-                leaveZnear();
-                break;
-
-            case OPTICS:
-                leaveOptics();
-                break;
-
-            case INSTANCE_MATERIAL:
-                leaveInstanceMaterial();
-                break;
-
-            case MATRIX:
-                leaveMatrix();
-                break;
-
-            case TRANSLATE:
-                leaveTranslate();
-                break;
-
-            case INSTANCE_GEOMETRY:
-                leaveInstanceGeometry();
-                break;
-
-            case INSTANCE_LIGHT:
-                leaveInstanceLight();
-                break;
-
-            case INSTANCE_CAMERA:
-                leaveInstanceCamera();
-                break;
-
-            case NODE:
-                leaveNode();
-                break;
-
-            case VISUAL_SCENE_NODE:
-                leaveVisualSceneNode();
-                break;
-
-            case VISUAL_SCENE:
-                leaveVisualScene();
-                break;
-
-            case SCENE:
-                leaveScene();
-                break;
+            // case ANIMATION_DATA_SOURCE:
+            // leaveAnimationDataSource();
+            // break;
+            //
+            // case SAMPLER:
+            // leaveSampler();
+            // break;
+            //
+            // case ANIMATION:
+            // leaveAnimation();
+            // break;
+            //
+            // case LIGHT_COLOR:
+            // leaveLightColor();
+            // break;
+            //
+            // case FALLOFF_ANGLE:
+            // leaveFalloffAngle();
+            // break;
+            //
+            // case LIGHT:
+            // leaveLight();
+            // break;
+            //
+            // case CAMERA:
+            // leaveCamera();
+            // break;
+            //
+            // case XFOV:
+            // leaveXfov();
+            // break;
+            //
+            // case YFOV:
+            // leaveYfov();
+            // break;
+            //
+            // case ASPECT_RATIO:
+            // leaveAspectRatio();
+            // break;
+            //
+            // case ZFAR:
+            // leaveZfar();
+            // break;
+            //
+            // case ZNEAR:
+            // leaveZnear();
+            // break;
+            //
+            // case OPTICS:
+            // leaveOptics();
+            // break;
+            //
+            // case INSTANCE_MATERIAL:
+            // leaveInstanceMaterial();
+            // break;
+            //
+            // case MATRIX:
+            // leaveMatrix();
+            // break;
+            //
+            // case TRANSLATE:
+            // leaveTranslate();
+            // break;
+            //
+            // case INSTANCE_GEOMETRY:
+            // leaveInstanceGeometry();
+            // break;
+            //
+            // case INSTANCE_LIGHT:
+            // leaveInstanceLight();
+            // break;
+            //
+            // case INSTANCE_CAMERA:
+            // leaveInstanceCamera();
+            // break;
+            //
+            // case NODE:
+            // leaveNode();
+            // break;
+            //
+            // case VISUAL_SCENE_NODE:
+            // leaveVisualSceneNode();
+            // break;
+            //
+            // case VISUAL_SCENE:
+            // leaveVisualScene();
+            // break;
+            //
+            // case SCENE:
+            // leaveScene();
+            // break;
 
             default:
                 leaveElement();
@@ -777,12 +880,15 @@ public class ColladaHandler extends DefaultHandler
             case LIGHT_COLOR:
             case SHADING_COLOR:
             case FLOAT:
-            case IMAGE_INIT_FROM:
+            case PARAM_SEMANTIC:
+            case FLOAT_PARAM:
+            case IMAGE_INIT_FROM_REF:
             case FALLOFF_ANGLE:
-            case SURFACE_INIT_FROM:
             case SAMPLER2D_MAGFILTER:
             case SAMPLER2D_SOURCE:
             case SAMPLER2D_MINFILTER:
+            case SAMPLER2D_WRAP_S:
+            case SAMPLER2D_WRAP_T:
                 this.stringBuilder.append(ch, start, length);
                 break;
 
@@ -874,15 +980,33 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterImage(final Attributes attributes)
     {
-        final String id = attributes.getValue("id");
         this.image = new Image();
-        if (id != null) this.image.setId(id);
+        this.image.setId(attributes.getValue("id"));
+        this.image.setName(attributes.getValue("name"));
+        this.image.setSid(attributes.getValue("sid"));
         enterElement(ParserMode.IMAGE);
     }
 
 
     /**
      * Enters image init_from element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterImageInitFrom(final Attributes attributes)
+    {
+        this.imageSourceBuilder = new ImageSourceBuilder();
+        final String tmp = attributes.getValue("mips_generate");
+        if (tmp != null)
+            this.imageSourceBuilder.setGenerateMips(Boolean.valueOf(tmp));
+        enterElement(ParserMode.IMAGE_INIT_FROM);
+    }
+
+
+    /**
+     * Enters image init_from ref element.
      */
 
     private void enterImageInitFromRef()
@@ -901,13 +1025,25 @@ public class ColladaHandler extends DefaultHandler
         final String text = this.stringBuilder.toString();
         try
         {
-            this.image.setSource(new ImageSource(new URI(text)));
+            this.imageSourceBuilder.setRef(new URI(text));
         }
         catch (final URISyntaxException e)
         {
             throw new ParserException(text + " is not a valid URI: " + e, e);
         }
         this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves an image init_from element.
+     */
+
+    private void leaveImageInitFrom()
+    {
+        this.image.setSource(this.imageSourceBuilder.build());
+        this.imageSourceBuilder = null;
         leaveElement();
     }
 
@@ -932,6 +1068,7 @@ public class ColladaHandler extends DefaultHandler
     {
         this.document.getImageLibraries().add(this.imageLibrary);
         this.imageLibrary = null;
+        leaveElement();
     }
 
 
@@ -973,10 +1110,13 @@ public class ColladaHandler extends DefaultHandler
      * Enters a instance_effect element.
      *
      * @param attributes
-     *            The element attributes
+     *            The element attributes.
+     * @throws URISyntaxException
+     *             When URI is invalid.
      */
 
     private void enterInstanceEffect(final Attributes attributes)
+        throws URISyntaxException
     {
         this.effectInstanceBuilder = new EffectInstanceBuilder();
         this.effectInstanceBuilder.setUrl(new URI(attributes.getValue("url")));
@@ -1019,6 +1159,23 @@ public class ColladaHandler extends DefaultHandler
     {
         this.document.getMaterialLibraries().add(this.materialLibrary);
         this.materialLibrary = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a library_effects element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryEffects(final Attributes attributes)
+    {
+        this.effectLibrary = new EffectLibrary();
+        this.effectLibrary.setName(attributes.getValue("name"));
+        this.effectLibrary.setId(attributes.getValue("id"));
+        enterElement(ParserMode.LIBRARY_EFFECTS);
     }
 
 
@@ -1029,21 +1186,26 @@ public class ColladaHandler extends DefaultHandler
      *            The element attributes
      */
 
-    public void enterEffect(final Attributes attributes)
+    private void enterEffect(final Attributes attributes)
     {
         final String id = attributes.getValue("id");
         this.effect = new Effect(id);
+        this.effect.setName(attributes.getValue("name"));
         enterElement(ParserMode.EFFECT);
     }
 
 
     /**
-     * Enters a common_PROFILE element.
+     * Enters a profile_COMMON element.
+     *
+     * @param attributes
+     *            The element attributes
      */
 
-    private void enterProfileCommon()
+    private void enterProfileCommon(final Attributes attributes)
     {
-        this.commonProfile = new CommonEffectProfile();
+        this.commonEffectProfileBuilder = new CommonEffectProfileBuilder();
+        this.commonEffectProfileBuilder.setId(attributes.getValue("id"));
         enterElement(ParserMode.PROFILE_COMMON);
     }
 
@@ -1055,80 +1217,94 @@ public class ColladaHandler extends DefaultHandler
      *            The element attributes
      */
 
-    private void enterNewParam(final Attributes attributes)
+    private void enterCommonNewParam(final Attributes attributes)
     {
-        this.paramId = attributes.getValue("sid");
+        this.commonNewParamBuilder = new CommonNewParamBuilder();
+        this.commonNewParamBuilder.setSid(attributes.getValue("sid"));
         enterElement(ParserMode.NEWPARAM);
     }
 
 
     /**
-     * Enters a surface element.
+     * Enters a float param.
      */
 
-    private void enterSurface()
-    {
-        this.profileParam = new SurfaceParam(this.paramId);
-        this.paramId = null;
-        enterElement(ParserMode.SURFACE);
-    }
-
-
-    /**
-     * Enters surface init_from element.
-     */
-
-    private void enterSurfaceInitFrom()
+    private void enterFloatParam()
     {
         this.stringBuilder = new StringBuilder();
-        enterElement(ParserMode.SURFACE_INIT_FROM);
+        enterElement(ParserMode.FLOAT_PARAM);
     }
 
 
     /**
-     * Leaves surface init_from element.
+     * Leaves a float param.
      */
 
-    private void leaveSurfaceInitFrom()
+    private void leaveFloatParam()
     {
-        ((SurfaceParam) this.profileParam).setImageId(this.stringBuilder
-                .toString());
+        final double value = Double.parseDouble(this.stringBuilder.toString()
+            .trim());
         this.stringBuilder = null;
+        this.profileParam = new FloatParam(value);
         leaveElement();
     }
 
 
     /**
-     * Enters a ssampler2D element.
+     * Enters a sampler2D element.
      */
 
-    private void enterSampler2D()
+    private void enterSampler2DParam()
     {
-        this.profileParam = new Sampler2DParam(this.paramId);
+        this.profileParam = new Sampler2DParam();
         this.paramId = null;
         enterElement(ParserMode.SAMPLER2D);
     }
 
 
     /**
-     * Enters sampler2D source element.
+     * Enters sampler2D wrap_s element.
      */
 
-    private void enterSampler2DSource()
+    private void enterSampler2DWrapS()
     {
         this.stringBuilder = new StringBuilder();
-        enterElement(ParserMode.SAMPLER2D_SOURCE);
+        enterElement(ParserMode.SAMPLER2D_WRAP_S);
     }
 
 
     /**
-     * Leaves sampler2D source element.
+     * Leaves sampler2D wrap_s element.
      */
 
-    private void leaveSampler2DSource()
+    private void leaveSampler2DWrapS()
     {
-        ((Sampler2DParam) this.profileParam).setSource(this.stringBuilder
-                .toString());
+        ((Sampler2DParam) this.profileParam).setWrapS(Wrap
+                .valueOf(this.stringBuilder.toString()));
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters sampler2D wrap_t element.
+     */
+
+    private void enterSampler2DWrapT()
+    {
+        this.stringBuilder = new StringBuilder();
+        enterElement(ParserMode.SAMPLER2D_WRAP_T);
+    }
+
+
+    /**
+     * Leaves sampler2D wrap_t element.
+     */
+
+    private void leaveSampler2DWrapT()
+    {
+        ((Sampler2DParam) this.profileParam).setWrapT(Wrap
+                .valueOf(this.stringBuilder.toString()));
         this.stringBuilder = null;
         leaveElement();
     }
@@ -1183,13 +1359,39 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
+     * Enters a param semantic element.
+     */
+
+    private void enterParamSemantic()
+    {
+        this.stringBuilder = new StringBuilder();
+        enterElement(ParserMode.PARAM_SEMANTIC);
+    }
+
+
+    /**
+     * Leaves a param semantic element.
+     */
+
+    private void leaveParamSemantic()
+    {
+        this.commonNewParamBuilder.setSemantic(this.stringBuilder.toString());
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
      * Leaves a newparam element.
      */
 
     private void leaveNewParam()
     {
-        this.commonProfile.getParams().add(this.profileParam);
+        this.commonNewParamBuilder.setParameter(this.profileParam);
         this.profileParam = null;
+        this.commonEffectProfileBuilder.getParams()
+            .add(this.commonNewParamBuilder.build());
+        this.commonNewParamBuilder = null;
         leaveElement();
     }
 
@@ -1203,8 +1405,9 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterTechniqueCommon(final Attributes attributes)
     {
-        final String sid = attributes.getValue("sid");
-        this.commonTechnique = new CommonTechnique(sid);
+        this.commonTechniqueBuilder = new CommonEffectTechniqueBuilder();
+        this.commonTechniqueBuilder.setSid(attributes.getValue("sid"));
+        this.commonTechniqueBuilder.setId(attributes.getValue("id"));
         enterElement(ParserMode.TECHNIQUE_COMMON);
     }
 
@@ -1215,36 +1418,42 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterPhong()
     {
-        this.shading = this.phong = new Phong();
+        this.shading = this.phong = new PhongShader();
         enterElement(ParserMode.PHONG);
     }
 
 
     /**
      * Enters a color element.
+     *
+     * @param attributes
+     *            The element attributes
      */
 
-    private void enterShadingColor()
+    private void enterShadingColor(final Attributes attributes)
     {
+        this.rgbaColor = new RGBAColor();
+        this.rgbaColor.setSid(attributes.getValue("sid"));
         this.stringBuilder = new StringBuilder();
         enterElement(ParserMode.SHADING_COLOR);
     }
 
 
     /**
-     * Leaves a shadin color element.
+     * Leaves a shading color element.
      */
 
     private void leaveShadingColor()
     {
         final String[] parts = this.stringBuilder.toString().trim().split(
                 "\\s+");
-        final ColladaColor color = new ColladaColor(Float.parseFloat(parts[0]),
-            Float
-                    .parseFloat(parts[1]), Float.parseFloat(parts[2]), Float
-                    .parseFloat(parts[3]));
-        this.colorOrTexture = new ColorOrTexture(color);
+        this.rgbaColor.setRed(Float.parseFloat(parts[0]));
+        this.rgbaColor.setGreen(Float.parseFloat(parts[1]));
+        this.rgbaColor.setBlue(Float.parseFloat(parts[2]));
+        this.rgbaColor.setAlpha(Float.parseFloat(parts[3]));
+        this.colorOrTexture = new ColorAttribute(this.rgbaColor);
         this.stringBuilder = null;
+        this.rgbaColor = null;
         leaveElement();
     }
 
@@ -1260,7 +1469,7 @@ public class ColladaHandler extends DefaultHandler
     {
         final String texture = attributes.getValue("texture");
         final String texcoord = attributes.getValue("texcoord");
-        this.colorOrTexture = new ColorOrTexture(new ColladaTexture(texture,
+        this.colorOrTexture = new ColorAttribute(new Texture(texture,
             texcoord));
         enterElement(ParserMode.TEXTURE);
     }
@@ -1279,15 +1488,18 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case AMBIENT:
-                this.shading.setAmbient(this.colorOrTexture);
+                if (this.phong != null)
+                    this.phong.setAmbient(this.colorOrTexture);
                 break;
 
             case DIFFUSE:
-                this.shading.setDiffuse(this.colorOrTexture);
+                if (this.phong != null)
+                    this.phong.setDiffuse(this.colorOrTexture);
                 break;
 
             case SPECULAR:
-                this.shading.setSpecular(this.colorOrTexture);
+                if (this.phong != null)
+                    this.phong.setSpecular(this.colorOrTexture);
                 break;
 
             case REFLECTIVE:
@@ -1310,12 +1522,33 @@ public class ColladaHandler extends DefaultHandler
 
     /**
      * Enters a float element.
+     *
+     * @param attributes
+     *            The element attributes.
      */
 
-    private void enterFloat()
+    private void enterFloat(final Attributes attributes)
     {
+        this.floatValue = new FloatValue(0);
+        this.floatValue.setSid(attributes.getValue("sid"));
         this.stringBuilder = new StringBuilder();
         enterElement(ParserMode.FLOAT);
+    }
+
+
+    /**
+     * Leaves a float element.
+     */
+
+    private void leaveFloat()
+    {
+        final double value = Double.parseDouble(this.stringBuilder.toString()
+            .trim());
+        this.stringBuilder = null;
+        this.floatValue.setValue(value);
+        this.floatAttrib = new FloatAttribute(this.floatValue);
+        this.floatValue = null;
+        leaveElement();
     }
 
 
@@ -1323,27 +1556,25 @@ public class ColladaHandler extends DefaultHandler
      * Leaves a shading float element.
      */
 
-    private void leaveShadingFloat()
+    private void leaveFloatOrParam()
     {
-        final float value = Float.parseFloat(this.stringBuilder.toString()
-                .trim());
-        this.stringBuilder = null;
         switch (this.mode)
         {
             case REFLECTIVITY:
-                this.shading.setReflectivity(value);
+                this.shading.setReflectivity(this.floatAttrib);
                 break;
 
             case SHININESS:
-                this.shading.setShininess(value);
+                if (this.phong != null)
+                    this.phong.setShininess(this.floatAttrib);
                 break;
 
             case TRANSPARENCY:
-                this.shading.setTransparency(value);
+                this.shading.setTransparency(this.floatAttrib);
                 break;
 
             case INDEX_OF_REFRACTION:
-                this.shading.setIndexOfRefraction(value);
+                this.shading.setIndexOfRefraction(this.floatAttrib);
                 break;
 
             default:
@@ -1360,7 +1591,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void leavePhong()
     {
-        this.commonTechnique.setPhong(this.phong);
+        this.commonTechniqueBuilder.setShader(this.phong);
         this.shading = this.phong = null;
         leaveElement();
     }
@@ -1372,8 +1603,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveTechniqueCommon()
     {
-        this.commonProfile.getTechniques().add(this.commonTechnique);
-        this.commonTechnique = null;
+        this.commonEffectProfileBuilder.setTechnique(this.commonTechniqueBuilder.build());
+        this.commonTechniqueBuilder = null;
         leaveElement();
     }
 
@@ -1384,8 +1615,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveProfileCommon()
     {
-        this.effect.getProfiles().add(this.commonProfile);
-        this.commonProfile = null;
+        this.effect.getProfiles().add(this.commonEffectProfileBuilder.build());
+        this.commonEffectProfileBuilder = null;
         leaveElement();
     }
 
@@ -1396,9 +1627,37 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveEffect()
     {
-        this.document.getLibraryEffects().add(this.effect);
+        this.effectLibrary.getEffects().add(this.effect);
         this.effect = null;
         leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_effects element.
+     */
+
+    private void leaveLibraryEffects()
+    {
+        this.document.getEffectLibraries().add(this.effectLibrary);
+        this.effectLibrary = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a library_geometries element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryGeometries(final Attributes attributes)
+    {
+        this.geometryLibrary = new GeometryLibrary();
+        this.geometryLibrary.setName(attributes.getValue("name"));
+        this.geometryLibrary.setId(attributes.getValue("id"));
+        enterElement(ParserMode.LIBRARY_GEOMETRIES);
     }
 
 
@@ -1411,7 +1670,9 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterGeometry(final Attributes attributes)
     {
-        this.geometryId = attributes.getValue("id");
+        this.geometryBuilder = new GeometryBuilder();
+        this.geometryBuilder.setId(attributes.getValue("id"));
+        this.geometryBuilder.setId(attributes.getValue("name"));
         enterElement(ParserMode.GEOMETRY);
     }
 
@@ -1422,7 +1683,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterMesh()
     {
-        this.mesh = new ColladaMesh();
+        this.meshBuilder = new MeshBuilder();
         enterElement(ParserMode.MESH);
     }
 
@@ -1437,7 +1698,8 @@ public class ColladaHandler extends DefaultHandler
     private void enterMeshDataSource(final Attributes attributes)
     {
         final String id = attributes.getValue("id");
-        this.dataSource = new DataSource(id);
+        this.dataSource = new DataFlowSource(id);
+        this.dataSource.setName(attributes.getValue("name"));
         enterElement(ParserMode.MESH_DATA_SOURCE);
     }
 
@@ -1453,17 +1715,23 @@ public class ColladaHandler extends DefaultHandler
     {
         final String id = attributes.getValue("id");
         final int count = Integer.parseInt(attributes.getValue("count"));
-        this.dataArray = new DataArray(id);
-        final float[] data = new float[count];
-        this.dataArray.setData(data);
+        final FloatArray array = this.floatArray = new FloatArray(count);
+        final String digits = attributes.getValue("digits");
+        final String magnitude = attributes.getValue("magnitude");
+        if (digits != null)
+            this.floatArray.setDigits(Integer.parseInt(digits));
+        if (magnitude != null)
+            this.floatArray.setMagnitude(Integer.parseInt(magnitude));
+        this.floatArray.setId(attributes.getValue("id"));
+        this.floatArray.setName(attributes.getValue("name"));
         this.chunkFloatReader = new ChunkFloatReader()
         {
             private int index = 0;
 
             @Override
-            protected void valueFound(final float value)
+            protected void valueFound(final double value)
             {
-                data[this.index++] = value;
+                array.setValue(this.index++, value);
             }
         };
 
@@ -1479,8 +1747,8 @@ public class ColladaHandler extends DefaultHandler
     {
         this.chunkFloatReader.finish();
         this.chunkFloatReader = null;
-        this.dataSource.setData(this.dataArray);
-        this.dataArray = null;
+        this.dataSource.setArray(this.floatArray);
+        this.floatArray = null;
         leaveElement();
     }
 
@@ -1496,9 +1764,9 @@ public class ColladaHandler extends DefaultHandler
     {
         final String id = attributes.getValue("id");
         final int count = Integer.parseInt(attributes.getValue("count"));
-        this.dataArray = new DataArray(id);
-        final String[] data = new String[count];
-        this.dataArray.setData(data);
+        final NameArray array = this.nameArray = new NameArray(count);
+        this.floatArray.setId(attributes.getValue("id"));
+        this.floatArray.setName(attributes.getValue("name"));
         this.chunkStringReader = new ChunkStringReader()
         {
             private int index = 0;
@@ -1506,7 +1774,7 @@ public class ColladaHandler extends DefaultHandler
             @Override
             protected void valueFound(final String value)
             {
-                data[this.index++] = value;
+                array.setValue(this.index++, value);
             }
         };
 
@@ -1522,8 +1790,8 @@ public class ColladaHandler extends DefaultHandler
     {
         this.chunkStringReader.finish();
         this.chunkStringReader = null;
-        this.dataSource.setData(this.dataArray);
-        this.dataArray = null;
+        this.dataSource.setArray(this.nameArray);
+        this.nameArray = null;
         leaveElement();
     }
 
@@ -1550,6 +1818,10 @@ public class ColladaHandler extends DefaultHandler
         }
         final int count = Integer.valueOf(attributes.getValue("count"));
         this.accessor = new Accessor(source, count);
+        final String offset = attributes.getValue("offset");
+        if (offset != null) this.accessor.setOffset(Integer.valueOf(offset));
+        final String stride = attributes.getValue("stride");
+        if (stride != null) this.accessor.setStride(Integer.valueOf(stride));
         enterElement(ParserMode.ACCESSOR);
     }
 
@@ -1558,14 +1830,18 @@ public class ColladaHandler extends DefaultHandler
      * Enters a param element.
      *
      * @param attributes
-     *            The element attribtues
+     *            The element attributes
      */
 
     private void enterParam(final Attributes attributes)
     {
-        final ParamType type = ParamType.valueOf(attributes.getValue("type")
+        final DataType type = DataType.valueOf(attributes.getValue("type")
                 .toUpperCase());
-        this.accessor.getParams().add(new Param(type));
+        final DataFlowParam param = new DataFlowParam(type);
+        param.setName(attributes.getValue("name"));
+        param.setSemantic(attributes.getValue("semantic"));
+        param.setSid(attributes.getValue("sid"));
+        this.accessor.getParams().add(param);
     }
 
 
@@ -1575,7 +1851,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveAccessor()
     {
-        this.dataSource.setAccessor(this.accessor);
+        this.dataSource.setCommonTechnique(new CommonSourceTechnique(
+            this.accessor));
         this.accessor = null;
         leaveElement();
     }
@@ -1587,7 +1864,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveMeshDataSource()
     {
-        this.mesh.getSources().add(this.dataSource);
+        this.meshBuilder.getSources().add(this.dataSource);
         this.dataSource = null;
         leaveElement();
     }
@@ -1604,12 +1881,13 @@ public class ColladaHandler extends DefaultHandler
     {
         final String id = attributes.getValue("id");
         this.vertices = new Vertices(id);
+        this.vertices.setName(attributes.getValue("name"));
         enterElement(ParserMode.VERTICES);
     }
 
 
     /**
-     * Enters verticies input element.
+     * Enters vertices input element.
      *
      * @param attributes
      *            The element attributes
@@ -1617,8 +1895,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterVerticesInput(final Attributes attributes)
     {
-        final Semantic semantic = Semantic.valueOf(attributes
-                .getValue("semantic"));
+        final String semantic = attributes.getValue("semantic");
         final String text = attributes.getValue("source");
         URI source;
         try
@@ -1640,29 +1917,37 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveVertices()
     {
-        this.mesh.setVertices(this.vertices);
+        this.meshBuilder.setVertices(this.vertices);
         this.vertices = null;
         leaveElement();
     }
 
 
     /**
-     * Enters a polygons element.
+     * Enters a triangles element.
      *
      * @param attributes
      *            The element attributes
      */
 
-    private void enterPolygons(final Attributes attributes)
+    private void enterTriangles(final Attributes attributes)
     {
-        final String material = attributes.getValue("material");
-        final int count = Integer.parseInt(attributes.getValue("count"));
-        this.polygonsIndices = new int[count][];
-        this.polygonsIndex = 0;
-        this.primitives = this.polygons = new Polygons();
-        this.polygons.setMaterial(material);
-        this.intArrayBuilder = new ArrayList<Integer>();
-        enterElement(ParserMode.POLYGONS);
+        this.trianglesBuilder = new TrianglesBuilder();
+        this.trianglesBuilder.setCount(Integer.parseInt(attributes
+            .getValue("count")));
+        this.trianglesBuilder.setMaterial(attributes.getValue("material"));
+        this.trianglesBuilder.setName(attributes.getValue("name"));
+
+        final List<Integer> builder = this.intArrayBuilder = new ArrayList<Integer>();
+        this.chunkIntReader = new ChunkIntReader()
+        {
+            @Override
+            protected void valueFound(final int value)
+            {
+                builder.add(value);
+            }
+        };
+        enterElement(ParserMode.TRIANGLES);
     }
 
 
@@ -1675,13 +1960,12 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterPrimitivesInput(final Attributes attributes)
     {
-        final String semanticString = attributes.getValue("semantic");
+        final String semantic = attributes.getValue("semantic");
         final int offset = Integer.parseInt(attributes.getValue("offset"));
         final String sourceString = attributes.getValue("source");
         final String setString = attributes.getValue("set");
         final Integer set = setString == null ? null : Integer
                 .parseInt(setString);
-        final Semantic semantic = Semantic.valueOf(semanticString);
         URI source;
         try
         {
@@ -1689,14 +1973,56 @@ public class ColladaHandler extends DefaultHandler
         }
         catch (final URISyntaxException e)
         {
-            throw new ParserException(semanticString + " is not a valid URI: "
+            throw new ParserException(sourceString + " is not a valid URI: "
                     + e, e);
         }
-        final SharedInput input = new SharedInput(semantic, offset, source);
+        final SharedInput input = new SharedInput(semantic, source, offset);
         input.setSet(set);
-        this.primitives.getInputs().add(input);
+        if (this.trianglesBuilder != null)
+            this.trianglesBuilder.getInputs().add(input);
+        else
+            throw new ParserException("not implemented");
         enterElement(ParserMode.PRIMITIVES_INPUT);
     }
+
+
+    /**
+     * Leaves a polygons element.
+     */
+
+    private void leaveTriangles()
+    {
+        this.chunkIntReader.finish();
+        this.chunkIntReader = null;
+        final int size = this.intArrayBuilder.size();
+        final PrimitiveData data = new PrimitiveData(size);
+        data.setValues(this.intArrayBuilder);
+        this.trianglesBuilder.setData(data);
+        this.meshBuilder.getPrimitives().add(this.trianglesBuilder.build());
+        this.trianglesBuilder = null;
+        this.intArrayBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a polygons element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    // private void enterPolygons(final Attributes attributes)
+    // {
+    // final String material = attributes.getValue("material");
+    // final int count = Integer.parseInt(attributes.getValue("count"));
+    // this.polygonsIndices = new int[count][];
+    // this.polygonsIndex = 0;
+    // this.primitives = this.polygons = new Polygons();
+    // this.polygons.setMaterial(material);
+    // this.intArrayBuilder = new ArrayList<Integer>();
+    // enterElement(ParserMode.POLYGONS);
+    // }
 
 
     /**
@@ -1740,60 +2066,15 @@ public class ColladaHandler extends DefaultHandler
      * Leaves a polygons element.
      */
 
-    private void leavePolygons()
-    {
-        this.polygons.setIndices(this.polygonsIndices);
-        this.mesh.getPrimitiveGroups().add(this.polygons);
-        this.polygonsIndices = null;
-        this.intArrayBuilder = null;
-        this.primitives = this.polygons = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a triangles element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterTriangles(final Attributes attributes)
-    {
-        final String material = attributes.getValue("material");
-        final List<Integer> builder = this.intArrayBuilder = new ArrayList<Integer>();
-        this.primitives = this.triangles = new Triangles();
-        this.triangles.setMaterial(material);
-        this.chunkIntReader = new ChunkIntReader()
-        {
-            @Override
-            protected void valueFound(final int value)
-            {
-                builder.add(value);
-            }
-        };
-        enterElement(ParserMode.TRIANGLES);
-    }
-
-
-    /**
-     * Leaves a polygons element.
-     */
-
-    private void leaveTriangles()
-    {
-        this.chunkIntReader.finish();
-        this.chunkIntReader = null;
-        final int size = this.intArrayBuilder.size();
-        final int[] data = new int[size];
-        for (int i = 0; i < size; i++)
-            data[i] = this.intArrayBuilder.get(i);
-        this.triangles.setIndices(data);
-        this.mesh.getPrimitiveGroups().add(this.triangles);
-        this.intArrayBuilder = null;
-        this.primitives = this.triangles = null;
-        leaveElement();
-    }
+    // private void leavePolygons()
+    // {
+    // this.polygons.setIndices(this.polygonsIndices);
+    // this.mesh.getPrimitiveGroups().add(this.polygons);
+    // this.polygonsIndices = null;
+    // this.intArrayBuilder = null;
+    // this.primitives = this.polygons = null;
+    // leaveElement();
+    // }
 
 
     /**
@@ -1802,8 +2083,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveMesh()
     {
-        this.geometry = new Geometry(this.geometryId, this.mesh);
-        this.mesh = null;
+        this.geometryBuilder.setGeometric(this.meshBuilder.build());
+        this.meshBuilder = null;
         leaveElement();
     }
 
@@ -1814,763 +2095,763 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveGeometry()
     {
-        this.document.getLibraryGeometries().add(this.geometry);
-        this.geometry = null;
+        this.geometryLibrary.getGeometries().add(this.geometryBuilder.build());
+        this.geometryBuilder = null;
         leaveElement();
     }
 
 
-    /**
-     * Enters a mesh element
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterAnimation(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        if (this.animationStack == null)
-            this.animationStack = new Stack<ColladaAnimation>();
-        else
-            this.animationStack.push(this.animation);
-        this.animation = new ColladaAnimation(id);
-        enterElement(ParserMode.ANIMATION);
-    }
-
-
-    /**
-     * Enters a animation data source element
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterAnimationDataSource(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        this.dataSource = new DataSource(id);
-        enterElement(ParserMode.ANIMATION_DATA_SOURCE);
-    }
-
-
-    /**
-     * Leaves a animation data source element.
-     */
-
-    private void leaveAnimationDataSource()
-    {
-        this.animation.getSources().add(this.dataSource);
-        this.dataSource = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a sampler element
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterSampler(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        this.sampler = new ColladaSampler(id);
-        enterElement(ParserMode.SAMPLER);
-    }
-
-
-    /**
-     * Enters a channel element
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterChannel(final Attributes attributes)
-    {
-        final String sourceStr = attributes.getValue("source");
-        URI source;
-        try
-        {
-            source = new URI(sourceStr);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(sourceStr + " is not a valid URI: " + e,
-                e);
-        }
-        final String target = attributes.getValue("target");
-        this.animation.getChannels().add(new Channel(source, target));
-        enterElement(ParserMode.CHANNEL);
-    }
-
-
-    /**
-     * Enters sampler input element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterSamplerInput(final Attributes attributes)
-    {
-        final Semantic semantic = Semantic.valueOf(attributes
-                .getValue("semantic"));
-        final String text = attributes.getValue("source");
-        URI source;
-        try
-        {
-            source = new URI(text);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(text + " is not a valid URI: " + e, e);
-        }
-        final UnsharedInput input = new UnsharedInput(semantic, source);
-        this.sampler.getInputs().add(input);
-    }
-
-
-    /**
-     * Leaves a sampler element.
-     */
-
-    private void leaveSampler()
-    {
-        this.animation.getSamplers().add(this.sampler);
-        this.sampler = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves animation element
-     */
-
-    private void leaveAnimation()
-    {
-        if (this.animationStack.empty())
-        {
-            this.document.getLibraryAnimations().add(this.animation);
-            this.animation = null;
-            this.animationStack = null;
-        }
-        else
-        {
-            final ColladaAnimation parentAnimation = this.animationStack.pop();
-            parentAnimation.getAnimations().add(this.animation);
-            this.animation = parentAnimation;
-        }
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a light element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterLight(final Attributes attributes)
-    {
-        this.lightId = attributes.getValue("id");
-        enterElement(ParserMode.LIGHT);
-    }
-
-
-    /**
-     * Enters a directional light element.
-     */
-
-    private void enterDirectional()
-    {
-        this.light = new ColladaDirectionalLight(this.lightId);
-        enterElement(ParserMode.LIGHT_DIRECTIONAL);
-    }
-
-
-    /**
-     * Enters a ambient light element.
-     */
-
-    private void enterAmbient()
-    {
-        this.light = new ColladaAmbientLight(this.lightId);
-        enterElement(ParserMode.LIGHT_AMBIENT);
-    }
-
-
-    /**
-     * Enters a point light element.
-     */
-
-    private void enterPoint()
-    {
-        this.light = new ColladaPointLight(this.lightId);
-        enterElement(ParserMode.LIGHT_POINT);
-    }
-
-
-    /**
-     * Enters a spot light element.
-     */
-
-    private void enterSpot()
-    {
-        this.light = new ColladaSpotLight(this.lightId);
-        enterElement(ParserMode.LIGHT_SPOT);
-    }
-
-
-    /**
-     * Enters a light color element.
-     */
-
-    private void enterLightColor()
-    {
-        this.stringBuilder = new StringBuilder();
-        enterElement(ParserMode.LIGHT_COLOR);
-    }
-
-
-    /**
-     * Leaves a light color element.
-     */
-
-    private void leaveLightColor()
-    {
-        final String[] parts = this.stringBuilder.toString().trim().split(
-                "\\s+");
-        final ColladaColor color = this.light.getColor();
-        color.setRed(Float.parseFloat(parts[0]));
-        color.setGreen(Float.parseFloat(parts[1]));
-        color.setBlue(Float.parseFloat(parts[2]));
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a falloff_angle element.
-     */
-
-    private void enterFalloffAngle()
-    {
-        this.stringBuilder = new StringBuilder();
-        enterElement(ParserMode.FALLOFF_ANGLE);
-    }
-
-
-    /**
-     * Leaves a falloff_angle element.
-     */
-
-    private void leaveFalloffAngle()
-    {
-        final float angle = Float.parseFloat(this.stringBuilder.toString());
-        ((ColladaSpotLight) this.light).setFalloffAngle(angle);
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a light element.
-     */
-
-    private void leaveLight()
-    {
-        if (this.light == null)
-            throw new ParserException("Internal parser error: No light created");
-        this.document.getLibraryLights().add(this.light);
-        this.light = null;
-        this.lightId = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a camera element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterCamera(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        this.camera = new ColladaCamera(id);
-        enterElement(ParserMode.CAMERA);
-    }
-
-
-    /**
-     * Enters perspective element
-     */
-
-    private void enterPerspective()
-    {
-        this.optic = this.perspectiveOptic = new PerspectiveOptic();
-        enterElement(ParserMode.PERSPECTIVE);
-    }
-
-
-    /**
-     * Enters a perspective value element.
-     *
-     * @param mode
-     *            The next parser mode
-     */
-
-    private void enterPerspectiveValue(final ParserMode mode)
-    {
-        this.stringBuilder = new StringBuilder();
-        enterElement(mode);
-    }
-
-
-    /**
-     * Leaves xfov element.
-     */
-
-    private void leaveXfov()
-    {
-        this.perspectiveOptic.setXfov(Float.parseFloat(this.stringBuilder
-                .toString().trim()));
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves yfov element.
-     */
-
-    private void leaveYfov()
-    {
-        this.perspectiveOptic.setYfov(Float.parseFloat(this.stringBuilder
-                .toString().trim()));
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves aspect_ratio element.
-     */
-
-    private void leaveAspectRatio()
-    {
-        this.perspectiveOptic.setAspectRatio(Float
-                .parseFloat(this.stringBuilder.toString().trim()));
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves znear element.
-     */
-
-    private void leaveZnear()
-    {
-        this.perspectiveOptic.setZnear(Float.parseFloat(this.stringBuilder
-                .toString().trim()));
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves zfar element.
-     */
-
-    private void leaveZfar()
-    {
-        this.perspectiveOptic.setZfar(Float.parseFloat(this.stringBuilder
-                .toString().trim()));
-        this.stringBuilder = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves optics element
-     */
-
-    private void leaveOptics()
-    {
-        this.camera.setOptic(this.optic);
-        this.optic = null;
-        this.perspectiveOptic = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a camera element.
-     */
-
-    private void leaveCamera()
-    {
-        this.document.getLibraryCameras().add(this.camera);
-        this.camera = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a visual_scene element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterVisualScene(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        this.visualScene = new VisualScene(id);
-        this.nodeStack = new Stack<Node>();
-        enterElement(ParserMode.VISUAL_SCENE);
-    }
-
-
-    /**
-     * Enters a visual scene node element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterVisualSceneNode(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        this.node = new Node(id);
-        enterElement(ParserMode.VISUAL_SCENE_NODE);
-    }
-
-
-    /**
-     * Enters a node element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterNode(final Attributes attributes)
-    {
-        final String id = attributes.getValue("id");
-        this.nodeStack.push(this.node);
-        this.node = new Node(id);
-        enterElement(ParserMode.NODE);
-    }
-
-
-    /**
-     * Enters a matrix element
-     */
-
-    private void enterMatrix()
-    {
-        this.matrixTransformation = new MatrixTransformation();
-        final float[] values = this.matrixTransformation.getValues();
-        this.chunkFloatReader = new ChunkFloatReader()
-        {
-            private int index = 0;
-
-            @Override
-            protected void valueFound(final float value)
-            {
-                values[this.index++] = value;
-            }
-        };
-        enterElement(ParserMode.MATRIX);
-    }
-
-
-    /**
-     * Leaves a matrix element.
-     */
-
-    private void leaveMatrix()
-    {
-        this.chunkFloatReader.finish();
-        this.chunkFloatReader = null;
-        this.node.getTransformations().add(this.matrixTransformation);
-        this.matrixTransformation = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a translate element
-     */
-
-    private void enterTranslate()
-    {
-        this.translateTransformation = new TranslateTransformation();
-        final float[] values = this.translateTransformation.getValues();
-        this.chunkFloatReader = new ChunkFloatReader()
-        {
-            private int index = 0;
-
-            @Override
-            protected void valueFound(final float value)
-            {
-                values[this.index++] = value;
-            }
-        };
-        enterElement(ParserMode.TRANSLATE);
-    }
-
-
-    /**
-     * Leaves a matrix element.
-     */
-
-    private void leaveTranslate()
-    {
-        this.chunkFloatReader.finish();
-        this.chunkFloatReader = null;
-        this.node.getTransformations().add(this.translateTransformation);
-        this.translateTransformation = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a instance_geometry element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterInstanceGeometry(final Attributes attributes)
-    {
-        final String urlString = attributes.getValue("url");
-        URI url;
-        try
-        {
-            url = new URI(urlString);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(urlString + " is not a valid URI: " + e,
-                    e);
-        }
-        this.instanceGeometry = new InstanceGeometry(url);
-        enterElement(ParserMode.INSTANCE_GEOMETRY);
-    }
-
-
-    /**
-     * Enters a instance_material element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterInstanceMaterial(final Attributes attributes)
-    {
-        final String symbol = attributes.getValue("symbol");
-        final String targetString = attributes.getValue("target");
-        URI target;
-        try
-        {
-            target = new URI(targetString);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(targetString + " is not a valid URI: "
-                    + e, e);
-        }
-        this.instanceMaterial = new InstanceMaterial(symbol, target);
-        enterElement(ParserMode.INSTANCE_MATERIAL);
-    }
-
-
-    /**
-     * Leaves a instance_material element.
-     */
-
-    private void leaveInstanceMaterial()
-    {
-        this.instanceGeometry.getInstanceMaterials().add(this.instanceMaterial);
-        this.instanceMaterial = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a instance_geometry element.
-     */
-
-    private void leaveInstanceGeometry()
-    {
-        this.node.getInstanceGeometries().add(this.instanceGeometry);
-        this.instanceGeometry = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a instance_light element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterInstanceLight(final Attributes attributes)
-    {
-        final String urlString = attributes.getValue("url");
-        URI url;
-        try
-        {
-            url = new URI(urlString);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(urlString + " is not a valid URI: " + e,
-                    e);
-        }
-        this.instanceLight = new InstanceLight(url);
-        enterElement(ParserMode.INSTANCE_LIGHT);
-    }
-
-
-    /**
-     * Leaves a instance_light element.
-     */
-
-    private void leaveInstanceLight()
-    {
-        this.node.getInstanceLights().add(this.instanceLight);
-        this.instanceLight = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a instance_camera element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterInstanceCamera(final Attributes attributes)
-    {
-        final String urlString = attributes.getValue("url");
-        URI url;
-        try
-        {
-            url = new URI(urlString);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(urlString + " is not a valid URI: " + e,
-                    e);
-        }
-        this.instanceCamera = new InstanceCamera(url);
-        enterElement(ParserMode.INSTANCE_CAMERA);
-    }
-
-
-    /**
-     * Leaves a instance_camera element.
-     */
-
-    private void leaveInstanceCamera()
-    {
-        this.node.getInstanceCameras().add(this.instanceCamera);
-        this.instanceCamera = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a node element.
-     */
-
-    private void leaveNode()
-    {
-        final Node parentNode = this.nodeStack.pop();
-        parentNode.getNodes().add(this.node);
-        this.node = parentNode;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a visual scene node element.
-     */
-
-    private void leaveVisualSceneNode()
-    {
-        this.visualScene.getNodes().add(this.node);
-        this.node = null;
-        leaveElement();
-    }
-
-    /**
-     * Leaves a visual_scene element.
-     */
-
-    private void leaveVisualScene()
-    {
-        this.document.getLibraryVisualScenes().add(this.visualScene);
-        this.visualScene = null;
-        this.nodeStack = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Enters a scene element.
-     */
-
-    private void enterScene()
-    {
-        this.scene = new ColladaScene();
-        enterElement(ParserMode.SCENE);
-    }
-
-
-    /**
-     * Enters a instance_visual_scene element.
-     *
-     * @param attributes
-     *            The element attributes
-     */
-
-    private void enterInstanceVisualScene(final Attributes attributes)
-    {
-        final String urlString = attributes.getValue("url");
-        URI url;
-        try
-        {
-            url = new URI(urlString);
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new ParserException(urlString + " is not a valid URI: " + e,
-                    e);
-        }
-        this.scene.setInstanceVisualScene(new InstanceVisualScene(url));
-        enterElement(ParserMode.INSTANCE_VISUAL_SCENE);
-    }
-
-
-    /**
-     * Leaves a scene element,
-     */
-
-    private void leaveScene()
-    {
-        this.document.setScene(this.scene);
-        this.scene = null;
-        leaveElement();
-    }
+    // /**
+    // * Enters a animation element
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterAnimation(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // if (this.animationStack == null)
+    // this.animationStack = new Stack<ColladaAnimation>();
+    // else
+    // this.animationStack.push(this.animation);
+    // this.animation = new ColladaAnimation(id);
+    // enterElement(ParserMode.ANIMATION);
+    // }
+    //
+    //
+    // /**
+    // * Enters a animation data source element
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterAnimationDataSource(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // this.dataSource = new DataSource(id);
+    // enterElement(ParserMode.ANIMATION_DATA_SOURCE);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a animation data source element.
+    // */
+    //
+    // private void leaveAnimationDataSource()
+    // {
+    // this.animation.getSources().add(this.dataSource);
+    // this.dataSource = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a sampler element
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterSampler(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // this.sampler = new ColladaSampler(id);
+    // enterElement(ParserMode.SAMPLER);
+    // }
+    //
+    //
+    // /**
+    // * Enters a channel element
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterChannel(final Attributes attributes)
+    // {
+    // final String sourceStr = attributes.getValue("source");
+    // URI source;
+    // try
+    // {
+    // source = new URI(sourceStr);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(sourceStr + " is not a valid URI: " + e,
+    // e);
+    // }
+    // final String target = attributes.getValue("target");
+    // this.animation.getChannels().add(new Channel(source, target));
+    // enterElement(ParserMode.CHANNEL);
+    // }
+    //
+    //
+    // /**
+    // * Enters sampler input element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterSamplerInput(final Attributes attributes)
+    // {
+    // final Semantic semantic = Semantic.valueOf(attributes
+    // .getValue("semantic"));
+    // final String text = attributes.getValue("source");
+    // URI source;
+    // try
+    // {
+    // source = new URI(text);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(text + " is not a valid URI: " + e, e);
+    // }
+    // final UnsharedInput input = new UnsharedInput(semantic, source);
+    // this.sampler.getInputs().add(input);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a sampler element.
+    // */
+    //
+    // private void leaveSampler()
+    // {
+    // this.animation.getSamplers().add(this.sampler);
+    // this.sampler = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves animation element
+    // */
+    //
+    // private void leaveAnimation()
+    // {
+    // if (this.animationStack.empty())
+    // {
+    // this.document.getLibraryAnimations().add(this.animation);
+    // this.animation = null;
+    // this.animationStack = null;
+    // }
+    // else
+    // {
+    // final ColladaAnimation parentAnimation = this.animationStack.pop();
+    // parentAnimation.getAnimations().add(this.animation);
+    // this.animation = parentAnimation;
+    // }
+    // leaveElement();
+    // }
+
+
+    // /**
+    // * Enters a light element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterLight(final Attributes attributes)
+    // {
+    // this.lightId = attributes.getValue("id");
+    // enterElement(ParserMode.LIGHT);
+    // }
+    //
+    //
+    // /**
+    // * Enters a directional light element.
+    // */
+    //
+    // private void enterDirectional()
+    // {
+    // this.light = new ColladaDirectionalLight(this.lightId);
+    // enterElement(ParserMode.LIGHT_DIRECTIONAL);
+    // }
+    //
+    //
+    // /**
+    // * Enters a ambient light element.
+    // */
+    //
+    // private void enterAmbient()
+    // {
+    // this.light = new ColladaAmbientLight(this.lightId);
+    // enterElement(ParserMode.LIGHT_AMBIENT);
+    // }
+    //
+    //
+    // /**
+    // * Enters a point light element.
+    // */
+    //
+    // private void enterPoint()
+    // {
+    // this.light = new ColladaPointLight(this.lightId);
+    // enterElement(ParserMode.LIGHT_POINT);
+    // }
+    //
+    //
+    // /**
+    // * Enters a spot light element.
+    // */
+    //
+    // private void enterSpot()
+    // {
+    // this.light = new ColladaSpotLight(this.lightId);
+    // enterElement(ParserMode.LIGHT_SPOT);
+    // }
+    //
+    //
+    // /**
+    // * Enters a light color element.
+    // */
+    //
+    // private void enterLightColor()
+    // {
+    // this.stringBuilder = new StringBuilder();
+    // enterElement(ParserMode.LIGHT_COLOR);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a light color element.
+    // */
+    //
+    // private void leaveLightColor()
+    // {
+    // final String[] parts = this.stringBuilder.toString().trim().split(
+    // "\\s+");
+    // final ColladaColor color = this.light.getColor();
+    // color.setRed(Float.parseFloat(parts[0]));
+    // color.setGreen(Float.parseFloat(parts[1]));
+    // color.setBlue(Float.parseFloat(parts[2]));
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a falloff_angle element.
+    // */
+    //
+    // private void enterFalloffAngle()
+    // {
+    // this.stringBuilder = new StringBuilder();
+    // enterElement(ParserMode.FALLOFF_ANGLE);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a falloff_angle element.
+    // */
+    //
+    // private void leaveFalloffAngle()
+    // {
+    // final float angle = Float.parseFloat(this.stringBuilder.toString());
+    // ((ColladaSpotLight) this.light).setFalloffAngle(angle);
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves a light element.
+    // */
+    //
+    // private void leaveLight()
+    // {
+    // if (this.light == null)
+    // throw new ParserException("Internal parser error: No light created");
+    // this.document.getLibraryLights().add(this.light);
+    // this.light = null;
+    // this.lightId = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a camera element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterCamera(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // this.camera = new ColladaCamera(id);
+    // enterElement(ParserMode.CAMERA);
+    // }
+    //
+    //
+    // /**
+    // * Enters perspective element
+    // */
+    //
+    // private void enterPerspective()
+    // {
+    // this.optic = this.perspectiveOptic = new PerspectiveOptic();
+    // enterElement(ParserMode.PERSPECTIVE);
+    // }
+    //
+    //
+    // /**
+    // * Enters a perspective value element.
+    // *
+    // * @param mode
+    // * The next parser mode
+    // */
+    //
+    // private void enterPerspectiveValue(final ParserMode mode)
+    // {
+    // this.stringBuilder = new StringBuilder();
+    // enterElement(mode);
+    // }
+    //
+    //
+    // /**
+    // * Leaves xfov element.
+    // */
+    //
+    // private void leaveXfov()
+    // {
+    // this.perspectiveOptic.setXfov(Float.parseFloat(this.stringBuilder
+    // .toString().trim()));
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves yfov element.
+    // */
+    //
+    // private void leaveYfov()
+    // {
+    // this.perspectiveOptic.setYfov(Float.parseFloat(this.stringBuilder
+    // .toString().trim()));
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves aspect_ratio element.
+    // */
+    //
+    // private void leaveAspectRatio()
+    // {
+    // this.perspectiveOptic.setAspectRatio(Float
+    // .parseFloat(this.stringBuilder.toString().trim()));
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves znear element.
+    // */
+    //
+    // private void leaveZnear()
+    // {
+    // this.perspectiveOptic.setZnear(Float.parseFloat(this.stringBuilder
+    // .toString().trim()));
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves zfar element.
+    // */
+    //
+    // private void leaveZfar()
+    // {
+    // this.perspectiveOptic.setZfar(Float.parseFloat(this.stringBuilder
+    // .toString().trim()));
+    // this.stringBuilder = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves optics element
+    // */
+    //
+    // private void leaveOptics()
+    // {
+    // this.camera.setOptic(this.optic);
+    // this.optic = null;
+    // this.perspectiveOptic = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves a camera element.
+    // */
+    //
+    // private void leaveCamera()
+    // {
+    // this.document.getLibraryCameras().add(this.camera);
+    // this.camera = null;
+    // leaveElement();
+    // }
+
+
+    // /**
+    // * Enters a visual_scene element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterVisualScene(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // this.visualScene = new VisualScene(id);
+    // this.nodeStack = new Stack<Node>();
+    // enterElement(ParserMode.VISUAL_SCENE);
+    // }
+    //
+    //
+    // /**
+    // * Enters a visual scene node element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterVisualSceneNode(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // this.node = new Node(id);
+    // enterElement(ParserMode.VISUAL_SCENE_NODE);
+    // }
+    //
+    //
+    // /**
+    // * Enters a node element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterNode(final Attributes attributes)
+    // {
+    // final String id = attributes.getValue("id");
+    // this.nodeStack.push(this.node);
+    // this.node = new Node(id);
+    // enterElement(ParserMode.NODE);
+    // }
+    //
+    //
+    // /**
+    // * Enters a matrix element
+    // */
+    //
+    // private void enterMatrix()
+    // {
+    // this.matrixTransformation = new MatrixTransformation();
+    // final float[] values = this.matrixTransformation.getValues();
+    // this.chunkFloatReader = new ChunkFloatReader()
+    // {
+    // private int index = 0;
+    //
+    // @Override
+    // protected void valueFound(final float value)
+    // {
+    // values[this.index++] = value;
+    // }
+    // };
+    // enterElement(ParserMode.MATRIX);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a matrix element.
+    // */
+    //
+    // private void leaveMatrix()
+    // {
+    // this.chunkFloatReader.finish();
+    // this.chunkFloatReader = null;
+    // this.node.getTransformations().add(this.matrixTransformation);
+    // this.matrixTransformation = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a translate element
+    // */
+    //
+    // private void enterTranslate()
+    // {
+    // this.translateTransformation = new TranslateTransformation();
+    // final float[] values = this.translateTransformation.getValues();
+    // this.chunkFloatReader = new ChunkFloatReader()
+    // {
+    // private int index = 0;
+    //
+    // @Override
+    // protected void valueFound(final float value)
+    // {
+    // values[this.index++] = value;
+    // }
+    // };
+    // enterElement(ParserMode.TRANSLATE);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a matrix element.
+    // */
+    //
+    // private void leaveTranslate()
+    // {
+    // this.chunkFloatReader.finish();
+    // this.chunkFloatReader = null;
+    // this.node.getTransformations().add(this.translateTransformation);
+    // this.translateTransformation = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a instance_geometry element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterInstanceGeometry(final Attributes attributes)
+    // {
+    // final String urlString = attributes.getValue("url");
+    // URI url;
+    // try
+    // {
+    // url = new URI(urlString);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(urlString + " is not a valid URI: " + e,
+    // e);
+    // }
+    // this.instanceGeometry = new InstanceGeometry(url);
+    // enterElement(ParserMode.INSTANCE_GEOMETRY);
+    // }
+    //
+    //
+    // /**
+    // * Enters a instance_material element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterInstanceMaterial(final Attributes attributes)
+    // {
+    // final String symbol = attributes.getValue("symbol");
+    // final String targetString = attributes.getValue("target");
+    // URI target;
+    // try
+    // {
+    // target = new URI(targetString);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(targetString + " is not a valid URI: "
+    // + e, e);
+    // }
+    // this.instanceMaterial = new InstanceMaterial(symbol, target);
+    // enterElement(ParserMode.INSTANCE_MATERIAL);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a instance_material element.
+    // */
+    //
+    // private void leaveInstanceMaterial()
+    // {
+    // this.instanceGeometry.getInstanceMaterials().add(this.instanceMaterial);
+    // this.instanceMaterial = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves a instance_geometry element.
+    // */
+    //
+    // private void leaveInstanceGeometry()
+    // {
+    // this.node.getInstanceGeometries().add(this.instanceGeometry);
+    // this.instanceGeometry = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a instance_light element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterInstanceLight(final Attributes attributes)
+    // {
+    // final String urlString = attributes.getValue("url");
+    // URI url;
+    // try
+    // {
+    // url = new URI(urlString);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(urlString + " is not a valid URI: " + e,
+    // e);
+    // }
+    // this.instanceLight = new InstanceLight(url);
+    // enterElement(ParserMode.INSTANCE_LIGHT);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a instance_light element.
+    // */
+    //
+    // private void leaveInstanceLight()
+    // {
+    // this.node.getInstanceLights().add(this.instanceLight);
+    // this.instanceLight = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a instance_camera element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterInstanceCamera(final Attributes attributes)
+    // {
+    // final String urlString = attributes.getValue("url");
+    // URI url;
+    // try
+    // {
+    // url = new URI(urlString);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(urlString + " is not a valid URI: " + e,
+    // e);
+    // }
+    // this.instanceCamera = new InstanceCamera(url);
+    // enterElement(ParserMode.INSTANCE_CAMERA);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a instance_camera element.
+    // */
+    //
+    // private void leaveInstanceCamera()
+    // {
+    // this.node.getInstanceCameras().add(this.instanceCamera);
+    // this.instanceCamera = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves a node element.
+    // */
+    //
+    // private void leaveNode()
+    // {
+    // final Node parentNode = this.nodeStack.pop();
+    // parentNode.getNodes().add(this.node);
+    // this.node = parentNode;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Leaves a visual scene node element.
+    // */
+    //
+    // private void leaveVisualSceneNode()
+    // {
+    // this.visualScene.getNodes().add(this.node);
+    // this.node = null;
+    // leaveElement();
+    // }
+    //
+    // /**
+    // * Leaves a visual_scene element.
+    // */
+    //
+    // private void leaveVisualScene()
+    // {
+    // this.document.getLibraryVisualScenes().add(this.visualScene);
+    // this.visualScene = null;
+    // this.nodeStack = null;
+    // leaveElement();
+    // }
+    //
+    //
+    // /**
+    // * Enters a scene element.
+    // */
+    //
+    // private void enterScene()
+    // {
+    // this.scene = new ColladaScene();
+    // enterElement(ParserMode.SCENE);
+    // }
+    //
+    //
+    // /**
+    // * Enters a instance_visual_scene element.
+    // *
+    // * @param attributes
+    // * The element attributes
+    // */
+    //
+    // private void enterInstanceVisualScene(final Attributes attributes)
+    // {
+    // final String urlString = attributes.getValue("url");
+    // URI url;
+    // try
+    // {
+    // url = new URI(urlString);
+    // }
+    // catch (final URISyntaxException e)
+    // {
+    // throw new ParserException(urlString + " is not a valid URI: " + e,
+    // e);
+    // }
+    // this.scene.setInstanceVisualScene(new InstanceVisualScene(url));
+    // enterElement(ParserMode.INSTANCE_VISUAL_SCENE);
+    // }
+    //
+    //
+    // /**
+    // * Leaves a scene element,
+    // */
+    //
+    // private void leaveScene()
+    // {
+    // this.document.setScene(this.scene);
+    // this.scene = null;
+    // leaveElement();
+    // }
 }

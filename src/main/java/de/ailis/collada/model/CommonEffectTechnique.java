@@ -12,7 +12,8 @@ package de.ailis.collada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class CommonEffectTechnique extends Element implements Identifiable,
+public final class CommonEffectTechnique extends Element implements
+    Identifiable,
         AssetElement, ScopeIdentifiable
 {
     /** Serial version UID. */
@@ -24,17 +25,23 @@ public final class CommonEffectTechnique extends Element implements Identifiable
     /** The scope ID */
     private String sid;
 
+    /** The shader. */
+    private Shader shader;
+
 
     /**
      * Constructor.
      *
      * @param sid
      *            The scope ID. Must not be null.
+     * @param shader
+     *            The shader. Must noot be null.
      */
 
-    public CommonEffectTechnique(final String sid)
+    public CommonEffectTechnique(final String sid, final Shader shader)
     {
         setSid(sid);
+        setShader(shader);
     }
 
 
@@ -93,6 +100,7 @@ public final class CommonEffectTechnique extends Element implements Identifiable
         this.sid = sid;
     }
 
+
     /**
      * Returns the asset-management information.
      *
@@ -116,5 +124,37 @@ public final class CommonEffectTechnique extends Element implements Identifiable
     public void setAsset(final Asset asset)
     {
         this.asset = asset;
+    }
+
+
+    /**
+     * Returns the shader.
+     *
+     * @return The shader. Never null.
+     */
+
+    public Shader getShader()
+    {
+        return this.shader;
+    }
+
+
+    /**
+     * Sets the shader.
+     *
+     * @param shader
+     *            The shader to set. Must not be null.
+     */
+
+    public void setShader(final Shader shader)
+    {
+        if (shader == null)
+            throw new IllegalArgumentException("shader must not be null");
+        if (shader != this.shader)
+        {
+            if (this.shader != null) removeChild(this.shader);
+            this.shader = shader;
+            addChild(shader);
+        }
     }
 }

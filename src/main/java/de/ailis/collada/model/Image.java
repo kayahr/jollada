@@ -157,6 +157,11 @@ public final class Image extends Element implements Identifiable,
 
     public void setSource(final ImageSource source)
     {
-        this.source = source;
+        if (source != this.source)
+        {
+            if (this.source != null) removeChild(this.source);
+            this.source = source;
+            if (source != null) addChild(source);
+        }
     }
 }

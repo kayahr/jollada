@@ -7,7 +7,7 @@ package de.ailis.collada.reader;
 
 
 /**
- * This class parses float values from a number of character array chunks
+ * This class parses double values from a number of character array chunks
  * as returned by the SAX parser for example.
  *
  * @author Klaus Reimer (k@ailis.de)
@@ -15,14 +15,14 @@ package de.ailis.collada.reader;
 
 public abstract class ChunkFloatReader
 {
-    /** The string builder used for building the float strings */
+    /** The string builder used for building the double strings */
     private final StringBuilder builder = new StringBuilder();
 
 
     /**
-     * Adds a chunk. For each detected (and complete) float in the chunk it
+     * Adds a chunk. For each detected (and complete) double in the chunk it
      * calls the valueFound method. You have to call the finish method after
-     * adding all chunks to make sure that the last float is correctly found.
+     * adding all chunks to make sure that the last double is correctly found.
      *
      * @param ch
      *            The character array
@@ -50,9 +50,9 @@ public abstract class ChunkFloatReader
 
 
     /**
-     * Adds a chunk. For each detected (and complete) float in the chunk it
+     * Adds a chunk. For each detected (and complete) double in the chunk it
      * calls the valueFound method. You have to call the finish method after
-     * adding all chunks to make sure that the last float is correctly found.
+     * adding all chunks to make sure that the last double is correctly found.
      *
      * @param chunk
      *            The chunk to add
@@ -66,7 +66,7 @@ public abstract class ChunkFloatReader
 
     /**
      * Finishes processing chunks. Call this after you have added all chunks
-     * to make sure that the last float is correctly processed.
+     * to make sure that the last double is correctly processed.
      */
 
     public void finish()
@@ -80,11 +80,11 @@ public abstract class ChunkFloatReader
 
 
     /**
-     * Called when a float value has been found.
+     * Called when a double value has been found.
      *
      * @param value
-     *            The found float value
+     *            The found double value
      */
 
-    protected abstract void valueFound(float value);
+    protected abstract void valueFound(double value);
 }
