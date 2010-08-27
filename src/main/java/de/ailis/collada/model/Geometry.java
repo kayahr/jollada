@@ -131,7 +131,12 @@ public final class Geometry extends Element implements Identifiable,
         if (geometric == null)
             throw new IllegalArgumentException(
                 "geometric element must not be null");
-        this.geometric = geometric;
+        if (geometric != this.geometric)
+        {
+            if (this.geometric != null) removeChild(this.geometric);
+            this.geometric = geometric;
+            addChild(geometric);
+        }
     }
 
 

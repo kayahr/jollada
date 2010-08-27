@@ -297,4 +297,29 @@
     </light>
   </library_lights>
   
+  <library_geometries id="geometry-lib-1" name="Geometry Library 1">
+    <geometry id="geometry-1" name="Geometry 1">
+      <mesh>
+        <source id="geometry-1-source-1" name="Geometry 1 Source 1">
+          <float_array id="geometry-1-floats" name="Geometry 1 Floats" count="6" digits="7" magnitude="39">
+            0.1 0.2 0.3 0.4 0.5 0.6
+          </float_array>
+          <technique_common>
+            <accessor source="#geometry-1-floats" count="6" offset="0" stride="1">
+              <param sid="geometry-1-floats-param" name="V" type="float" semantic="SEMANTIC"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="geometry-1-vertices" name="Geometry 1 Vertices">
+          <input source="#geometry-1-source" semantic="POSITION" />
+        </vertices>
+        <triangles material="material-1" name="Triangles" count="3">
+          <p>
+            0 1 2 3 4 5
+          </p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  
 </COLLADA>

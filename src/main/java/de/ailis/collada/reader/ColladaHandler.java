@@ -762,6 +762,11 @@ public class ColladaHandler extends DefaultHandler
                 leaveGeometry();
                 break;
 
+            case LIBRARY_GEOMETRIES:
+                leaveLibraryGeometries();
+                break;
+
+
             // case ANIMATION_DATA_SOURCE:
             // leaveAnimationDataSource();
             // break;
@@ -1726,7 +1731,7 @@ public class ColladaHandler extends DefaultHandler
     {
         this.geometryBuilder = new GeometryBuilder();
         this.geometryBuilder.setId(attributes.getValue("id"));
-        this.geometryBuilder.setId(attributes.getValue("name"));
+        this.geometryBuilder.setName(attributes.getValue("name"));
         enterElement(ParserMode.GEOMETRY);
     }
 
@@ -2149,6 +2154,18 @@ public class ColladaHandler extends DefaultHandler
     {
         this.geometryLibrary.getGeometries().add(this.geometryBuilder.build());
         this.geometryBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_geometries element.
+     */
+
+    private void leaveLibraryGeometries()
+    {
+        this.document.getGeometryLibraries().add(this.geometryLibrary);
+        this.geometryLibrary = null;
         leaveElement();
     }
 

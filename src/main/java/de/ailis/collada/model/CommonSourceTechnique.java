@@ -57,6 +57,11 @@ public final class CommonSourceTechnique extends Element
     {
         if (accessor == null)
             throw new IllegalArgumentException("accessor must be set");
-        this.accessor = accessor;
+        if (accessor != this.accessor)
+        {
+            if (this.accessor != null) removeChild(this.accessor);
+            this.accessor = accessor;
+            addChild(accessor);
+        }
     }
 }

@@ -19,7 +19,9 @@ import java.net.URI;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.ailis.collada.model.Accessor;
 import de.ailis.collada.model.Ambient;
+import de.ailis.collada.model.Array;
 import de.ailis.collada.model.Camera;
 import de.ailis.collada.model.CameraLibraries;
 import de.ailis.collada.model.CameraLibrary;
@@ -30,6 +32,12 @@ import de.ailis.collada.model.CommonLightTechnique;
 import de.ailis.collada.model.CommonNewParam;
 import de.ailis.collada.model.CommonNewParams;
 import de.ailis.collada.model.CommonOpticsTechnique;
+import de.ailis.collada.model.CommonSourceTechnique;
+import de.ailis.collada.model.DataFlowParam;
+import de.ailis.collada.model.DataFlowParams;
+import de.ailis.collada.model.DataFlowSource;
+import de.ailis.collada.model.DataFlowSources;
+import de.ailis.collada.model.DataType;
 import de.ailis.collada.model.Directional;
 import de.ailis.collada.model.Document;
 import de.ailis.collada.model.Effect;
@@ -40,9 +48,15 @@ import de.ailis.collada.model.EffectProfile;
 import de.ailis.collada.model.EffectProfiles;
 import de.ailis.collada.model.Effects;
 import de.ailis.collada.model.Filter;
+import de.ailis.collada.model.FloatArray;
 import de.ailis.collada.model.FloatAttribute;
 import de.ailis.collada.model.FloatParam;
 import de.ailis.collada.model.FloatValue;
+import de.ailis.collada.model.Geometric;
+import de.ailis.collada.model.Geometries;
+import de.ailis.collada.model.Geometry;
+import de.ailis.collada.model.GeometryLibraries;
+import de.ailis.collada.model.GeometryLibrary;
 import de.ailis.collada.model.Image;
 import de.ailis.collada.model.ImageLibraries;
 import de.ailis.collada.model.ImageLibrary;
@@ -57,6 +71,7 @@ import de.ailis.collada.model.Material;
 import de.ailis.collada.model.MaterialLibraries;
 import de.ailis.collada.model.MaterialLibrary;
 import de.ailis.collada.model.Materials;
+import de.ailis.collada.model.Mesh;
 import de.ailis.collada.model.Optics;
 import de.ailis.collada.model.Orthographic;
 import de.ailis.collada.model.Param;
@@ -70,6 +85,9 @@ import de.ailis.collada.model.Sampler2DParam;
 import de.ailis.collada.model.Shader;
 import de.ailis.collada.model.Spot;
 import de.ailis.collada.model.Texture;
+import de.ailis.collada.model.UnsharedInput;
+import de.ailis.collada.model.UnsharedInputs;
+import de.ailis.collada.model.Vertices;
 import de.ailis.collada.model.Wrap;
 import de.ailis.collada.reader.ColladaReader;
 
@@ -573,5 +591,214 @@ public class FullTest
         assertEquals(0.5, value.getValue(), 0.001);
         assertSame(doc, value.getDocument());
         assertSame(spot, value.getParent());
+    }
+
+
+    /**
+     * Tests the geometry libraries.
+     *
+     * @throws Exception
+     *             When an error occurs.
+     */
+
+    @Test
+    public void testGeometryLibraries() throws Exception
+    {
+        // Check geometry libraries
+        final GeometryLibraries geometryLibs = doc.getGeometryLibraries();
+        assertEquals(1, geometryLibs.size());
+
+        // Check geometry library
+        final GeometryLibrary geometryLib = geometryLibs.get(0);
+        assertEquals("geometry-lib-1", geometryLib.getId());
+        assertEquals("Geometry Library 1", geometryLib.getName());
+        assertSame(doc, geometryLib.getDocument());
+        assertSame(doc, geometryLib.getParent());
+
+        // Check geometries
+        final Geometries geometries = geometryLib.getGeometries();
+        assertEquals(1, geometries.size());
+
+        // Check geometry
+        final Geometry geometry = geometries.get(0);
+        assertEquals("geometry-1", geometry.getId());
+        assertEquals("Geometry 1", geometry.getName());
+        assertSame(doc, geometry.getDocument());
+        assertSame(geometryLib, geometry.getParent());
+
+        // Check geometric
+        final Geometric geometric = geometry.getGeometric();
+        assertSame(doc, geometric.getDocument());
+        assertSame(geometry, geometric.getParent());
+
+        // Check mesh
+        final Mesh mesh = (Mesh) geometric;
+
+        // Check sources
+        final DataFlowSources sources = mesh.getSources();
+        assertEquals(1, sources.size());
+
+        // Check data flow source
+        final DataFlowSource source = sources.get(0);
+        assertEquals("geometry-1-source-1", source.getId());
+        assertEquals("Geometry 1 Source 1", source.getName());
+        assertSame(doc, source.getDocument());
+        assertSame(mesh, source.getParent());
+
+        // Check array
+        final Array array = source.getArray();
+        assertEquals("geometry-1-floats", array.getId());
+        assertEquals("Geometry 1 Floats", array.getName());
+        assertSame(doc, array.getDocument());
+        assertSame(source, array.getParent());
+        assertEquals(6, array.getCount());
+
+        // Check float array
+        final FloatArray floatArray = (FloatArray) array;
+        assertEquals(7, floatArray.getDigits());
+        assertEquals(39, floatArray.getMagnitude());
+        assertEquals(0.1, floatArray.getValue(0), 0.001);
+        assertEquals(0.2, floatArray.getValue(1), 0.001);
+        assertEquals(0.3, floatArray.getValue(2), 0.001);
+        assertEquals(0.4, floatArray.getValue(3), 0.001);
+        assertEquals(0.5, floatArray.getValue(4), 0.001);
+        assertEquals(0.6, floatArray.getValue(5), 0.001);
+
+        // Check common technique
+        final CommonSourceTechnique technique = source.getCommonTechnique();
+        assertSame(doc, technique.getDocument());
+        assertSame(source, technique.getParent());
+
+        // Check accessor
+        final Accessor accessor = technique.getAccessor();
+        assertSame(doc, accessor.getDocument());
+        assertSame(technique, accessor.getParent());
+        assertEquals(6, accessor.getCount());
+        assertEquals(0, accessor.getOffset());
+        assertEquals(1, accessor.getStride());
+        assertEquals(new URI("#geometry-1-floats"), accessor.getSource());
+
+        // Check accessor params
+        final DataFlowParams params = accessor.getParams();
+        assertEquals(1, params.size());
+
+        // Check accessor param
+        final DataFlowParam param = params.get(0);
+        assertSame(doc, param.getDocument());
+        assertSame(accessor, param.getParent());
+        assertEquals("SEMANTIC", param.getSemantic());
+        assertEquals("V", param.getName());
+        assertEquals("geometry-1-floats-param", param.getSid());
+        assertEquals(DataType.FLOAT, param.getType());
+
+        // Check vertices
+        final Vertices vertices = mesh.getVertices();
+        assertSame(doc, vertices.getDocument());
+        assertSame(mesh, vertices.getParent());
+        assertEquals("geometry-1-vertices", vertices.getId());
+        assertEquals("Geometry 1 Vertices", vertices.getName());
+
+        // Check vertex inputs
+        final UnsharedInputs inputs = vertices.getInputs();
+        assertEquals(1, inputs.size());
+
+        // Check vertex input
+        final UnsharedInput input = inputs.get(0);
+        assertSame(doc, input.getDocument());
+        assertSame(vertices, input.getParent());
+        assertEquals("POSITION", input.getSemantic());
+        assertEquals(new URI("#geometry-1-source"), input.getSource());
+
+
+
+//        // Check common technique
+//        final CommonLightTechnique technique = light.getCommonTechnique();
+//        assertSame(doc, technique.getDocument());
+//        assertSame(light, technique.getParent());
+//
+//        // Check light source
+//        final LightSource lightSource = technique.getLightSource();
+//        assertSame(doc, lightSource.getDocument());
+//        assertSame(technique, lightSource.getParent());
+//
+//        // Check ambient light source
+//        final Ambient ambient = (Ambient) lightSource;
+//        RGBColor color = ambient.getColor();
+//        assertEquals(0.1, color.getRed(), 0.001);
+//        assertEquals(0.2, color.getGreen(), 0.001);
+//        assertEquals(0.3, color.getBlue(), 0.001);
+//        assertEquals("light-1-color", color.getSid());
+//        assertSame(doc, color.getDocument());
+//        assertSame(ambient, color.getParent());
+//
+//        // Check directional light source
+//        final Directional directional = (Directional) lights.get(1).getCommonTechnique().getLightSource();
+//        color = directional.getColor();
+//        assertEquals(0.4, color.getRed(), 0.001);
+//        assertEquals(0.5, color.getGreen(), 0.001);
+//        assertEquals(0.6, color.getBlue(), 0.001);
+//        assertEquals("light-2-color", color.getSid());
+//        assertSame(doc, color.getDocument());
+//        assertSame(directional, color.getParent());
+//
+//        // Check point light source
+//        final Point point = (Point) lights.get(2).getCommonTechnique().getLightSource();
+//        color = point.getColor();
+//        assertEquals(0.7, color.getRed(), 0.001);
+//        assertEquals(0.8, color.getGreen(), 0.001);
+//        assertEquals(0.9, color.getBlue(), 0.001);
+//        assertEquals("light-3-color", color.getSid());
+//        assertSame(doc, color.getDocument());
+//        assertSame(point, color.getParent());
+//        FloatValue value = point.getConstantAttenuation();
+//        assertEquals("light-3-constant", value.getSid());
+//        assertEquals(0.6, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(point, value.getParent());
+//        value = point.getLinearAttenuation();
+//        assertEquals("light-3-linear", value.getSid());
+//        assertEquals(0.5, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(point, value.getParent());
+//        value = point.getQuadraticAttenuation();
+//        assertEquals("light-3-quadratic", value.getSid());
+//        assertEquals(0.9, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(point, value.getParent());
+//
+//        // Check point light source
+//        final Spot spot = (Spot) lightLibs.get(1).getLights().get(0).getCommonTechnique().getLightSource();
+//        color = spot.getColor();
+//        assertEquals(0.1, color.getRed(), 0.001);
+//        assertEquals(0.3, color.getGreen(), 0.001);
+//        assertEquals(0.9, color.getBlue(), 0.001);
+//        assertEquals("light-4-color", color.getSid());
+//        assertSame(doc, color.getDocument());
+//        assertSame(spot, color.getParent());
+//        value = spot.getConstantAttenuation();
+//        assertEquals("light-4-constant", value.getSid());
+//        assertEquals(0.1, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(spot, value.getParent());
+//        value = spot.getLinearAttenuation();
+//        assertEquals("light-4-linear", value.getSid());
+//        assertEquals(0.2, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(spot, value.getParent());
+//        value = spot.getQuadraticAttenuation();
+//        assertEquals("light-4-quadratic", value.getSid());
+//        assertEquals(0.3, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(spot, value.getParent());
+//        value = spot.getFalloffAngle();
+//        assertEquals("light-4-angle", value.getSid());
+//        assertEquals(0.4, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(spot, value.getParent());
+//        value = spot.getFalloffExponent();
+//        assertEquals("light-4-exponent", value.getSid());
+//        assertEquals(0.5, value.getValue(), 0.001);
+//        assertSame(doc, value.getDocument());
+//        assertSame(spot, value.getParent());
     }
 }
