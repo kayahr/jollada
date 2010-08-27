@@ -45,6 +45,10 @@ public final class Document extends Element implements AssetElement
     private final CameraLibraries cameraLibraries =
             new CameraLibraries(this);
 
+    /** The list of camera libraries. */
+    private final LightLibraries lightLibraries =
+            new LightLibraries(this);
+
     /** The list of geometry libraries. */
     private final GeometryLibraries geometryLibraries = new GeometryLibraries(
         this);
@@ -218,6 +222,18 @@ public final class Document extends Element implements AssetElement
     public CameraLibraries getCameraLibraries()
     {
         return this.cameraLibraries;
+    }
+
+
+    /**
+     * Returns the list of light libraries.
+     *
+     * @return The list of light libraries. Never null. May be empty.
+     */
+
+    public LightLibraries getLightLibraries()
+    {
+        return this.lightLibraries;
     }
 
 

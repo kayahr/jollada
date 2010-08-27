@@ -254,4 +254,47 @@
       </optics>
     </camera>
   </library_cameras>  
+  
+  <library_lights id="light-lib-1" name="Light Library 1">
+    <light id="light-1" name="Light 1">
+      <technique_common>
+        <ambient>
+          <color sid="light-1-color">0.1 0.2 0.3</color>
+        </ambient>
+      </technique_common>
+    </light>
+    <light id="light-2" name="Light 2">
+      <technique_common>
+        <directional>
+          <color sid="light-2-color">0.4 0.5 0.6</color>
+        </directional>
+      </technique_common>
+    </light>
+    <light id="light-3" name="Light 3">
+      <technique_common>
+        <point>
+          <color sid="light-3-color">0.7 0.8 0.9</color>
+          <constant_attenuation sid="light-3-constant">0.6</constant_attenuation>
+          <linear_attenuation sid="light-3-linear">0.5</linear_attenuation>
+          <quadratic_attenuation sid="light-3-quadratic">0.9</quadratic_attenuation>
+        </point>
+      </technique_common>
+    </light>   
+  </library_lights>
+  
+  <library_lights>
+    <light id="light-4" name="Light 4">
+      <technique_common>
+        <spot>
+          <color sid="light-4-color">0.1 0.3 0.9</color>
+          <constant_attenuation sid="light-4-constant">0.1</constant_attenuation>
+          <linear_attenuation sid="light-4-linear">0.2</linear_attenuation>
+          <quadratic_attenuation sid="light-4-quadratic">0.3</quadratic_attenuation>
+          <falloff_angle sid="light-4-angle">0.4</falloff_angle>
+          <falloff_exponent sid="light-4-exponent">0.5</falloff_exponent>
+        </spot>
+      </technique_common>
+    </light>
+  </library_lights>
+  
 </COLLADA>

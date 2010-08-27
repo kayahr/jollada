@@ -19,15 +19,18 @@ import java.net.URI;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.ailis.collada.model.Ambient;
 import de.ailis.collada.model.Camera;
 import de.ailis.collada.model.CameraLibraries;
 import de.ailis.collada.model.CameraLibrary;
 import de.ailis.collada.model.Cameras;
 import de.ailis.collada.model.CommonEffectProfile;
 import de.ailis.collada.model.CommonEffectTechnique;
+import de.ailis.collada.model.CommonLightTechnique;
 import de.ailis.collada.model.CommonNewParam;
 import de.ailis.collada.model.CommonNewParams;
 import de.ailis.collada.model.CommonOpticsTechnique;
+import de.ailis.collada.model.Directional;
 import de.ailis.collada.model.Document;
 import de.ailis.collada.model.Effect;
 import de.ailis.collada.model.EffectInstance;
@@ -45,6 +48,11 @@ import de.ailis.collada.model.ImageLibraries;
 import de.ailis.collada.model.ImageLibrary;
 import de.ailis.collada.model.ImageSource;
 import de.ailis.collada.model.Images;
+import de.ailis.collada.model.Light;
+import de.ailis.collada.model.LightLibraries;
+import de.ailis.collada.model.LightLibrary;
+import de.ailis.collada.model.LightSource;
+import de.ailis.collada.model.Lights;
 import de.ailis.collada.model.Material;
 import de.ailis.collada.model.MaterialLibraries;
 import de.ailis.collada.model.MaterialLibrary;
@@ -54,10 +62,13 @@ import de.ailis.collada.model.Orthographic;
 import de.ailis.collada.model.Param;
 import de.ailis.collada.model.Perspective;
 import de.ailis.collada.model.PhongShader;
+import de.ailis.collada.model.Point;
 import de.ailis.collada.model.Projection;
 import de.ailis.collada.model.RGBAColor;
+import de.ailis.collada.model.RGBColor;
 import de.ailis.collada.model.Sampler2DParam;
 import de.ailis.collada.model.Shader;
+import de.ailis.collada.model.Spot;
 import de.ailis.collada.model.Texture;
 import de.ailis.collada.model.Wrap;
 import de.ailis.collada.reader.ColladaReader;
@@ -438,5 +449,129 @@ public class FullTest
         assertEquals(1.5, value.getValue(), 0.001);
         assertSame(doc, value.getDocument());
         assertSame(perspecive, value.getParent());
+    }
+
+
+    /**
+     * Tests the light libraries.
+     *
+     * @throws Exception
+     *             When an error occurs.
+     */
+
+    @Test
+    public void testLightLibraries() throws Exception
+    {
+        // Check camera libraries
+        final LightLibraries lightLibs = doc.getLightLibraries();
+        assertEquals(2, lightLibs.size());
+
+        // Check camera library
+        final LightLibrary lightLib = lightLibs.get(0);
+        assertEquals("light-lib-1", lightLib.getId());
+        assertEquals("Light Library 1", lightLib.getName());
+        assertSame(doc, lightLib.getDocument());
+        assertSame(doc, lightLib.getParent());
+
+        // Check cameras
+        final Lights lights = lightLib.getLights();
+        assertEquals(3, lights.size());
+
+        // Check light
+        final Light light = lights.get(0);
+        assertEquals("light-1", light.getId());
+        assertEquals("Light 1", light.getName());
+        assertSame(doc, light.getDocument());
+        assertSame(lightLib, light.getParent());
+
+        // Check common technique
+        final CommonLightTechnique technique = light.getCommonTechnique();
+        assertSame(doc, technique.getDocument());
+        assertSame(light, technique.getParent());
+
+        // Check light source
+        final LightSource lightSource = technique.getLightSource();
+        assertSame(doc, lightSource.getDocument());
+        assertSame(technique, lightSource.getParent());
+
+        // Check ambient light source
+        final Ambient ambient = (Ambient) lightSource;
+        RGBColor color = ambient.getColor();
+        assertEquals(0.1, color.getRed(), 0.001);
+        assertEquals(0.2, color.getGreen(), 0.001);
+        assertEquals(0.3, color.getBlue(), 0.001);
+        assertEquals("light-1-color", color.getSid());
+        assertSame(doc, color.getDocument());
+        assertSame(ambient, color.getParent());
+
+        // Check directional light source
+        final Directional directional = (Directional) lights.get(1).getCommonTechnique().getLightSource();
+        color = directional.getColor();
+        assertEquals(0.4, color.getRed(), 0.001);
+        assertEquals(0.5, color.getGreen(), 0.001);
+        assertEquals(0.6, color.getBlue(), 0.001);
+        assertEquals("light-2-color", color.getSid());
+        assertSame(doc, color.getDocument());
+        assertSame(directional, color.getParent());
+
+        // Check point light source
+        final Point point = (Point) lights.get(2).getCommonTechnique().getLightSource();
+        color = point.getColor();
+        assertEquals(0.7, color.getRed(), 0.001);
+        assertEquals(0.8, color.getGreen(), 0.001);
+        assertEquals(0.9, color.getBlue(), 0.001);
+        assertEquals("light-3-color", color.getSid());
+        assertSame(doc, color.getDocument());
+        assertSame(point, color.getParent());
+        FloatValue value = point.getConstantAttenuation();
+        assertEquals("light-3-constant", value.getSid());
+        assertEquals(0.6, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(point, value.getParent());
+        value = point.getLinearAttenuation();
+        assertEquals("light-3-linear", value.getSid());
+        assertEquals(0.5, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(point, value.getParent());
+        value = point.getQuadraticAttenuation();
+        assertEquals("light-3-quadratic", value.getSid());
+        assertEquals(0.9, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(point, value.getParent());
+
+        // Check point light source
+        final Spot spot = (Spot) lightLibs.get(1).getLights().get(0).getCommonTechnique().getLightSource();
+        color = spot.getColor();
+        assertEquals(0.1, color.getRed(), 0.001);
+        assertEquals(0.3, color.getGreen(), 0.001);
+        assertEquals(0.9, color.getBlue(), 0.001);
+        assertEquals("light-4-color", color.getSid());
+        assertSame(doc, color.getDocument());
+        assertSame(spot, color.getParent());
+        value = spot.getConstantAttenuation();
+        assertEquals("light-4-constant", value.getSid());
+        assertEquals(0.1, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(spot, value.getParent());
+        value = spot.getLinearAttenuation();
+        assertEquals("light-4-linear", value.getSid());
+        assertEquals(0.2, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(spot, value.getParent());
+        value = spot.getQuadraticAttenuation();
+        assertEquals("light-4-quadratic", value.getSid());
+        assertEquals(0.3, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(spot, value.getParent());
+        value = spot.getFalloffAngle();
+        assertEquals("light-4-angle", value.getSid());
+        assertEquals(0.4, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(spot, value.getParent());
+        value = spot.getFalloffExponent();
+        assertEquals("light-4-exponent", value.getSid());
+        assertEquals(0.5, value.getValue(), 0.001);
+        assertSame(doc, value.getDocument());
+        assertSame(spot, value.getParent());
     }
 }

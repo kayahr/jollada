@@ -7,37 +7,37 @@ package de.ailis.collada.model;
 
 
 /**
- * A camera.
+ * A light.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class Camera extends Element implements Identifiable,
+public final class Light extends Element implements Identifiable,
         AssetElement
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The camera name. */
+    /** The light name. */
     private String name;
 
     /** Asset-management information. */
     private Asset asset;
 
-    /** The camera optics. */
-    private Optics optics;
+    /** The common technique. */
+    private CommonLightTechnique commonTechnique;
 
 
     /**
      * Constructor.
      *
-     * @param optics
-     *            The camera optics. Must not be null.
+     * @param commonTechnique
+     *            The common light technique. Must not be null.
      */
 
-    public Camera(final Optics optics)
+    public Light(final CommonLightTechnique commonTechnique)
     {
-        setOptics(optics);
+        setCommonTechnique(commonTechnique);
     }
 
 
@@ -120,32 +120,35 @@ public final class Camera extends Element implements Identifiable,
 
 
     /**
-     * Returns the camera optics.
+     * Returns the common technique.
      *
-     * @return The camera optics. Never null.
+     * @return The common technique. Never null.
      */
 
-    public Optics getOptics()
+    public CommonLightTechnique getCommonTechnique()
     {
-        return this.optics;
+        return this.commonTechnique;
     }
 
 
     /**
-     * Sets the camera optics.
+     * Sets the common technique.
      *
-     * @param optics
-     *            The camera optics to set. Must not be null.
+     * @param commonTechnique
+     *            The common technique to set. Must not be null.
      */
 
-    public void setOptics(final Optics optics)
+    public void setCommonTechnique(final CommonLightTechnique commonTechnique)
     {
-        if (optics == null) throw new IllegalArgumentException("optics must not be null");
-        if (optics != this.optics)
+        if (commonTechnique == null)
+            throw new IllegalArgumentException(
+                "commonTechnique must not be null");
+        if (commonTechnique != this.commonTechnique)
         {
-            if (this.optics != null) removeChild(this.optics);
-            this.optics = optics;
-            addChild(optics);
+            if (this.commonTechnique != null)
+                removeChild(this.commonTechnique);
+            this.commonTechnique = commonTechnique;
+            addChild(commonTechnique);
         }
     }
 }

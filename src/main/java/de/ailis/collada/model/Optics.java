@@ -17,7 +17,7 @@ public final class Optics extends Element
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The scene name. */
+    /** The common technique. */
     private CommonOpticsTechnique commonTechnique;
 
 

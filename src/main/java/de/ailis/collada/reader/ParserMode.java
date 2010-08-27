@@ -208,8 +208,20 @@ enum ParserMode {
     /** Parser is in light color element */
     LIGHT_COLOR("color"),
 
-    /** Parser is in falloff angle element */
+    /** Parser is in falloff_angle element */
     FALLOFF_ANGLE("falloff_angle"),
+
+    /** Parser is in falloff_exponent element */
+    FALLOFF_EXPONENT("falloff_exponent"),
+
+    /** Parser is in constant_attenuation element */
+    CONSTANT_ATTENUATION("constant_attenuation"),
+
+    /** Parser is in linear_attenuation element */
+    LINEAR_ATTENUATION("linear_attenuation"),
+
+    /** Parser is in quadratic_attenuation element */
+    QUADRATIC_ATTENUATION("quadratic_attenuation"),
 
     /** Parser is in library cameras element */
     LIBRARY_CAMERAS("library_cameras"),

@@ -22,6 +22,8 @@ import de.ailis.collada.builders.CommonNewParamBuilder;
 import de.ailis.collada.builders.EffectInstanceBuilder;
 import de.ailis.collada.builders.GeometryBuilder;
 import de.ailis.collada.builders.ImageSourceBuilder;
+import de.ailis.collada.builders.LightBuilder;
+import de.ailis.collada.builders.LightSourceBuilder;
 import de.ailis.collada.builders.MaterialBuilder;
 import de.ailis.collada.builders.MeshBuilder;
 import de.ailis.collada.builders.OrthographicBuilder;
@@ -47,6 +49,7 @@ import de.ailis.collada.model.Geometry;
 import de.ailis.collada.model.GeometryLibrary;
 import de.ailis.collada.model.Image;
 import de.ailis.collada.model.ImageLibrary;
+import de.ailis.collada.model.LightLibrary;
 import de.ailis.collada.model.MaterialLibrary;
 import de.ailis.collada.model.NameArray;
 import de.ailis.collada.model.Param;
@@ -54,6 +57,7 @@ import de.ailis.collada.model.PhongShader;
 import de.ailis.collada.model.PrimitiveData;
 import de.ailis.collada.model.Primitives;
 import de.ailis.collada.model.RGBAColor;
+import de.ailis.collada.model.RGBColor;
 import de.ailis.collada.model.Sampler2DParam;
 import de.ailis.collada.model.Shader;
 import de.ailis.collada.model.SharedInput;
@@ -266,6 +270,14 @@ public class ColladaHandler extends DefaultHandler
 
     private OrthographicBuilder orthographicBuilder;
 
+    private LightLibrary lightLibrary;
+
+    private LightBuilder lightBuilder;
+
+    private LightSourceBuilder lightSourceBuilder;
+
+    private RGBColor rgbColor;
+
 
     /**
      * Constructs a new parser.
@@ -312,10 +324,10 @@ public class ColladaHandler extends DefaultHandler
                         enterLibraryGeometries(attributes);
                     else if (localName.equals("library_cameras"))
                         enterLibraryCameras(attributes);
+                    else if (localName.equals("library_lights"))
+                        enterLibraryLights(attributes);
                     else if (localName.equals("library_animations"))
                         enterElement(ParserMode.LIBRARY_ANIMATIONS);
-                    else if (localName.equals("library_lights"))
-                        enterElement(ParserMode.LIBRARY_LIGHTS);
                     else if (localName.equals("library_visual_scenes"))
                         enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
                     // else if (localName.equals("scene")) enterScene();
@@ -507,38 +519,63 @@ public class ColladaHandler extends DefaultHandler
                 // if (localName.equals("input")) enterSamplerInput(attributes);
                 // break;
                 //
-                // case LIBRARY_LIGHTS:
-                // if (localName.equals("light")) enterLight(attributes);
-                // break;
-                //
-                // case LIGHT:
-                // if (localName.equals("technique_common"))
-                // enterElement(ParserMode.LIGHT_TECHNIQUE_COMMON);
-                // break;
-                //
-                // case LIGHT_TECHNIQUE_COMMON:
-                // if (localName.equals("directional"))
-                // enterDirectional();
-                // else if (localName.equals("point"))
-                // enterPoint();
-                // else if (localName.equals("ambient"))
-                // enterAmbient();
-                // else if (localName.equals("spot")) enterSpot();
-                // break;
-                //
-                // case LIGHT_AMBIENT:
-                // case LIGHT_POINT:
-                // case LIGHT_DIRECTIONAL:
-                // if (localName.equals("color")) enterLightColor();
-                // break;
-                //
-                // case LIGHT_SPOT:
-                // if (localName.equals("color"))
-                // enterLightColor();
-                // else if (localName.equals("falloff_angle"))
-                // enterFalloffAngle();
-                // break;
-                //
+                case LIBRARY_LIGHTS:
+                    if (localName.equals("light")) enterLight(attributes);
+                    break;
+
+                case LIGHT:
+                    if (localName.equals("technique_common"))
+                        enterElement(ParserMode.LIGHT_TECHNIQUE_COMMON);
+                    break;
+
+                case LIGHT_TECHNIQUE_COMMON:
+                    if (localName.equals("directional"))
+                        enterLightSource(ParserMode.LIGHT_DIRECTIONAL);
+                    else if (localName.equals("point"))
+                        enterLightSource(ParserMode.LIGHT_POINT);
+                    else if (localName.equals("ambient"))
+                        enterLightSource(ParserMode.LIGHT_AMBIENT);
+                    else if (localName.equals("spot"))
+                        enterLightSource(ParserMode.LIGHT_SPOT);
+                    break;
+
+                case LIGHT_AMBIENT:
+                case LIGHT_DIRECTIONAL:
+                    if (localName.equals("color")) enterLightColor(attributes);
+                    break;
+
+                case LIGHT_POINT:
+                    if (localName.equals("color"))
+                        enterLightColor(attributes);
+                    else if (localName.equals("constant_attenuation"))
+                        enterLightFloatValue(attributes,
+                            ParserMode.CONSTANT_ATTENUATION);
+                    else if (localName.equals("linear_attenuation"))
+                        enterLightFloatValue(attributes,
+                            ParserMode.LINEAR_ATTENUATION);
+                    else if (localName.equals("quadratic_attenuation"))
+                        enterLightFloatValue(attributes,
+                            ParserMode.QUADRATIC_ATTENUATION);
+                    break;
+
+                case LIGHT_SPOT:
+                    if (localName.equals("color"))
+                        enterLightColor(attributes);
+                    else if (localName.equals("falloff_angle"))
+                        enterLightFloatValue(attributes, ParserMode.FALLOFF_ANGLE);
+                    else if (localName.equals("falloff_exponent"))
+                        enterLightFloatValue(attributes, ParserMode.FALLOFF_EXPONENT);
+                    else if (localName.equals("constant_attenuation"))
+                        enterLightFloatValue(attributes,
+                            ParserMode.CONSTANT_ATTENUATION);
+                    else if (localName.equals("linear_attenuation"))
+                        enterLightFloatValue(attributes,
+                            ParserMode.LINEAR_ATTENUATION);
+                    else if (localName.equals("quadratic_attenuation"))
+                        enterLightFloatValue(attributes,
+                            ParserMode.QUADRATIC_ATTENUATION);
+                    break;
+
                 case LIBRARY_CAMERAS:
                     if (localName.equals("camera")) enterCamera(attributes);
                     break;
@@ -800,18 +837,54 @@ public class ColladaHandler extends DefaultHandler
             // leaveAnimation();
             // break;
             //
-            // case LIGHT_COLOR:
-            // leaveLightColor();
-            // break;
-            //
-            // case FALLOFF_ANGLE:
-            // leaveFalloffAngle();
-            // break;
-            //
-            // case LIGHT:
-            // leaveLight();
-            // break;
-            //
+            case LIGHT_COLOR:
+                leaveLightColor();
+                break;
+
+            case FALLOFF_ANGLE:
+                leaveFalloffAngle();
+                break;
+
+            case FALLOFF_EXPONENT:
+                leaveFalloffExponent();
+                break;
+
+            case CONSTANT_ATTENUATION:
+                leaveConstantAttenuation();
+                break;
+
+            case LINEAR_ATTENUATION:
+                leaveLinearAttenuation();
+                break;
+
+            case QUADRATIC_ATTENUATION:
+                leaveQuadraticAttenuation();
+                break;
+
+            case LIGHT_AMBIENT:
+                leaveAmbient();
+                break;
+
+            case LIGHT_DIRECTIONAL:
+                leaveDirectional();
+                break;
+
+            case LIGHT_POINT:
+                leavePoint();
+                break;
+
+            case LIGHT_SPOT:
+                leaveSpot();
+                break;
+
+            case LIGHT:
+                leaveLight();
+                break;
+
+            case LIBRARY_LIGHTS:
+                leaveLibraryLights();
+                break;
+
             case XFOV:
                 leaveXfov();
                 break;
@@ -924,6 +997,10 @@ public class ColladaHandler extends DefaultHandler
             case FLOAT_PARAM:
             case IMAGE_INIT_FROM_REF:
             case FALLOFF_ANGLE:
+            case FALLOFF_EXPONENT:
+            case CONSTANT_ATTENUATION:
+            case LINEAR_ATTENUATION:
+            case QUADRATIC_ATTENUATION:
             case SAMPLER2D_MAGFILTER:
             case SAMPLER2D_SOURCE:
             case SAMPLER2D_MINFILTER:
@@ -2287,131 +2364,251 @@ public class ColladaHandler extends DefaultHandler
     // }
 
 
-    // /**
-    // * Enters a light element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterLight(final Attributes attributes)
-    // {
-    // this.lightId = attributes.getValue("id");
-    // enterElement(ParserMode.LIGHT);
-    // }
-    //
-    //
-    // /**
-    // * Enters a directional light element.
-    // */
-    //
-    // private void enterDirectional()
-    // {
-    // this.light = new ColladaDirectionalLight(this.lightId);
-    // enterElement(ParserMode.LIGHT_DIRECTIONAL);
-    // }
-    //
-    //
-    // /**
-    // * Enters a ambient light element.
-    // */
-    //
-    // private void enterAmbient()
-    // {
-    // this.light = new ColladaAmbientLight(this.lightId);
-    // enterElement(ParserMode.LIGHT_AMBIENT);
-    // }
-    //
-    //
-    // /**
-    // * Enters a point light element.
-    // */
-    //
-    // private void enterPoint()
-    // {
-    // this.light = new ColladaPointLight(this.lightId);
-    // enterElement(ParserMode.LIGHT_POINT);
-    // }
-    //
-    //
-    // /**
-    // * Enters a spot light element.
-    // */
-    //
-    // private void enterSpot()
-    // {
-    // this.light = new ColladaSpotLight(this.lightId);
-    // enterElement(ParserMode.LIGHT_SPOT);
-    // }
-    //
-    //
-    // /**
-    // * Enters a light color element.
-    // */
-    //
-    // private void enterLightColor()
-    // {
-    // this.stringBuilder = new StringBuilder();
-    // enterElement(ParserMode.LIGHT_COLOR);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a light color element.
-    // */
-    //
-    // private void leaveLightColor()
-    // {
-    // final String[] parts = this.stringBuilder.toString().trim().split(
-    // "\\s+");
-    // final ColladaColor color = this.light.getColor();
-    // color.setRed(Float.parseFloat(parts[0]));
-    // color.setGreen(Float.parseFloat(parts[1]));
-    // color.setBlue(Float.parseFloat(parts[2]));
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Enters a falloff_angle element.
-    // */
-    //
-    // private void enterFalloffAngle()
-    // {
-    // this.stringBuilder = new StringBuilder();
-    // enterElement(ParserMode.FALLOFF_ANGLE);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a falloff_angle element.
-    // */
-    //
-    // private void leaveFalloffAngle()
-    // {
-    // final float angle = Float.parseFloat(this.stringBuilder.toString());
-    // ((ColladaSpotLight) this.light).setFalloffAngle(angle);
-    // this.stringBuilder = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves a light element.
-    // */
-    //
-    // private void leaveLight()
-    // {
-    // if (this.light == null)
-    // throw new ParserException("Internal parser error: No light created");
-    // this.document.getLibraryLights().add(this.light);
-    // this.light = null;
-    // this.lightId = null;
-    // leaveElement();
-    // }
-    //
-    //
+    /**
+     * Enters a library_light element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryLights(final Attributes attributes)
+    {
+        this.lightLibrary = new LightLibrary();
+        this.lightLibrary.setName(attributes.getValue("name"));
+        this.lightLibrary.setId(attributes.getValue("id"));
+        enterElement(ParserMode.LIBRARY_LIGHTS);
+    }
+
+
+    /**
+     * Enters a light element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLight(final Attributes attributes)
+    {
+        this.lightBuilder = new LightBuilder();
+        this.lightBuilder.setId(attributes.getValue("id"));
+        this.lightBuilder.setName(attributes.getValue("name"));
+        enterElement(ParserMode.LIGHT);
+    }
+
+
+    /**
+     * Enters a directional light element.
+     *
+     * @param mode
+     *            The light source mode.
+     */
+
+    private void enterLightSource(final ParserMode mode)
+    {
+        this.lightSourceBuilder = new LightSourceBuilder();
+        enterElement(mode);
+    }
+
+
+    /**
+     * Enters a light color element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLightColor(final Attributes attributes)
+    {
+        this.rgbColor = new RGBColor();
+        this.rgbColor.setSid(attributes.getValue("sid"));
+        this.stringBuilder = new StringBuilder();
+        enterElement(ParserMode.LIGHT_COLOR);
+    }
+
+
+    /**
+     * Leaves a light color element.
+     */
+
+    private void leaveLightColor()
+    {
+        final String[] parts = this.stringBuilder.toString().trim().split(
+            "\\s+");
+        this.rgbColor.setRed(Double.parseDouble(parts[0]));
+        this.rgbColor.setGreen(Double.parseDouble(parts[1]));
+        this.rgbColor.setBlue(Double.parseDouble(parts[2]));
+        this.stringBuilder = null;
+        this.lightSourceBuilder.setColor(this.rgbColor);
+        this.rgbColor = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a light float value.
+     *
+     * @param attributes
+     *            The element attributes.
+     * @param mode
+     *            The parser mode.
+     */
+
+    private void enterLightFloatValue(final Attributes attributes, final ParserMode mode)
+    {
+        this.floatValue = new FloatValue(0);
+        this.floatValue.setSid(attributes.getValue("sid"));
+        this.stringBuilder = new StringBuilder();
+        enterElement(mode);
+    }
+
+
+    /**
+     * Leaves a falloff_angle element.
+     */
+
+    private void leaveFalloffAngle()
+    {
+        final double value = Double.parseDouble(this.stringBuilder.toString());
+        this.floatValue.setValue(value);
+        this.lightSourceBuilder.setFalloffAngle(this.floatValue);
+        this.floatValue = null;
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a falloff_exponent element.
+     */
+
+    private void leaveFalloffExponent()
+    {
+        final double value = Double.parseDouble(this.stringBuilder.toString());
+        this.floatValue.setValue(value);
+        this.lightSourceBuilder.setFalloffExponent(this.floatValue);
+        this.floatValue = null;
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a constant_attenuation element.
+     */
+
+    private void leaveConstantAttenuation()
+    {
+        final double value = Double.parseDouble(this.stringBuilder.toString());
+        this.floatValue.setValue(value);
+        this.lightSourceBuilder.setConstantAttenuation(this.floatValue);
+        this.floatValue = null;
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a linear_attenuation element.
+     */
+
+    private void leaveLinearAttenuation()
+    {
+        final double value = Double.parseDouble(this.stringBuilder.toString());
+        this.floatValue.setValue(value);
+        this.lightSourceBuilder.setLinearAttenuation(this.floatValue);
+        this.floatValue = null;
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a quadratic_attenuation element.
+     */
+
+    private void leaveQuadraticAttenuation()
+    {
+        final double value = Double.parseDouble(this.stringBuilder.toString());
+        this.floatValue.setValue(value);
+        this.lightSourceBuilder.setQuadraticAttenuation(this.floatValue);
+        this.floatValue = null;
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves an ambient element.
+     */
+
+    private void leaveAmbient()
+    {
+        this.lightBuilder
+                .setLightSource(this.lightSourceBuilder.buildAmbient());
+        this.lightSourceBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a directional element.
+     */
+
+    private void leaveDirectional()
+    {
+        this.lightBuilder.setLightSource(this.lightSourceBuilder
+                .buildDirectional());
+        this.lightSourceBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a point element.
+     */
+
+    private void leavePoint()
+    {
+        this.lightBuilder.setLightSource(this.lightSourceBuilder.buildPoint());
+        this.lightSourceBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a spot element.
+     */
+
+    private void leaveSpot()
+    {
+        this.lightBuilder.setLightSource(this.lightSourceBuilder.buildSpot());
+        this.lightSourceBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a light element.
+     */
+
+    private void leaveLight()
+    {
+        this.lightLibrary.getLights().add(this.lightBuilder.build());
+        this.lightBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_lights element.
+     */
+
+    private void leaveLibraryLights()
+    {
+        this.document.getLightLibraries().add(this.lightLibrary);
+        this.lightLibrary = null;
+        leaveElement();
+    }
 
 
     /**
