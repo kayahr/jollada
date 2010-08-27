@@ -45,7 +45,6 @@ import de.ailis.collada.model.FloatArray;
 import de.ailis.collada.model.FloatAttribute;
 import de.ailis.collada.model.FloatParam;
 import de.ailis.collada.model.FloatValue;
-import de.ailis.collada.model.Geometry;
 import de.ailis.collada.model.GeometryLibrary;
 import de.ailis.collada.model.Image;
 import de.ailis.collada.model.ImageLibrary;
@@ -55,17 +54,14 @@ import de.ailis.collada.model.NameArray;
 import de.ailis.collada.model.Param;
 import de.ailis.collada.model.PhongShader;
 import de.ailis.collada.model.PrimitiveData;
-import de.ailis.collada.model.Primitives;
 import de.ailis.collada.model.RGBAColor;
 import de.ailis.collada.model.RGBColor;
 import de.ailis.collada.model.Sampler2DParam;
 import de.ailis.collada.model.Shader;
 import de.ailis.collada.model.SharedInput;
 import de.ailis.collada.model.Texture;
-import de.ailis.collada.model.Triangles;
 import de.ailis.collada.model.UnsharedInput;
 import de.ailis.collada.model.Vertices;
-import de.ailis.collada.model.VisualScene;
 import de.ailis.collada.model.Wrap;
 
 
@@ -108,26 +104,6 @@ public class ColladaHandler extends DefaultHandler
     /** The current color or texture */
     private ColorAttribute colorOrTexture;
 
-    /** The current geometry id */
-    private String geometryId;
-
-    //
-    // /** The current mesh */
-    // private ColladaMesh mesh;
-
-    /** The current geometry */
-    private Geometry geometry;
-
-    //
-    // /** The current data source */
-    // private DataFlowSource dataSource;
-    //
-    // /** The current sampler */
-    // private ColladaSampler sampler;
-    //
-    // /** The current data array */
-    // private DataArray dataArray;
-
     /** The chunk float reader */
     private ChunkFloatReader chunkFloatReader;
 
@@ -140,142 +116,103 @@ public class ColladaHandler extends DefaultHandler
     /** The current vertices */
     private Vertices vertices;
 
-    //
-    // /** The current polygons */
-    // private Polygons polygons;
-
-    /** The current primitives */
-    private Primitives primitives;
-
     /** The current polygons index */
     private int polygonsIndex;
 
     /** The current polygon indices */
     private int[][] polygonsIndices;
 
-    /** The current triangles */
-    private Triangles triangles;
-
     /** The int array builder */
     private List<Integer> intArrayBuilder;
-
-    /** The current light id */
-    private String lightId;
-
-    //
-    // /** The current light */
-    // private ColladaLight light;
-    //
-    // /** The current camera */
-    // private ColladaCamera camera;
-    //
-    // /** The current optic */
-    // private Optic optic;
-    //
-    // /** The current perspective optic */
-    // private PerspectiveOptic perspectiveOptic;
-
-    /** The current visual scene */
-    private VisualScene visualScene;
-
-    //
-    // /** The node stack */
-    // private Stack<Node> nodeStack;
-    //
-    // /** The current node */
-    // private Node node;
 
     /** The current accessor */
     private Accessor accessor;
 
-    //
-    // /** The animation stack */
-    // private Stack<ColladaAnimation> animationStack;
-    //
-    // /** The current animation */
-    // private ColladaAnimation animation;
-    //
-    // /** The current matrix transformation */
-    // private MatrixTransformation matrixTransformation;
-    //
-    // /** The current translate transformation */
-    // private TranslateTransformation translateTransformation;
-    //
-    // /** The current instance geometry */
-    // private InstanceGeometry instanceGeometry;
-    //
-    // /** The current instance material */
-    // private InstanceMaterial instanceMaterial;
-    //
-    // /** The current instance geometry */
-    // private InstanceLight instanceLight;
-    //
-    // /** The current instance camera */
-    // private InstanceCamera instanceCamera;
-    //
-    // /** The current scene */
-    // private ColladaScene scene;
-
-    /** The current parameter id */
-    private String paramId;
-
     /** The current profile param */
     private Param profileParam;
 
+    /** The current image library. */
     private ImageLibrary imageLibrary;
 
+    /** The current material library. */
     private MaterialLibrary materialLibrary;
 
+    /** The current material builder. */
     private MaterialBuilder materialBuilder;
 
+    /** The current effect instance builder. */
     private EffectInstanceBuilder effectInstanceBuilder;
 
+    /** The current effect profile builder. */
     private CommonEffectProfileBuilder commonEffectProfileBuilder;
 
+    /** The current new_param builder. */
     private CommonNewParamBuilder commonNewParamBuilder;
 
+    /** The current RGBA color. */
     private RGBAColor rgbaColor;
 
+    /** The current float value. */
     private FloatValue floatValue;
 
+    /** The current float attrib. */
     private FloatAttribute floatAttrib;
 
+    /** The current effect library. */
     private EffectLibrary effectLibrary;
 
+    /** The current geometry library. */
     private GeometryLibrary geometryLibrary;
 
+    /** The current geometry builder. */
     private GeometryBuilder geometryBuilder;
 
+    /** The current mesh builder. */
     private MeshBuilder meshBuilder;
 
+    /** The current float array. */
     private FloatArray floatArray;
 
+    /** The current name array. */
     private NameArray nameArray;
 
+    /** The current triangles builder. */
     private TrianglesBuilder trianglesBuilder;
 
+    /** The current data source. */
     private DataFlowSource dataSource;
 
+    /** The current image source builder. */
     private ImageSourceBuilder imageSourceBuilder;
 
-    private CommonEffectTechniqueBuilder commonTechniqueBuilder;
+    /** The current common effect technique builder. */
+    private CommonEffectTechniqueBuilder commonEffectTechniqueBuilder;
 
+    /** The current camera builder. */
     private CameraBuilder cameraBuilder;
 
+    /** The current perspective builder. */
     private PerspectiveBuilder perspectiveBuilder;
 
+    /** The current projection builder. */
     private ProjectionBuilder projectionBuilder;
 
+    /** The current camera library. */
     private CameraLibrary cameraLibrary;
 
+    /** The current orthographic builder. */
     private OrthographicBuilder orthographicBuilder;
 
+    /** The current light library. */
     private LightLibrary lightLibrary;
 
+    /** The current light builder. */
     private LightBuilder lightBuilder;
 
+    /** Ther current light source builder. */
     private LightSourceBuilder lightSourceBuilder;
 
+    /** The current RGB color. */
     private RGBColor rgbColor;
 
 
@@ -1374,7 +1311,6 @@ public class ColladaHandler extends DefaultHandler
     private void enterSampler2DParam()
     {
         this.profileParam = new Sampler2DParam();
-        this.paramId = null;
         enterElement(ParserMode.SAMPLER2D);
     }
 
@@ -1522,9 +1458,9 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterTechniqueCommon(final Attributes attributes)
     {
-        this.commonTechniqueBuilder = new CommonEffectTechniqueBuilder();
-        this.commonTechniqueBuilder.setSid(attributes.getValue("sid"));
-        this.commonTechniqueBuilder.setId(attributes.getValue("id"));
+        this.commonEffectTechniqueBuilder = new CommonEffectTechniqueBuilder();
+        this.commonEffectTechniqueBuilder.setSid(attributes.getValue("sid"));
+        this.commonEffectTechniqueBuilder.setId(attributes.getValue("id"));
         enterElement(ParserMode.TECHNIQUE_COMMON);
     }
 
@@ -1708,7 +1644,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void leavePhong()
     {
-        this.commonTechniqueBuilder.setShader(this.phong);
+        this.commonEffectTechniqueBuilder.setShader(this.phong);
         this.shading = this.phong = null;
         leaveElement();
     }
@@ -1721,8 +1657,8 @@ public class ColladaHandler extends DefaultHandler
     private void leaveTechniqueCommon()
     {
         this.commonEffectProfileBuilder
-                .setTechnique(this.commonTechniqueBuilder.build());
-        this.commonTechniqueBuilder = null;
+                .setTechnique(this.commonEffectTechniqueBuilder.build());
+        this.commonEffectTechniqueBuilder = null;
         leaveElement();
     }
 
