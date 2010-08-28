@@ -24,7 +24,7 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
     private String name;
 
     /** The data type. */
-    private DataType type;
+    private String type;
 
     /** The user-defined meaning of the parameter. */
     private String semantic;
@@ -37,7 +37,7 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      *            The data type. Must not be null.
      */
 
-    public DataFlowParam(final DataType type)
+    public DataFlowParam(final String type)
     {
         setType(type);
     }
@@ -101,7 +101,7 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      * @return The data type. Never null.
      */
 
-    public DataType getType()
+    public String getType()
     {
         return this.type;
     }
@@ -114,7 +114,7 @@ public final class DataFlowParam extends Element implements ScopeIdentifiable
      *            The data type to set. Must not be null.
      */
 
-    public void setType(final DataType type)
+    public void setType(final String type)
     {
         if (type == null)
             throw new IllegalArgumentException("type must not be null");

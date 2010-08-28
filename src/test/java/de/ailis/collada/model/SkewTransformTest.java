@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.ailis.gramath.ImmutableVector3f;
+import de.ailis.gramath.ImmutableVector3d;
 
 
 /**
@@ -77,7 +77,7 @@ public class SkewTransformTest
     {
         final SkewTransform transform = new SkewTransform();
         assertTrue(transform.getRotationAxis().isNull());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
         transform.setRotationAxis(translation);
         assertEquals(translation.getX(), transform.getRotationAxis().getX(),
             0.0001f);
@@ -108,7 +108,7 @@ public class SkewTransformTest
     {
         final SkewTransform transform = new SkewTransform();
         assertTrue(transform.getTranslationAxis().isNull());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
         transform.setTranslationAxis(translation);
         assertEquals(translation.getX(), transform.getTranslationAxis().getX(),
             0.0001f);

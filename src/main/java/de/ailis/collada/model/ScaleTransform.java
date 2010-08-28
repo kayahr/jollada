@@ -5,8 +5,8 @@
 
 package de.ailis.collada.model;
 
-import de.ailis.gramath.MutableVector3f;
-import de.ailis.gramath.Vector3f;
+import de.ailis.gramath.MutableVector3d;
+import de.ailis.gramath.Vector3d;
 
 
 /**
@@ -21,7 +21,7 @@ public final class ScaleTransform extends Transformation
     private static final long serialVersionUID = 1L;
 
     /** The rotation axis. */
-    private final MutableVector3f scaling = new MutableVector3f();
+    private final MutableVector3d scaling = new MutableVector3d();
 
 
     /**
@@ -31,7 +31,7 @@ public final class ScaleTransform extends Transformation
      *            The scaling. Must not be null.
      */
 
-    public void setScaling(final Vector3f scaling)
+    public void setScaling(final Vector3d scaling)
     {
         if (scaling == null)
             throw new IllegalArgumentException("scaling must not be null");
@@ -45,7 +45,7 @@ public final class ScaleTransform extends Transformation
      * @return The scaling. Never null.
      */
 
-    public MutableVector3f getScaling()
+    public MutableVector3d getScaling()
     {
         return this.scaling;
     }

@@ -274,8 +274,20 @@ enum ParserMode {
     /** Parser is in node element */
     NODE("node"),
 
+    /** Parser is in lookat element */
+    LOOKAT("lookat"),
+
     /** Parser is in matrix element */
     MATRIX("matrix"),
+
+    /** Parser is in rotate element */
+    ROTATE("rotate"),
+
+    /** Parser is in scale element */
+    SCALE("scale"),
+
+    /** Parser is in skew element */
+    SKEW("skew"),
 
     /** Parser is in translate element */
     TRANSLATE("translate"),
@@ -285,6 +297,9 @@ enum ParserMode {
 
     /** Parser is in bind_material element */
     BIND_MATERIAL("bind_material"),
+
+    /** Parser is in bind_material param element */
+    BIND_MATERIAL_PARAM("param"),
 
     /** Parser is in bind_material technique_common element */
     BIND_MATERIAL_TECHNIQUE_COMMON("technique_common"),

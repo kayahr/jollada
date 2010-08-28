@@ -324,4 +324,40 @@
     </geometry>
   </library_geometries>
   
+  <library_visual_scenes id="visual-scene-lib-1" name="Visual Scene Lib 1">
+    <visual_scene id="visual-scene-1" name="Visual Scene 1">
+      <node id="node-1" name="Node 1" sid="node-a" type="NODE" layer="l1  lay2">
+        <lookat sid="node-1-lookat">1 2 3 4 5 6 7 8 9</lookat>
+        <matrix sid="node-1-matrix">
+          0 1 2 3
+          4 5 6 7
+          8 9 10 11
+          12 13 14 15
+        </matrix>
+        <rotate sid="node-1-rotate">1 2 3 4</rotate>
+        <scale sid="node-1-scale">4 5 6</scale>
+        <skew sid="node-1-skew">1 2 3 4 5 6 7</skew>
+        <translate sid="node-1-translate">1 2 3</translate>        
+        <instance_camera url="#camera-1" name="Camera" sid="camera" />
+        <instance_geometry url="#geometry-1" sid="geometry" name="Geometry">
+          <bind_material>
+            <param sid="windAmount" semantic="WINDSPEED" type="float3_type" name="Wind Amount" />
+            <technique_common>
+              <instance_material symbol="leaf" target="MidsummerLeaf01" name="Leaf Material" sid="leaf-material" />
+              <instance_material symbol="RedMat" target="beechBark" name="RedMat Material" sid="redmat-material">
+                <bind semantic="LIGHTPOS0" target="LightNode/translate" />
+                <bind_vertex_input semantic="TEXCOORD0" input_semantic="TEXCOORD" input_set="2" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <instance_light url="#light-1" name="Light" sid="light" />
+        <node>          
+        </node>
+        <node>          
+        </node>
+      </node>      
+    </visual_scene>
+  </library_visual_scenes>
+  
 </COLLADA>

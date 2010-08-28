@@ -31,38 +31,55 @@ import de.ailis.collada.builders.PerspectiveBuilder;
 import de.ailis.collada.builders.ProjectionBuilder;
 import de.ailis.collada.builders.TrianglesBuilder;
 import de.ailis.collada.model.Accessor;
+import de.ailis.collada.model.CameraInstance;
 import de.ailis.collada.model.CameraLibrary;
 import de.ailis.collada.model.ColorAttribute;
 import de.ailis.collada.model.CommonSourceTechnique;
 import de.ailis.collada.model.DataFlowParam;
+import de.ailis.collada.model.DataFlowParams;
 import de.ailis.collada.model.DataFlowSource;
-import de.ailis.collada.model.DataType;
 import de.ailis.collada.model.Document;
 import de.ailis.collada.model.Effect;
 import de.ailis.collada.model.EffectLibrary;
+import de.ailis.collada.model.Element;
 import de.ailis.collada.model.Filter;
 import de.ailis.collada.model.FloatArray;
 import de.ailis.collada.model.FloatAttribute;
 import de.ailis.collada.model.FloatParam;
 import de.ailis.collada.model.FloatValue;
+import de.ailis.collada.model.GeometryInstance;
 import de.ailis.collada.model.GeometryLibrary;
 import de.ailis.collada.model.Image;
 import de.ailis.collada.model.ImageLibrary;
+import de.ailis.collada.model.LightInstance;
 import de.ailis.collada.model.LightLibrary;
+import de.ailis.collada.model.LookAtTransform;
+import de.ailis.collada.model.MaterialInstance;
 import de.ailis.collada.model.MaterialLibrary;
+import de.ailis.collada.model.MatrixTransform;
 import de.ailis.collada.model.NameArray;
+import de.ailis.collada.model.Node;
+import de.ailis.collada.model.NodeType;
 import de.ailis.collada.model.Param;
 import de.ailis.collada.model.PhongShader;
 import de.ailis.collada.model.PrimitiveData;
 import de.ailis.collada.model.RGBAColor;
 import de.ailis.collada.model.RGBColor;
+import de.ailis.collada.model.RotateTransform;
 import de.ailis.collada.model.Sampler2DParam;
+import de.ailis.collada.model.ScaleTransform;
 import de.ailis.collada.model.Shader;
 import de.ailis.collada.model.SharedInput;
+import de.ailis.collada.model.SkewTransform;
 import de.ailis.collada.model.Texture;
+import de.ailis.collada.model.TranslateTransform;
 import de.ailis.collada.model.UnsharedInput;
 import de.ailis.collada.model.Vertices;
+import de.ailis.collada.model.VisualScene;
+import de.ailis.collada.model.VisualSceneLibrary;
 import de.ailis.collada.model.Wrap;
+import de.ailis.gramath.MutableMatrix4d;
+import de.ailis.gramath.MutableVector3d;
 
 
 /**
@@ -215,6 +232,21 @@ public class ColladaHandler extends DefaultHandler
     /** The current RGB color. */
     private RGBColor rgbColor;
 
+    /** The current visual scene library. */
+    private VisualSceneLibrary visualSceneLibrary;
+
+    /** The current visual scene. */
+    private VisualScene visualScene;
+
+    /** The current scene node. */
+    private Node node;
+
+    /** The current geometry instance. */
+    private GeometryInstance geometryInstance;
+
+    /** The current material instance. */
+    private MaterialInstance materialInstance;
+
 
     /**
      * Constructs a new parser.
@@ -263,10 +295,10 @@ public class ColladaHandler extends DefaultHandler
                         enterLibraryCameras(attributes);
                     else if (localName.equals("library_lights"))
                         enterLibraryLights(attributes);
+                    else if (localName.equals("library_visual_scenes"))
+                        enterLibraryVisualScenes(attributes);
                     else if (localName.equals("library_animations"))
                         enterElement(ParserMode.LIBRARY_ANIMATIONS);
-                    else if (localName.equals("library_visual_scenes"))
-                        enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
                     // else if (localName.equals("scene")) enterScene();
                     break;
 
@@ -499,9 +531,11 @@ public class ColladaHandler extends DefaultHandler
                     if (localName.equals("color"))
                         enterLightColor(attributes);
                     else if (localName.equals("falloff_angle"))
-                        enterLightFloatValue(attributes, ParserMode.FALLOFF_ANGLE);
+                        enterLightFloatValue(attributes,
+                            ParserMode.FALLOFF_ANGLE);
                     else if (localName.equals("falloff_exponent"))
-                        enterLightFloatValue(attributes, ParserMode.FALLOFF_EXPONENT);
+                        enterLightFloatValue(attributes,
+                            ParserMode.FALLOFF_EXPONENT);
                     else if (localName.equals("constant_attenuation"))
                         enterLightFloatValue(attributes,
                             ParserMode.CONSTANT_ATTENUATION);
@@ -552,48 +586,57 @@ public class ColladaHandler extends DefaultHandler
                     else if (localName.equals("zfar"))
                         enterProjectionValue(ParserMode.ZFAR, attributes);
                     break;
-                //
-                // case LIBRARY_VISUAL_SCENES:
-                // if (localName.equals("visual_scene"))
-                // enterVisualScene(attributes);
-                // break;
-                //
-                // case VISUAL_SCENE:
-                // if (localName.equals("node"))
-                // enterVisualSceneNode(attributes);
-                // break;
-                //
-                // case NODE:
-                // case VISUAL_SCENE_NODE:
-                // if (localName.equals("matrix"))
-                // enterMatrix();
-                // else if (localName.equals("translate"))
-                // enterTranslate();
-                // else if (localName.equals("node"))
-                // enterNode(attributes);
-                // else if (localName.equals("instance_geometry"))
-                // enterInstanceGeometry(attributes);
-                // else if (localName.equals("instance_light"))
-                // enterInstanceLight(attributes);
-                // else if (localName.equals("instance_camera"))
-                // enterInstanceCamera(attributes);
-                // break;
-                //
-                // case INSTANCE_GEOMETRY:
-                // if (localName.equals("bind_material"))
-                // enterElement(ParserMode.BIND_MATERIAL);
-                // break;
-                //
-                // case BIND_MATERIAL:
-                // if (localName.equals("technique_common"))
-                // enterElement(ParserMode.BIND_MATERIAL_TECHNIQUE_COMMON);
-                // break;
-                //
-                // case BIND_MATERIAL_TECHNIQUE_COMMON:
-                // if (localName.equals("instance_material"))
-                // enterInstanceMaterial(attributes);
-                // break;
-                //
+
+                case LIBRARY_VISUAL_SCENES:
+                    if (localName.equals("visual_scene"))
+                        enterVisualScene(attributes);
+                    break;
+
+                case VISUAL_SCENE:
+                    if (localName.equals("node"))
+                        enterNode(attributes);
+                    break;
+
+                case NODE:
+                    if (localName.equals("lookat"))
+                        enterLookAt(attributes);
+                    else if (localName.equals("matrix"))
+                        enterMatrix(attributes);
+                    else if (localName.equals("rotate"))
+                        enterRotate(attributes);
+                    else if (localName.equals("scale"))
+                        enterScale(attributes);
+                    else if (localName.equals("skew"))
+                        enterSkew(attributes);
+                    else if (localName.equals("translate"))
+                        enterTranslate(attributes);
+                    else if (localName.equals("node"))
+                        enterNode(attributes);
+                    else if (localName.equals("instance_geometry"))
+                        enterInstanceGeometry(attributes);
+                    else if (localName.equals("instance_light"))
+                        enterInstanceLight(attributes);
+                    else if (localName.equals("instance_camera"))
+                        enterInstanceCamera(attributes);
+                    break;
+
+                case INSTANCE_GEOMETRY:
+                    if (localName.equals("bind_material"))
+                        enterElement(ParserMode.BIND_MATERIAL);
+                    break;
+
+                case BIND_MATERIAL:
+                    if (localName.equals("param"))
+                        enterMaterialBindParam(attributes);
+                    else if (localName.equals("technique_common"))
+                        enterElement(ParserMode.BIND_MATERIAL_TECHNIQUE_COMMON);
+                    break;
+
+                case BIND_MATERIAL_TECHNIQUE_COMMON:
+                    if (localName.equals("instance_material"))
+                        enterInstanceMaterial(attributes);
+                    break;
+
                 // case SCENE:
                 // if (localName.equals("instance_visual_scene"))
                 // enterInstanceVisualScene(attributes);
@@ -868,43 +911,36 @@ public class ColladaHandler extends DefaultHandler
                 leaveLibraryCameras();
                 break;
 
-            //
-            // case INSTANCE_MATERIAL:
-            // leaveInstanceMaterial();
-            // break;
-            //
-            // case MATRIX:
-            // leaveMatrix();
-            // break;
-            //
-            // case TRANSLATE:
-            // leaveTranslate();
-            // break;
-            //
-            // case INSTANCE_GEOMETRY:
-            // leaveInstanceGeometry();
-            // break;
-            //
-            // case INSTANCE_LIGHT:
-            // leaveInstanceLight();
-            // break;
-            //
-            // case INSTANCE_CAMERA:
-            // leaveInstanceCamera();
-            // break;
-            //
-            // case NODE:
-            // leaveNode();
-            // break;
-            //
-            // case VISUAL_SCENE_NODE:
-            // leaveVisualSceneNode();
-            // break;
-            //
-            // case VISUAL_SCENE:
-            // leaveVisualScene();
-            // break;
-            //
+
+            case INSTANCE_MATERIAL:
+                leaveInstanceMaterial();
+                break;
+
+            case LOOKAT:
+            case MATRIX:
+            case ROTATE:
+            case SCALE:
+            case SKEW:
+            case TRANSLATE:
+                leaveTransform();
+                break;
+
+            case INSTANCE_GEOMETRY:
+                leaveInstanceGeometry();
+                break;
+
+            case NODE:
+                leaveNode();
+                break;
+
+            case VISUAL_SCENE:
+                leaveVisualScene();
+                break;
+
+            case LIBRARY_VISUAL_SCENES:
+                leaveLibraryVisualScenes();
+                break;
+
             // case SCENE:
             // leaveScene();
             // break;
@@ -954,6 +990,10 @@ public class ColladaHandler extends DefaultHandler
             case FLOAT_ARRAY:
             case MATRIX:
             case TRANSLATE:
+            case LOOKAT:
+            case SCALE:
+            case ROTATE:
+            case SKEW:
                 this.chunkFloatReader.addChunk(ch, start, length);
                 break;
 
@@ -1892,9 +1932,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterParam(final Attributes attributes)
     {
-        final DataType type = DataType.valueOf(attributes.getValue("type")
-                .toUpperCase());
-        final DataFlowParam param = new DataFlowParam(type);
+        final DataFlowParam param = new DataFlowParam(attributes.getValue("type"));
         param.setName(attributes.getValue("name"));
         param.setSemantic(attributes.getValue("semantic"));
         param.setSid(attributes.getValue("sid"));
@@ -2406,7 +2444,8 @@ public class ColladaHandler extends DefaultHandler
      *            The parser mode.
      */
 
-    private void enterLightFloatValue(final Attributes attributes, final ParserMode mode)
+    private void enterLightFloatValue(final Attributes attributes,
+        final ParserMode mode)
     {
         this.floatValue = new FloatValue(0);
         this.floatValue.setSid(attributes.getValue("sid"));
@@ -2781,310 +2820,562 @@ public class ColladaHandler extends DefaultHandler
         leaveElement();
     }
 
+    /**
+     * Enters a library_visual_scenes element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
 
-    // /**
-    // * Enters a visual_scene element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterVisualScene(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // this.visualScene = new VisualScene(id);
-    // this.nodeStack = new Stack<Node>();
-    // enterElement(ParserMode.VISUAL_SCENE);
-    // }
-    //
-    //
-    // /**
-    // * Enters a visual scene node element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterVisualSceneNode(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // this.node = new Node(id);
-    // enterElement(ParserMode.VISUAL_SCENE_NODE);
-    // }
-    //
-    //
-    // /**
-    // * Enters a node element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterNode(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // this.nodeStack.push(this.node);
-    // this.node = new Node(id);
-    // enterElement(ParserMode.NODE);
-    // }
-    //
-    //
-    // /**
-    // * Enters a matrix element
-    // */
-    //
-    // private void enterMatrix()
-    // {
-    // this.matrixTransformation = new MatrixTransformation();
-    // final float[] values = this.matrixTransformation.getValues();
-    // this.chunkFloatReader = new ChunkFloatReader()
-    // {
-    // private int index = 0;
-    //
-    // @Override
-    // protected void valueFound(final float value)
-    // {
-    // values[this.index++] = value;
-    // }
-    // };
-    // enterElement(ParserMode.MATRIX);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a matrix element.
-    // */
-    //
-    // private void leaveMatrix()
-    // {
-    // this.chunkFloatReader.finish();
-    // this.chunkFloatReader = null;
-    // this.node.getTransformations().add(this.matrixTransformation);
-    // this.matrixTransformation = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Enters a translate element
-    // */
-    //
-    // private void enterTranslate()
-    // {
-    // this.translateTransformation = new TranslateTransformation();
-    // final float[] values = this.translateTransformation.getValues();
-    // this.chunkFloatReader = new ChunkFloatReader()
-    // {
-    // private int index = 0;
-    //
-    // @Override
-    // protected void valueFound(final float value)
-    // {
-    // values[this.index++] = value;
-    // }
-    // };
-    // enterElement(ParserMode.TRANSLATE);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a matrix element.
-    // */
-    //
-    // private void leaveTranslate()
-    // {
-    // this.chunkFloatReader.finish();
-    // this.chunkFloatReader = null;
-    // this.node.getTransformations().add(this.translateTransformation);
-    // this.translateTransformation = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Enters a instance_geometry element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterInstanceGeometry(final Attributes attributes)
-    // {
-    // final String urlString = attributes.getValue("url");
-    // URI url;
-    // try
-    // {
-    // url = new URI(urlString);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(urlString + " is not a valid URI: " + e,
-    // e);
-    // }
-    // this.instanceGeometry = new InstanceGeometry(url);
-    // enterElement(ParserMode.INSTANCE_GEOMETRY);
-    // }
-    //
-    //
-    // /**
-    // * Enters a instance_material element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterInstanceMaterial(final Attributes attributes)
-    // {
-    // final String symbol = attributes.getValue("symbol");
-    // final String targetString = attributes.getValue("target");
-    // URI target;
-    // try
-    // {
-    // target = new URI(targetString);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(targetString + " is not a valid URI: "
-    // + e, e);
-    // }
-    // this.instanceMaterial = new InstanceMaterial(symbol, target);
-    // enterElement(ParserMode.INSTANCE_MATERIAL);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a instance_material element.
-    // */
-    //
-    // private void leaveInstanceMaterial()
-    // {
-    // this.instanceGeometry.getInstanceMaterials().add(this.instanceMaterial);
-    // this.instanceMaterial = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves a instance_geometry element.
-    // */
-    //
-    // private void leaveInstanceGeometry()
-    // {
-    // this.node.getInstanceGeometries().add(this.instanceGeometry);
-    // this.instanceGeometry = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Enters a instance_light element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterInstanceLight(final Attributes attributes)
-    // {
-    // final String urlString = attributes.getValue("url");
-    // URI url;
-    // try
-    // {
-    // url = new URI(urlString);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(urlString + " is not a valid URI: " + e,
-    // e);
-    // }
-    // this.instanceLight = new InstanceLight(url);
-    // enterElement(ParserMode.INSTANCE_LIGHT);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a instance_light element.
-    // */
-    //
-    // private void leaveInstanceLight()
-    // {
-    // this.node.getInstanceLights().add(this.instanceLight);
-    // this.instanceLight = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Enters a instance_camera element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterInstanceCamera(final Attributes attributes)
-    // {
-    // final String urlString = attributes.getValue("url");
-    // URI url;
-    // try
-    // {
-    // url = new URI(urlString);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(urlString + " is not a valid URI: " + e,
-    // e);
-    // }
-    // this.instanceCamera = new InstanceCamera(url);
-    // enterElement(ParserMode.INSTANCE_CAMERA);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a instance_camera element.
-    // */
-    //
-    // private void leaveInstanceCamera()
-    // {
-    // this.node.getInstanceCameras().add(this.instanceCamera);
-    // this.instanceCamera = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves a node element.
-    // */
-    //
-    // private void leaveNode()
-    // {
-    // final Node parentNode = this.nodeStack.pop();
-    // parentNode.getNodes().add(this.node);
-    // this.node = parentNode;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves a visual scene node element.
-    // */
-    //
-    // private void leaveVisualSceneNode()
-    // {
-    // this.visualScene.getNodes().add(this.node);
-    // this.node = null;
-    // leaveElement();
-    // }
-    //
-    // /**
-    // * Leaves a visual_scene element.
-    // */
-    //
-    // private void leaveVisualScene()
-    // {
-    // this.document.getLibraryVisualScenes().add(this.visualScene);
-    // this.visualScene = null;
-    // this.nodeStack = null;
-    // leaveElement();
-    // }
+    private void enterLibraryVisualScenes(final Attributes attributes)
+    {
+        this.visualSceneLibrary = new VisualSceneLibrary();
+        this.visualSceneLibrary.setName(attributes.getValue("name"));
+        this.visualSceneLibrary.setId(attributes.getValue("id"));
+        enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
+    }
+
+
+    /**
+     * Enters a visual_scene element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterVisualScene(final Attributes attributes)
+    {
+        this.visualScene = new VisualScene();
+        this.visualScene.setId(attributes.getValue("id"));
+        this.visualScene.setName(attributes.getValue("name"));
+        enterElement(ParserMode.VISUAL_SCENE);
+    }
+
+
+    /**
+     * Enters a visual scene node element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterNode(final Attributes attributes)
+    {
+        final Node node = new Node();
+        node.setId(attributes.getValue("id"));
+        node.setName(attributes.getValue("name"));
+        node.setSid(attributes.getValue("sid"));
+        final String type = attributes.getValue("type");
+        if (type != null) node.setType(NodeType.valueOf(type));
+        final String layers = attributes.getValue("layer");
+        if (layers != null)
+        {
+            for (final String layer : layers.split("\\s+"))
+                node.getLayers().add(layer);
+        }
+
+        // Append the node to the scene or its parent node.
+        if (this.node == null)
+            this.visualScene.getNodes().add(node);
+        else
+            this.node.getNodes().add(node);
+        this.node = node;
+
+        enterElement(ParserMode.NODE);
+    }
+
+
+    /**
+     * Enters a matrix element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterMatrix(final Attributes attributes)
+    {
+        final MatrixTransform transform = new MatrixTransform();
+        transform.setSid(attributes.getValue("sid"));
+
+        final MutableMatrix4d matrix = transform.getMatrix();
+        this.chunkFloatReader = new ChunkFloatReader()
+        {
+            private int index = 0;
+
+            @Override
+            protected void valueFound(final double value)
+            {
+                matrix.setElement(this.index / 4, this.index % 4, value);
+                this.index++;
+            }
+        };
+        this.node.getTransformations().add(transform);
+        enterElement(ParserMode.MATRIX);
+    }
+
+
+    /**
+     * Leaves a transform element.
+     */
+
+    private void leaveTransform()
+    {
+        this.chunkFloatReader.finish();
+        this.chunkFloatReader = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a scale element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterRotate(final Attributes attributes)
+    {
+        final RotateTransform transform = new RotateTransform();
+        transform.setSid(attributes.getValue("sid"));
+
+        final MutableVector3d vector = transform.getAxis();
+        this.chunkFloatReader = new ChunkFloatReader()
+        {
+            private int index = 0;
+
+            @Override
+            protected void valueFound(final double value)
+            {
+                switch (this.index)
+                {
+                    case 0:
+                        vector.setX(value);
+                        break;
+
+                    case 1:
+                        vector.setY(value);
+                        break;
+
+                    case 2:
+                        vector.setZ(value);
+                        break;
+
+                    case 3:
+                        transform.setAngle(value);
+                        break;
+                }
+                this.index++;
+            }
+        };
+        this.node.getTransformations().add(transform);
+        enterElement(ParserMode.ROTATE);
+    }
+
+
+    /**
+     * Enters a translate element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterTranslate(final Attributes attributes)
+    {
+        final TranslateTransform transform = new TranslateTransform();
+        transform.setSid(attributes.getValue("sid"));
+
+        final MutableVector3d vector = transform.getTranslation();
+        this.chunkFloatReader = new ChunkFloatReader()
+        {
+            private int index = 0;
+
+            @Override
+            protected void valueFound(final double value)
+            {
+                switch (this.index)
+                {
+                    case 0:
+                        vector.setX(value);
+                        break;
+
+                    case 1:
+                        vector.setY(value);
+                        break;
+
+                    case 2:
+                        vector.setZ(value);
+                        break;
+                }
+                this.index++;
+            }
+        };
+        this.node.getTransformations().add(transform);
+        enterElement(ParserMode.TRANSLATE);
+    }
+
+
+    /**
+     * Enters a scale element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterLookAt(final Attributes attributes)
+    {
+        final LookAtTransform transform = new LookAtTransform();
+        transform.setSid(attributes.getValue("sid"));
+
+        final MutableVector3d eye = transform.getEye();
+        final MutableVector3d interest = transform.getInterest();
+        final MutableVector3d up = transform.getUp();
+        this.chunkFloatReader = new ChunkFloatReader()
+        {
+            private int index = 0;
+
+            @Override
+            protected void valueFound(final double value)
+            {
+                switch (this.index)
+                {
+                    case 0:
+                        eye.setX(value);
+                        break;
+
+                    case 1:
+                        eye.setY(value);
+                        break;
+
+                    case 2:
+                        eye.setZ(value);
+                        break;
+                    case 3:
+                        interest.setX(value);
+                        break;
+
+                    case 4:
+                        interest.setY(value);
+                        break;
+
+                    case 5:
+                        interest.setZ(value);
+                        break;
+
+                    case 6:
+                        up.setX(value);
+                        break;
+
+                    case 7:
+                        up.setY(value);
+                        break;
+
+                    case 8:
+                        up.setZ(value);
+                        break;
+                }
+                this.index++;
+            }
+        };
+        this.node.getTransformations().add(transform);
+        enterElement(ParserMode.LOOKAT);
+    }
+
+
+    /**
+     * Enters a scale element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterScale(final Attributes attributes)
+    {
+        final ScaleTransform transform = new ScaleTransform();
+        transform.setSid(attributes.getValue("sid"));
+
+        final MutableVector3d vector = transform.getScaling();
+        this.chunkFloatReader = new ChunkFloatReader()
+        {
+            private int index = 0;
+
+            @Override
+            protected void valueFound(final double value)
+            {
+                switch (this.index)
+                {
+                    case 0:
+                        vector.setX(value);
+                        break;
+
+                    case 1:
+                        vector.setY(value);
+                        break;
+
+                    case 2:
+                        vector.setZ(value);
+                        break;
+                }
+                this.index++;
+            }
+        };
+        this.node.getTransformations().add(transform);
+        enterElement(ParserMode.SCALE);
+    }
+
+
+    /**
+     * Enters a skew element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterSkew(final Attributes attributes)
+    {
+        final SkewTransform transform = new SkewTransform();
+        transform.setSid(attributes.getValue("sid"));
+
+        final MutableVector3d rotationAxis = transform.getRotationAxis();
+        final MutableVector3d translationAxis = transform.getTranslationAxis();
+        this.chunkFloatReader = new ChunkFloatReader()
+        {
+            private int index = 0;
+
+            @Override
+            protected void valueFound(final double value)
+            {
+                switch (this.index)
+                {
+                    case 0:
+                        transform.setAngle(value);
+                        break;
+
+                    case 1:
+                        rotationAxis.setX(value);
+                        break;
+
+                    case 2:
+                        rotationAxis.setY(value);
+                        break;
+
+                    case 3:
+                        rotationAxis.setZ(value);
+                        break;
+
+                    case 4:
+                        translationAxis.setX(value);
+                        break;
+
+                    case 5:
+                        translationAxis.setY(value);
+                        break;
+
+                    case 6:
+                        translationAxis.setZ(value);
+                        break;
+                }
+                this.index++;
+            }
+        };
+        this.node.getTransformations().add(transform);
+        enterElement(ParserMode.SKEW);
+    }
+
+
+    /**
+     * Enters a instance_geometry element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterInstanceGeometry(final Attributes attributes)
+    {
+        final String urlString = attributes.getValue("url");
+        URI url;
+        try
+        {
+            url = new URI(urlString);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(urlString + " is not a valid URI: " + e,
+                e);
+        }
+        this.geometryInstance = new GeometryInstance(url);
+        this.geometryInstance.setName(attributes.getValue("name"));
+        this.geometryInstance.setSid(attributes.getValue("sid"));
+        enterElement(ParserMode.INSTANCE_GEOMETRY);
+    }
+
+    /**
+     * Enters a bind_material param element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterMaterialBindParam(final Attributes attributes)
+    {
+        final DataFlowParams params = this.geometryInstance
+                .getMaterialBinding().getParams();
+        final DataFlowParam param = new DataFlowParam(attributes.getValue("type"));
+        param.setName(attributes.getValue("name"));
+        param.setSemantic(attributes.getValue("semantic"));
+        param.setSid(attributes.getValue("sid"));
+        params.add(param);
+        enterElement(ParserMode.BIND_MATERIAL_PARAM);
+    }
+
+
+    /**
+     * Enters a instance_material element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterInstanceMaterial(final Attributes attributes)
+    {
+        final String symbol = attributes.getValue("symbol");
+        final String targetString = attributes.getValue("target");
+        URI target;
+        try
+        {
+            target = new URI(targetString);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(targetString + " is not a valid URI: "
+                + e, e);
+        }
+        this.materialInstance = new MaterialInstance(symbol, target);
+        this.materialInstance.setName(attributes.getValue("name"));
+        this.materialInstance.setSid(attributes.getValue("sid"));
+        enterElement(ParserMode.INSTANCE_MATERIAL);
+    }
+
+
+    /**
+     * Leaves a instance_material element.
+     */
+
+    private void leaveInstanceMaterial()
+    {
+        this.geometryInstance.getMaterialBinding().getCommonTechnique()
+                .getMaterialInstances().add(this.materialInstance);
+        this.materialInstance = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a instance_geometry element.
+     */
+
+    private void leaveInstanceGeometry()
+    {
+        this.node.getGeometryInstances().add(this.geometryInstance);
+        this.geometryInstance = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a instance_light element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterInstanceLight(final Attributes attributes)
+    {
+        final String urlString = attributes.getValue("url");
+        URI url;
+        try
+        {
+            url = new URI(urlString);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(urlString + " is not a valid URI: " + e,
+                e);
+        }
+        final LightInstance lightInstance = new LightInstance(url);
+        lightInstance.setName(attributes.getValue("name"));
+        lightInstance.setSid(attributes.getValue("sid"));
+        this.node.getLightInstances().add(lightInstance);
+        enterElement(ParserMode.INSTANCE_LIGHT);
+    }
+
+
+    /**
+     * Enters a instance_camera element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterInstanceCamera(final Attributes attributes)
+    {
+        final String urlString = attributes.getValue("url");
+        URI url;
+        try
+        {
+            url = new URI(urlString);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(urlString + " is not a valid URI: " + e,
+                e);
+        }
+        final CameraInstance cameraInstance = new CameraInstance(url);
+        cameraInstance.setName(attributes.getValue("name"));
+        cameraInstance.setSid(attributes.getValue("sid"));
+        this.node.getCameraInstances().add(cameraInstance);
+        enterElement(ParserMode.INSTANCE_CAMERA);
+    }
+
+
+    /**
+     * Leaves a node element.
+     */
+
+    private void leaveNode()
+    {
+        final Element element = this.node.getParent();
+        if (element instanceof Node)
+            this.node = (Node) element;
+        else
+            this.node = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a visual_scene element.
+     */
+
+    private void leaveVisualScene()
+    {
+        this.visualSceneLibrary.getVisualScenes().add(this.visualScene);
+        this.visualScene = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_visual_scenes element.
+     */
+
+    private void leaveLibraryVisualScenes()
+    {
+        this.document.getVisualSceneLibraries().add(this.visualSceneLibrary);
+        this.visualSceneLibrary = null;
+        leaveElement();
+    }
+
+
     //
     //
     // /**

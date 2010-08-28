@@ -5,8 +5,8 @@
 
 package de.ailis.collada.model;
 
-import de.ailis.gramath.MutableVector3f;
-import de.ailis.gramath.Vector3f;
+import de.ailis.gramath.MutableVector3d;
+import de.ailis.gramath.Vector3d;
 
 
 /**
@@ -21,7 +21,7 @@ public final class TranslateTransform extends Transformation
     private static final long serialVersionUID = 1L;
 
     /** The translation axis. */
-    private final MutableVector3f translation = new MutableVector3f();
+    private final MutableVector3d translation = new MutableVector3d();
 
 
     /**
@@ -31,7 +31,7 @@ public final class TranslateTransform extends Transformation
      *            The translation to set. Must not be null.
      */
 
-    public void setTranslation(final Vector3f translation)
+    public void setTranslation(final Vector3d translation)
     {
         if (translation == null)
             throw new IllegalArgumentException("translation must not be null");
@@ -45,7 +45,7 @@ public final class TranslateTransform extends Transformation
      * @return The translation. Never null.
      */
 
-    public MutableVector3f getTranslation()
+    public MutableVector3d getTranslation()
     {
         return this.translation;
     }

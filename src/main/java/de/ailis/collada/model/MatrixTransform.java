@@ -5,8 +5,8 @@
 
 package de.ailis.collada.model;
 
-import de.ailis.gramath.Matrix4f;
-import de.ailis.gramath.MutableMatrix4f;
+import de.ailis.gramath.Matrix4d;
+import de.ailis.gramath.MutableMatrix4d;
 
 
 /**
@@ -21,7 +21,7 @@ public final class MatrixTransform extends Transformation
     private static final long serialVersionUID = 1L;
 
     /** The matrix. */
-    private final MutableMatrix4f matrix = MutableMatrix4f.identity();
+    private final MutableMatrix4d matrix = MutableMatrix4d.identity();
 
 
     /**
@@ -31,7 +31,7 @@ public final class MatrixTransform extends Transformation
      *            The matrix to set. Must not be null.
      */
 
-    public void setMatrix(final Matrix4f matrix)
+    public void setMatrix(final Matrix4d matrix)
     {
         if (matrix == null)
             throw new IllegalArgumentException("matrix must not be null");
@@ -45,7 +45,7 @@ public final class MatrixTransform extends Transformation
      * @return The matrix. Never null.
      */
 
-    public MutableMatrix4f getMatrix()
+    public MutableMatrix4d getMatrix()
     {
         return this.matrix;
     }

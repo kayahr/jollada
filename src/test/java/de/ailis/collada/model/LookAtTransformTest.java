@@ -12,8 +12,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.ailis.gramath.ImmutableVector3f;
-import de.ailis.gramath.MutableVector3f;
+import de.ailis.gramath.ImmutableVector3d;
+import de.ailis.gramath.MutableVector3d;
 
 
 /**
@@ -64,8 +64,8 @@ public class LookAtTransformTest
     {
         final LookAtTransform transform = new LookAtTransform();
         assertTrue(transform.getEye().isNull());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-       transform.setEye(translation);
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
+        transform.setEye(translation);
         assertEquals(translation.getX(), transform.getEye().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getEye().getY(),
@@ -94,9 +94,9 @@ public class LookAtTransformTest
     public void testInterest()
     {
         final LookAtTransform transform = new LookAtTransform();
-        assertEquals(new MutableVector3f(0, 0, -1), transform.getInterest());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
-       transform.setInterest(translation);
+        assertEquals(new MutableVector3d(0, 0, -1), transform.getInterest());
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
+        transform.setInterest(translation);
         assertEquals(translation.getX(), transform.getInterest().getX(),
             0.0001f);
         assertEquals(translation.getY(), transform.getInterest().getY(),
@@ -125,8 +125,8 @@ public class LookAtTransformTest
     public void testUp()
     {
         final LookAtTransform transform = new LookAtTransform();
-        assertEquals(new MutableVector3f(0, 1, 0), transform.getUp());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
+        assertEquals(new MutableVector3d(0, 1, 0), transform.getUp());
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
         transform.setUp(translation);
         assertEquals(translation.getX(), transform.getUp().getX(),
             0.0001f);

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.ailis.gramath.ImmutableVector3f;
+import de.ailis.gramath.ImmutableVector3d;
 
 
 /**
@@ -76,7 +76,7 @@ public class RotateTransformTest
     {
         final RotateTransform transform = new RotateTransform();
         assertTrue(transform.getAxis().isNull());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
         transform.setAxis(translation);
         assertEquals(translation.getX(), transform.getAxis().getX(),
             0.0001f);

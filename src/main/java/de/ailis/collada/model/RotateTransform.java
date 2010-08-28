@@ -5,8 +5,8 @@
 
 package de.ailis.collada.model;
 
-import de.ailis.gramath.MutableVector3f;
-import de.ailis.gramath.Vector3f;
+import de.ailis.gramath.MutableVector3d;
+import de.ailis.gramath.Vector3d;
 
 
 /**
@@ -21,10 +21,10 @@ public final class RotateTransform extends Transformation
     private static final long serialVersionUID = 1L;
 
     /** The rotation axis. */
-    private final MutableVector3f axis = new MutableVector3f(0, 0, 0);
+    private final MutableVector3d axis = new MutableVector3d(0, 0, 0);
 
     /** The rotation angle in degree. */
-    private float angle;
+    private double angle;
 
 
     /**
@@ -34,7 +34,7 @@ public final class RotateTransform extends Transformation
      *            The rotation axis to set. Must not be null.
      */
 
-    public void setAxis(final Vector3f axis)
+    public void setAxis(final Vector3d axis)
     {
         if (axis == null)
             throw new IllegalArgumentException("axis must not be null");
@@ -48,7 +48,7 @@ public final class RotateTransform extends Transformation
      * @return The rotation axis. Never null.
      */
 
-    public MutableVector3f getAxis()
+    public MutableVector3d getAxis()
     {
         return this.axis;
     }
@@ -60,7 +60,7 @@ public final class RotateTransform extends Transformation
      * @return The rotation angle in degrees.
      */
 
-    public float getAngle()
+    public double getAngle()
     {
         return this.angle;
     }
@@ -73,7 +73,7 @@ public final class RotateTransform extends Transformation
      *            The rotation angle in degrees to set.
      */
 
-    public void setAngle(final float angle)
+    public void setAngle(final double angle)
     {
         this.angle = angle;
     }

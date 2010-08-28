@@ -26,8 +26,8 @@ public class DataFlowParamTest
     @Test
     public void testDefaultConstructor()
     {
-        final DataFlowParam param = new DataFlowParam(DataType.INT);
-        assertEquals(DataType.INT, param.getType());
+        final DataFlowParam param = new DataFlowParam("int");
+        assertEquals("int", param.getType());
         assertNull(param.getName());
         assertNull(param.getSid());
         assertNull(param.getSemantic());
@@ -52,7 +52,7 @@ public class DataFlowParamTest
     @Test
     public void testSid()
     {
-        final DataFlowParam param = new DataFlowParam(DataType.INT);
+        final DataFlowParam param = new DataFlowParam("int");
         assertNull(param.getSid());
         param.setSid("foo");
         assertEquals("foo", param.getSid());
@@ -68,7 +68,7 @@ public class DataFlowParamTest
     @Test
     public void testName()
     {
-        final DataFlowParam param = new DataFlowParam(DataType.INT);
+        final DataFlowParam param = new DataFlowParam("int");
         assertNull(param.getName());
         param.setName("foo");
         assertEquals("foo", param.getName());
@@ -84,7 +84,7 @@ public class DataFlowParamTest
     @Test
     public void testSemantic()
     {
-        final DataFlowParam param = new DataFlowParam(DataType.INT);
+        final DataFlowParam param = new DataFlowParam("int");
         assertNull(param.getSemantic());
         param.setSemantic("foo");
         assertEquals("foo", param.getSemantic());
@@ -100,9 +100,9 @@ public class DataFlowParamTest
     @Test
     public void testType()
     {
-        final DataFlowParam param = new DataFlowParam(DataType.INT);
-        param.setType(DataType.FLOAT);
-        assertEquals(DataType.FLOAT, param.getType());
+        final DataFlowParam param = new DataFlowParam("int");
+        param.setType("float");
+        assertEquals("float", param.getType());
     }
 
 
@@ -113,7 +113,7 @@ public class DataFlowParamTest
     @Test(expected=IllegalArgumentException.class)
     public void testTypeWithNull()
     {
-        final DataFlowParam param = new DataFlowParam(DataType.INT);
+        final DataFlowParam param = new DataFlowParam("int");
         param.setType(null);
     }
 }

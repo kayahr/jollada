@@ -5,8 +5,8 @@
 
 package de.ailis.collada.model;
 
-import de.ailis.gramath.MutableVector3f;
-import de.ailis.gramath.Vector3f;
+import de.ailis.gramath.MutableVector3d;
+import de.ailis.gramath.Vector3d;
 
 
 /**
@@ -21,13 +21,13 @@ public final class LookAtTransform extends Transformation
     private static final long serialVersionUID = 1L;
 
     /** The position of the eye. */
-    private final MutableVector3f eye = new MutableVector3f(0, 0, 0);
+    private final MutableVector3d eye = new MutableVector3d(0, 0, 0);
 
     /** The position of the interest point. */
-    private final MutableVector3f interest = new MutableVector3f(0, 0, -1);
+    private final MutableVector3d interest = new MutableVector3d(0, 0, -1);
 
     /** The direction that points up. */
-    private final MutableVector3f up = new MutableVector3f(0, 1, 0);
+    private final MutableVector3d up = new MutableVector3d(0, 1, 0);
 
 
     /**
@@ -37,7 +37,7 @@ public final class LookAtTransform extends Transformation
      *            The eye position to set. Must not be null.
      */
 
-    public void setEye(final Vector3f eye)
+    public void setEye(final Vector3d eye)
     {
         if (eye == null)
             throw new IllegalArgumentException("eye must not be null");
@@ -51,7 +51,7 @@ public final class LookAtTransform extends Transformation
      * @return The eye position. Never null.
      */
 
-    public MutableVector3f getEye()
+    public MutableVector3d getEye()
     {
         return this.eye;
     }
@@ -64,7 +64,7 @@ public final class LookAtTransform extends Transformation
      *            The interest point position to set. Must not be null.
      */
 
-    public void setInterest(final Vector3f interest)
+    public void setInterest(final Vector3d interest)
     {
         if (interest == null)
             throw new IllegalArgumentException("interest must not be null");
@@ -78,7 +78,7 @@ public final class LookAtTransform extends Transformation
      * @return The interest point. Never null.
      */
 
-    public MutableVector3f getInterest()
+    public MutableVector3d getInterest()
     {
         return this.interest;
     }
@@ -91,7 +91,7 @@ public final class LookAtTransform extends Transformation
      *            The up direction. Must not be null.
      */
 
-    public void setUp(final Vector3f up)
+    public void setUp(final Vector3d up)
     {
         if (up == null)
             throw new IllegalArgumentException("up must not be null");
@@ -105,7 +105,7 @@ public final class LookAtTransform extends Transformation
      * @return The up direction. Never null.
      */
 
-    public MutableVector3f getUp()
+    public MutableVector3d getUp()
     {
         return this.up;
     }

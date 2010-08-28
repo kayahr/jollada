@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.ailis.gramath.ImmutableVector3f;
+import de.ailis.gramath.ImmutableVector3d;
 
 
 /**
@@ -61,7 +61,7 @@ public class ScaleTransformTest
     {
         final ScaleTransform transform = new ScaleTransform();
         assertTrue(transform.getScaling().isNull());
-        final ImmutableVector3f translation = new ImmutableVector3f(1, 2, 3);
+        final ImmutableVector3d translation = new ImmutableVector3d(1, 2, 3);
         transform.setScaling(translation);
         assertEquals(translation.getX(), transform.getScaling().getX(),
             0.0001f);
