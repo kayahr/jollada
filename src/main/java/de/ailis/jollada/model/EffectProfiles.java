@@ -29,4 +29,20 @@ public final class EffectProfiles extends Elements<EffectProfile>
     {
         super(parent);
     }
+
+
+    /**
+     * Returns the first common profile.
+     *
+     * @return The first common profile. May return null if no common profile is
+     *         found.
+     */
+
+    public CommonEffectProfile getCommonProfile()
+    {
+        for (final EffectProfile profile : this)
+            if (profile instanceof CommonEffectProfile)
+                return (CommonEffectProfile) profile;
+        return null;
+    }
 }
