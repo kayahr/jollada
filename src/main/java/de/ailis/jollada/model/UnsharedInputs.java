@@ -29,4 +29,20 @@ public final class UnsharedInputs extends Elements<UnsharedInput>
     {
         super(parent);
     }
+
+
+    /**
+     * Returns the input with the specified semantic.
+     *
+     * @param semantic
+     *            The semantic.
+     * @return The input with the specified semantic. Null if not found.
+     */
+
+    public UnsharedInput getBySemantic(final String semantic)
+    {
+        for (final UnsharedInput input : this)
+            if (input.getSemantic().equals(semantic)) return input;
+        return null;
+    }
 }
