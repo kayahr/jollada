@@ -12,7 +12,7 @@ package de.ailis.jollada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public abstract class Transformation extends Element implements
+public abstract class Transform extends Element implements
         ScopeIdentifiable
 {
     /** Serial version UID. */

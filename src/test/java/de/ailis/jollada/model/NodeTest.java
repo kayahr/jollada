@@ -41,7 +41,7 @@ public class NodeTest
         assertEquals(0, node.getCameraInstances().size());
         assertEquals(0, node.getGeometryInstances().size());
         assertEquals(0, node.getLightInstances().size());
-        assertEquals(0, node.getTransformations().size());
+        assertEquals(0, node.getTransforms().size());
     }
 
 

@@ -737,7 +737,7 @@ public class FullTest
         assertEquals("lay2", layers.get(1));
 
         // Check transformations
-        final Transformations transforms = rootNode.getTransformations();
+        final Transformations transforms = rootNode.getTransforms();
         assertEquals(6, transforms.size());
 
         // Check lookat transformation

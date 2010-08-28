@@ -2904,7 +2904,7 @@ public class ColladaHandler extends DefaultHandler
                 this.index++;
             }
         };
-        this.node.getTransformations().add(transform);
+        this.node.getTransforms().add(transform);
         enterElement(ParserMode.MATRIX);
     }
 
@@ -2962,7 +2962,7 @@ public class ColladaHandler extends DefaultHandler
                 this.index++;
             }
         };
-        this.node.getTransformations().add(transform);
+        this.node.getTransforms().add(transform);
         enterElement(ParserMode.ROTATE);
     }
 
@@ -3004,7 +3004,7 @@ public class ColladaHandler extends DefaultHandler
                 this.index++;
             }
         };
-        this.node.getTransformations().add(transform);
+        this.node.getTransforms().add(transform);
         enterElement(ParserMode.TRANSLATE);
     }
 
@@ -3071,7 +3071,7 @@ public class ColladaHandler extends DefaultHandler
                 this.index++;
             }
         };
-        this.node.getTransformations().add(transform);
+        this.node.getTransforms().add(transform);
         enterElement(ParserMode.LOOKAT);
     }
 
@@ -3113,7 +3113,7 @@ public class ColladaHandler extends DefaultHandler
                 this.index++;
             }
         };
-        this.node.getTransformations().add(transform);
+        this.node.getTransforms().add(transform);
         enterElement(ParserMode.SCALE);
     }
 
@@ -3172,7 +3172,7 @@ public class ColladaHandler extends DefaultHandler
                 this.index++;
             }
         };
-        this.node.getTransformations().add(transform);
+        this.node.getTransforms().add(transform);
         enterElement(ParserMode.SKEW);
     }
 

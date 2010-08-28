@@ -15,7 +15,7 @@ import de.ailis.gramath.MutableMatrix4d;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class MatrixTransform extends Transformation
+public final class MatrixTransform extends Transform
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

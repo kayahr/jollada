@@ -210,7 +210,7 @@ public final class Node extends Element implements ScopeIdentifiable,
      * @return The list of transformations. Never null. May be empty.
      */
 
-    public Transformations getTransformations()
+    public Transformations getTransforms()
     {
         return this.transformations;
     }

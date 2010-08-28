@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3d;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class TranslateTransform extends Transformation
+public final class TranslateTransform extends Transform
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;

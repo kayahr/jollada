@@ -15,7 +15,7 @@ import de.ailis.gramath.Vector3d;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class SkewTransform extends Transformation
+public final class SkewTransform extends Transform
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
