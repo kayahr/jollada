@@ -154,4 +154,28 @@ public final class ColorAttribute extends Element
             addChild(texture);
         }
     }
+
+
+    /**
+     * Checks if this color attribute is a plain color.
+     *
+     * @return True if color, false if texture.
+     */
+
+    public boolean isColor()
+    {
+        return this.color != null;
+    }
+
+
+    /**
+     * Checks if this color attribute is a texture.
+     *
+     * @return True if texture, false if color.
+     */
+
+    public boolean isTexture()
+    {
+        return this.texture != null;
+    }
 }
