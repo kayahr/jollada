@@ -5,6 +5,8 @@
 
 package de.ailis.jollada.model;
 
+import de.ailis.gramath.ImmutableMatrix4d;
+import de.ailis.gramath.Matrix4d;
 import de.ailis.gramath.MutableVector3d;
 import de.ailis.gramath.Vector3d;
 
@@ -48,5 +50,17 @@ public final class ScaleTransform extends Transform
     public MutableVector3d getScaling()
     {
         return this.scaling;
+    }
+
+
+    /**
+     * @see de.ailis.jollada.model.Transform#asMatrix()
+     */
+
+    @Override
+    public Matrix4d asMatrix()
+    {
+        return ImmutableMatrix4d.scaling(this.scaling.getX(),
+            this.scaling.getY(), this.scaling.getZ());
     }
 }

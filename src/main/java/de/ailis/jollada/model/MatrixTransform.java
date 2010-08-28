@@ -5,6 +5,7 @@
 
 package de.ailis.jollada.model;
 
+import de.ailis.gramath.ImmutableMatrix4d;
 import de.ailis.gramath.Matrix4d;
 import de.ailis.gramath.MutableMatrix4d;
 
@@ -48,5 +49,16 @@ public final class MatrixTransform extends Transform
     public MutableMatrix4d getMatrix()
     {
         return this.matrix;
+    }
+
+
+    /**
+     * @see de.ailis.jollada.model.Transform#asMatrix()
+     */
+
+    @Override
+    public Matrix4d asMatrix()
+    {
+        return new ImmutableMatrix4d(this.matrix);
     }
 }

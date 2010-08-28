@@ -5,6 +5,8 @@
 
 package de.ailis.jollada.model;
 
+import de.ailis.gramath.ImmutableMatrix4d;
+import de.ailis.gramath.Matrix4d;
 import de.ailis.gramath.MutableVector3d;
 import de.ailis.gramath.Vector3d;
 
@@ -76,5 +78,16 @@ public final class RotateTransform extends Transform
     public void setAngle(final double angle)
     {
         this.angle = angle;
+    }
+
+
+    /**
+     * @see de.ailis.jollada.model.Transform#asMatrix()
+     */
+
+    @Override
+    public Matrix4d asMatrix()
+    {
+        return ImmutableMatrix4d.rotation(this.axis, this.angle);
     }
 }

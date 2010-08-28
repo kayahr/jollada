@@ -5,6 +5,8 @@
 
 package de.ailis.jollada.model;
 
+import de.ailis.gramath.Matrix4d;
+
 
 /**
  * Look-at transformation.
@@ -47,4 +49,13 @@ public abstract class Transform extends Element implements
     {
         this.sid = sid;
     }
+
+
+    /**
+     * Returns this transformation as a transformation matrix.
+     *
+     * @return The transformation as a matrix. Never null.
+     */
+
+    public abstract Matrix4d asMatrix();
 }

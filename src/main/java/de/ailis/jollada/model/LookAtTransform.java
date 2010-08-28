@@ -5,6 +5,7 @@
 
 package de.ailis.jollada.model;
 
+import de.ailis.gramath.Matrix4d;
 import de.ailis.gramath.MutableVector3d;
 import de.ailis.gramath.Vector3d;
 
@@ -108,5 +109,18 @@ public final class LookAtTransform extends Transform
     public MutableVector3d getUp()
     {
         return this.up;
+    }
+
+
+    /**
+     * TODO Implement me!
+     *
+     * @see de.ailis.jollada.model.Transform#asMatrix()
+     */
+
+    @Override
+    public Matrix4d asMatrix()
+    {
+        throw new RuntimeException("Not implemented!");
     }
 }
