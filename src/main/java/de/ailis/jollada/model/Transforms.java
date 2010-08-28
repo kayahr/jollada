@@ -12,7 +12,7 @@ package de.ailis.jollada.model;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class Transformations extends Elements<Transform>
+public final class Transforms extends Elements<Transform>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public final class Transformations extends Elements<Transform>
      *            The parent element
      */
 
-    Transformations(final Element parent)
+    Transforms(final Element parent)
     {
         super(parent);
     }

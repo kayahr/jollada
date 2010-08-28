@@ -40,7 +40,7 @@ public final class Node extends Element implements ScopeIdentifiable,
     private final ArrayList<String> layers = new ArrayList<String>();
 
     /** The list of transformations. */
-    private final Transformations transformations = new Transformations(this);
+    private final Transforms transforms = new Transforms(this);
 
     /** The list of camera instances. */
     private final CameraInstances cameraInstances = new CameraInstances(this);
@@ -210,9 +210,9 @@ public final class Node extends Element implements ScopeIdentifiable,
      * @return The list of transformations. Never null. May be empty.
      */
 
-    public Transformations getTransforms()
+    public Transforms getTransforms()
     {
-        return this.transformations;
+        return this.transforms;
     }
 
 
