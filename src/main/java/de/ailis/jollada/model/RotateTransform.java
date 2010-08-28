@@ -88,6 +88,7 @@ public final class RotateTransform extends Transform
     @Override
     public Matrix4d asMatrix()
     {
-        return ImmutableMatrix4d.rotation(this.axis, this.angle);
+        return ImmutableMatrix4d
+                .rotation(this.axis, Math.toRadians(this.angle));
     }
 }
