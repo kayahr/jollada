@@ -339,6 +339,14 @@
         <skew sid="node-1-skew">1 2 3 4 5 6 7</skew>
         <translate sid="node-1-translate">1 2 3</translate>        
         <instance_camera url="#camera-1" name="Camera" sid="camera" />
+        <instance_controller url="#controller-1" name="Controller Instance" sid="controller">
+          <skeleton>#skel01</skeleton>
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="a" target="b" />
+            </technique_common>
+          </bind_material>
+        </instance_controller>
         <instance_geometry url="#geometry-1" sid="geometry" name="Geometry">
           <bind_material>
             <param sid="windAmount" semantic="WINDSPEED" type="float3_type" name="Wind Amount" />
@@ -352,6 +360,7 @@
           </bind_material>
         </instance_geometry>
         <instance_light url="#light-1" name="Light" sid="light" />
+        <instance_node url="#node-1" proxy="#node-2" name="Instance Node" sid="instance-node" />
         <node>          
         </node>
         <node>          
@@ -359,5 +368,10 @@
       </node>      
     </visual_scene>
   </library_visual_scenes>
+  
+  <scene>
+    <instance_visual_scene url="#visual-scene-1" name="Scene" sid="scene">
+    </instance_visual_scene>
+  </scene>
   
 </COLLADA>

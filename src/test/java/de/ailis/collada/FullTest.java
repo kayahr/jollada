@@ -20,104 +20,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ailis.collada.model.Accessor;
-import de.ailis.collada.model.Ambient;
-import de.ailis.collada.model.Array;
-import de.ailis.collada.model.Camera;
-import de.ailis.collada.model.CameraInstance;
-import de.ailis.collada.model.CameraInstances;
-import de.ailis.collada.model.CameraLibraries;
-import de.ailis.collada.model.CameraLibrary;
-import de.ailis.collada.model.Cameras;
-import de.ailis.collada.model.CommonEffectProfile;
-import de.ailis.collada.model.CommonEffectTechnique;
-import de.ailis.collada.model.CommonLightTechnique;
-import de.ailis.collada.model.CommonMaterialBindingTechnique;
-import de.ailis.collada.model.CommonNewParam;
-import de.ailis.collada.model.CommonNewParams;
-import de.ailis.collada.model.CommonOpticsTechnique;
-import de.ailis.collada.model.CommonSourceTechnique;
-import de.ailis.collada.model.DataFlowParam;
-import de.ailis.collada.model.DataFlowParams;
-import de.ailis.collada.model.DataFlowSource;
-import de.ailis.collada.model.DataFlowSources;
-import de.ailis.collada.model.Directional;
-import de.ailis.collada.model.Document;
-import de.ailis.collada.model.Effect;
-import de.ailis.collada.model.EffectInstance;
-import de.ailis.collada.model.EffectLibraries;
-import de.ailis.collada.model.EffectLibrary;
-import de.ailis.collada.model.EffectProfile;
-import de.ailis.collada.model.EffectProfiles;
-import de.ailis.collada.model.Effects;
-import de.ailis.collada.model.Filter;
-import de.ailis.collada.model.FloatArray;
-import de.ailis.collada.model.FloatAttribute;
-import de.ailis.collada.model.FloatParam;
-import de.ailis.collada.model.FloatValue;
-import de.ailis.collada.model.Geometric;
-import de.ailis.collada.model.Geometries;
-import de.ailis.collada.model.Geometry;
-import de.ailis.collada.model.GeometryInstance;
-import de.ailis.collada.model.GeometryInstances;
-import de.ailis.collada.model.GeometryLibraries;
-import de.ailis.collada.model.GeometryLibrary;
-import de.ailis.collada.model.Image;
-import de.ailis.collada.model.ImageLibraries;
-import de.ailis.collada.model.ImageLibrary;
-import de.ailis.collada.model.ImageSource;
-import de.ailis.collada.model.Images;
-import de.ailis.collada.model.Light;
-import de.ailis.collada.model.LightInstance;
-import de.ailis.collada.model.LightInstances;
-import de.ailis.collada.model.LightLibraries;
-import de.ailis.collada.model.LightLibrary;
-import de.ailis.collada.model.LightSource;
-import de.ailis.collada.model.Lights;
-import de.ailis.collada.model.LookAtTransform;
-import de.ailis.collada.model.Material;
-import de.ailis.collada.model.MaterialBinding;
-import de.ailis.collada.model.MaterialInstance;
-import de.ailis.collada.model.MaterialInstances;
-import de.ailis.collada.model.MaterialLibraries;
-import de.ailis.collada.model.MaterialLibrary;
-import de.ailis.collada.model.Materials;
-import de.ailis.collada.model.MatrixTransform;
-import de.ailis.collada.model.Mesh;
-import de.ailis.collada.model.Node;
-import de.ailis.collada.model.NodeType;
-import de.ailis.collada.model.Nodes;
-import de.ailis.collada.model.Optics;
-import de.ailis.collada.model.Orthographic;
-import de.ailis.collada.model.Param;
-import de.ailis.collada.model.Perspective;
-import de.ailis.collada.model.PhongShader;
-import de.ailis.collada.model.Point;
-import de.ailis.collada.model.PrimitiveData;
-import de.ailis.collada.model.PrimitiveElements;
-import de.ailis.collada.model.Projection;
-import de.ailis.collada.model.RGBAColor;
-import de.ailis.collada.model.RGBColor;
-import de.ailis.collada.model.RotateTransform;
-import de.ailis.collada.model.Sampler2DParam;
-import de.ailis.collada.model.ScaleTransform;
-import de.ailis.collada.model.Shader;
-import de.ailis.collada.model.SharedInput;
-import de.ailis.collada.model.SharedInputs;
-import de.ailis.collada.model.SkewTransform;
-import de.ailis.collada.model.Spot;
-import de.ailis.collada.model.Texture;
-import de.ailis.collada.model.Transformations;
-import de.ailis.collada.model.TranslateTransform;
-import de.ailis.collada.model.Triangles;
-import de.ailis.collada.model.UnsharedInput;
-import de.ailis.collada.model.UnsharedInputs;
-import de.ailis.collada.model.Vertices;
-import de.ailis.collada.model.VisualScene;
-import de.ailis.collada.model.VisualSceneLibraries;
-import de.ailis.collada.model.VisualSceneLibrary;
-import de.ailis.collada.model.VisualScenes;
-import de.ailis.collada.model.Wrap;
+import de.ailis.collada.model.*;
 import de.ailis.collada.reader.ColladaReader;
 import de.ailis.gramath.MutableMatrix4d;
 import de.ailis.gramath.MutableVector3d;
@@ -780,6 +683,7 @@ public class FullTest
         assertEquals(5, data.getValue(5));
     }
 
+
     /**
      * Tests the visual scene libraries.
      *
@@ -968,5 +872,30 @@ public class FullTest
         assertEquals("WINDSPEED", param.getSemantic());
         assertEquals("windAmount", param.getSid());
         assertEquals("float3_type", param.getType());
+    }
+
+
+    /**
+     * Tests the scene.
+     *
+     * @throws Exception
+     *             When an error occurs.
+     */
+
+    @Test
+    public void testScene() throws Exception
+    {
+        // Test the scene
+        final Scene scene = doc.getScene();
+        assertSame(doc, scene.getDocument());
+        assertSame(doc, scene.getParent());
+
+        // Test the visual scene instance
+        final VisualSceneInstance instance = scene.getVisualSceneInstance();
+        assertSame(doc, instance.getDocument());
+        assertSame(scene, instance.getParent());
+        assertEquals("Scene", instance.getName());
+        assertEquals("scene", instance.getSid());
+        assertEquals(new URI("#visual-scene-1"), instance.getUrl());
     }
 }

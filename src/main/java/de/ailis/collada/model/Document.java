@@ -278,7 +278,7 @@ public final class Document extends Element implements AssetElement
     /**
      * Returns the scene.
      *
-     * @return The scene. May be empty if not set.
+     * @return The scene. May be null if not set.
      */
 
     public Scene getScene()

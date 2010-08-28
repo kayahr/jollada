@@ -68,6 +68,7 @@ import de.ailis.collada.model.RGBColor;
 import de.ailis.collada.model.RotateTransform;
 import de.ailis.collada.model.Sampler2DParam;
 import de.ailis.collada.model.ScaleTransform;
+import de.ailis.collada.model.Scene;
 import de.ailis.collada.model.Shader;
 import de.ailis.collada.model.SharedInput;
 import de.ailis.collada.model.SkewTransform;
@@ -76,6 +77,7 @@ import de.ailis.collada.model.TranslateTransform;
 import de.ailis.collada.model.UnsharedInput;
 import de.ailis.collada.model.Vertices;
 import de.ailis.collada.model.VisualScene;
+import de.ailis.collada.model.VisualSceneInstance;
 import de.ailis.collada.model.VisualSceneLibrary;
 import de.ailis.collada.model.Wrap;
 import de.ailis.gramath.MutableMatrix4d;
@@ -104,10 +106,6 @@ public class ColladaHandler extends DefaultHandler
 
     /** The current image */
     private Image image;
-
-    //
-    // /** The current material */
-    // private ColladaMaterial material;
 
     /** The current effect */
     private Effect effect;
@@ -299,7 +297,7 @@ public class ColladaHandler extends DefaultHandler
                         enterLibraryVisualScenes(attributes);
                     else if (localName.equals("library_animations"))
                         enterElement(ParserMode.LIBRARY_ANIMATIONS);
-                    // else if (localName.equals("scene")) enterScene();
+                    else if (localName.equals("scene")) enterScene();
                     break;
 
                 case LIBRARY_IMAGES:
@@ -637,10 +635,10 @@ public class ColladaHandler extends DefaultHandler
                         enterInstanceMaterial(attributes);
                     break;
 
-                // case SCENE:
-                // if (localName.equals("instance_visual_scene"))
-                // enterInstanceVisualScene(attributes);
-                // break;
+                case SCENE:
+                    if (localName.equals("instance_visual_scene"))
+                        enterInstanceVisualScene(attributes);
+                    break;
 
                 default:
                     // Ignored
@@ -940,10 +938,6 @@ public class ColladaHandler extends DefaultHandler
             case LIBRARY_VISUAL_SCENES:
                 leaveLibraryVisualScenes();
                 break;
-
-            // case SCENE:
-            // leaveScene();
-            // break;
 
             default:
                 leaveElement();
@@ -1932,7 +1926,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterParam(final Attributes attributes)
     {
-        final DataFlowParam param = new DataFlowParam(attributes.getValue("type"));
+        final DataFlowParam param = new DataFlowParam(
+            attributes.getValue("type"));
         param.setName(attributes.getValue("name"));
         param.setSemantic(attributes.getValue("semantic"));
         param.setSid(attributes.getValue("sid"));
@@ -3219,7 +3214,8 @@ public class ColladaHandler extends DefaultHandler
     {
         final DataFlowParams params = this.geometryInstance
                 .getMaterialBinding().getParams();
-        final DataFlowParam param = new DataFlowParam(attributes.getValue("type"));
+        final DataFlowParam param = new DataFlowParam(
+            attributes.getValue("type"));
         param.setName(attributes.getValue("name"));
         param.setSemantic(attributes.getValue("semantic"));
         param.setSid(attributes.getValue("sid"));
@@ -3376,52 +3372,41 @@ public class ColladaHandler extends DefaultHandler
     }
 
 
-    //
-    //
-    // /**
-    // * Enters a scene element.
-    // */
-    //
-    // private void enterScene()
-    // {
-    // this.scene = new ColladaScene();
-    // enterElement(ParserMode.SCENE);
-    // }
-    //
-    //
-    // /**
-    // * Enters a instance_visual_scene element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterInstanceVisualScene(final Attributes attributes)
-    // {
-    // final String urlString = attributes.getValue("url");
-    // URI url;
-    // try
-    // {
-    // url = new URI(urlString);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(urlString + " is not a valid URI: " + e,
-    // e);
-    // }
-    // this.scene.setInstanceVisualScene(new InstanceVisualScene(url));
-    // enterElement(ParserMode.INSTANCE_VISUAL_SCENE);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a scene element,
-    // */
-    //
-    // private void leaveScene()
-    // {
-    // this.document.setScene(this.scene);
-    // this.scene = null;
-    // leaveElement();
-    // }
+    /**
+     * Enters a scene element.
+     */
+
+    private void enterScene()
+    {
+        this.document.setScene(new Scene());
+        enterElement(ParserMode.SCENE);
+    }
+
+
+    /**
+     * Enters a instance_visual_scene element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterInstanceVisualScene(final Attributes attributes)
+    {
+        final String urlString = attributes.getValue("url");
+        URI url;
+        try
+        {
+            url = new URI(urlString);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(urlString + " is not a valid URI: " + e,
+                e);
+        }
+        final VisualSceneInstance instance = new VisualSceneInstance(url);
+        instance.setName(attributes.getValue("name"));
+        instance.setSid(attributes.getValue("sid"));
+        this.document.getScene().setVisualSceneInstance(instance);
+        enterElement(ParserMode.INSTANCE_VISUAL_SCENE);
+    }
 }
