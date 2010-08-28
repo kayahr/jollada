@@ -78,13 +78,18 @@ import de.ailis.collada.model.Param;
 import de.ailis.collada.model.Perspective;
 import de.ailis.collada.model.PhongShader;
 import de.ailis.collada.model.Point;
+import de.ailis.collada.model.PrimitiveData;
+import de.ailis.collada.model.PrimitiveElements;
 import de.ailis.collada.model.Projection;
 import de.ailis.collada.model.RGBAColor;
 import de.ailis.collada.model.RGBColor;
 import de.ailis.collada.model.Sampler2DParam;
 import de.ailis.collada.model.Shader;
+import de.ailis.collada.model.SharedInput;
+import de.ailis.collada.model.SharedInputs;
 import de.ailis.collada.model.Spot;
 import de.ailis.collada.model.Texture;
+import de.ailis.collada.model.Triangles;
 import de.ailis.collada.model.UnsharedInput;
 import de.ailis.collada.model.UnsharedInputs;
 import de.ailis.collada.model.Vertices;
@@ -708,6 +713,42 @@ public class FullTest
         assertSame(vertices, input.getParent());
         assertEquals("POSITION", input.getSemantic());
         assertEquals(new URI("#geometry-1-source"), input.getSource());
+
+        // Check primitives
+        final PrimitiveElements primitives = mesh.getPrimitives();
+        assertEquals(1, primitives.size());
+
+        // Check triangles
+        final Triangles triangles = (Triangles) primitives.get(0);
+        assertSame(doc, triangles.getDocument());
+        assertSame(mesh, triangles.getParent());
+        assertEquals(3, triangles.getCount());
+        assertEquals("Triangles", triangles.getName());
+        assertEquals("material-1", triangles.getMaterial());
+
+        // Check inputs
+        final SharedInputs primInputs = triangles.getInputs();
+        assertEquals(2, primInputs.size());
+
+        // Check input
+        final SharedInput primInput = primInputs.get(1);
+        assertSame(doc, primInput.getDocument());
+        assertSame(triangles, primInput.getParent());
+        assertEquals(new URI("#geometry-1-floats"), primInput.getSource());
+        assertEquals("STUFF", primInput.getSemantic());
+        assertEquals(2, primInput.getOffset());
+        assertEquals(1, primInput.getSet());
+
+        // Check primitive data
+        final PrimitiveData data = triangles.getData();
+        assertEquals(6, data.getSize());
+        assertEquals(0, data.getValue(0));
+        assertEquals(1, data.getValue(1));
+        assertEquals(2, data.getValue(2));
+        assertEquals(3, data.getValue(3));
+        assertEquals(4, data.getValue(4));
+        assertEquals(5, data.getValue(5));
+
 
 
 

@@ -314,6 +314,8 @@
           <input source="#geometry-1-source" semantic="POSITION" />
         </vertices>
         <triangles material="material-1" name="Triangles" count="3">
+          <input source="#geometry-1-source" semantic="TEXCOORDS" offset="1" set="3" />
+          <input source="#geometry-1-floats" semantic="STUFF" offset="2" set="1" />
           <p>
             0 1 2 3 4 5
           </p>
