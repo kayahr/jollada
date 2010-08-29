@@ -194,7 +194,32 @@
     <effect id="effect-2">
       <profile_COMMON>      
         <technique sid="technique">
-          <phong />
+          <blinn>
+            <emission>
+              <color sid="emission-color">0.5 0.6 0.7 0.8</color>
+            </emission>
+            <ambient>
+              <color sid="ambient-color">0.1 0.2 0.3 0.4</color>
+            </ambient>
+            <diffuse>
+              <texture texcoord="TEXCOORD" texture="TEXTURE"></texture>
+            </diffuse>
+            <specular>
+              <color sid="specular-color">0.4 0.3 0.2 0.1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess-value">0.95</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective-color">0.9 0.8 0.7 0.6</color>
+            </reflective>
+            <reflectivity><float sid="reflectivity-value">0.8</float></reflectivity>
+            <transparent>
+              <color sid="transparent-color">0.1 0.8 0.2 0.6</color>
+            </transparent>
+            <transparency><float sid="transparency-value">0.7</float></transparency>
+            <index_of_refraction><float sid="index_of_refraction-value">20</float></index_of_refraction>
+          </blinn>
         </technique>        
       </profile_COMMON>
     </effect>

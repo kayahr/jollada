@@ -188,7 +188,7 @@ public class FullTest
         assertEquals(2, effects.size());
 
         // Check effect
-        final Effect effect = effects.get(0);
+        Effect effect = effects.get(0);
         assertEquals("effect-1", effect.getId());
         assertEquals("Effect 1", effect.getName());
         assertSame(doc, effect.getDocument());
@@ -238,7 +238,7 @@ public class FullTest
         assertEquals(Filter.LINEAR, sampler2DParam.getMagFilter());
 
         // Check common effect technique
-        final CommonEffectTechnique commonEffectTechnique = commonEffectProfile
+        CommonEffectTechnique commonEffectTechnique = commonEffectProfile
                 .getTechnique();
         assertEquals("effect-1-common-technique", commonEffectTechnique.getId());
         assertEquals("technique", commonEffectTechnique.getSid());
@@ -246,12 +246,12 @@ public class FullTest
         assertSame(effectProfile, commonEffectTechnique.getParent());
 
         // Check shader
-        final Shader shader = commonEffectTechnique.getShader();
+        Shader shader = commonEffectTechnique.getShader();
         assertSame(doc, shader.getDocument());
         assertSame(commonEffectTechnique, shader.getParent());
 
         // Check reflectivity
-        final FloatAttribute floatAttrib = shader.getReflectivity();
+        FloatAttribute floatAttrib = shader.getReflectivity();
         assertSame(shader, floatAttrib.getParent());
         assertSame(doc, floatAttrib.getDocument());
 
@@ -275,7 +275,7 @@ public class FullTest
         assertEquals(0.2f, color.getGreen(), 0.001);
         assertEquals(0.3f, color.getBlue(), 0.001);
         assertEquals(0.4f, color.getAlpha(), 0.001);
-        final Texture texture = ((PhongShader) shader).getDiffuse()
+        Texture texture = ((PhongShader) shader).getDiffuse()
                 .getTexture();
         assertEquals("TEXCOORD", texture.getTexcoord());
         assertEquals("TEXTURE", texture.getTexture());
@@ -295,6 +295,64 @@ public class FullTest
         assertEquals(0.7f, color.getBlue(), 0.001);
         assertEquals(0.6f, color.getAlpha(), 0.001);
         color = ((PhongShader) shader).getTransparent().getColor();
+        assertEquals("transparent-color", color.getSid());
+        assertEquals(0.1f, color.getRed(), 0.001);
+        assertEquals(0.8f, color.getGreen(), 0.001);
+        assertEquals(0.2f, color.getBlue(), 0.001);
+        assertEquals(0.6f, color.getAlpha(), 0.001);
+        floatValue = shader.getTransparency().getFloat();
+        assertEquals("transparency-value", floatValue.getSid());
+        assertEquals(0.7, floatValue.getValue(), 0.001f);
+        floatValue = shader.getIndexOfRefraction().getFloat();
+        assertEquals("index_of_refraction-value", floatValue.getSid());
+        assertEquals(20, floatValue.getValue(), 0.001f);
+
+        // Check blinn shader
+        effect = (Effect) doc.getById("effect-2");
+        commonEffectTechnique = effect.getProfiles().getCommonProfile().getTechnique();
+        shader = commonEffectTechnique.getShader();
+        assertSame(doc, shader.getDocument());
+        assertSame(commonEffectTechnique, shader.getParent());
+        floatAttrib = shader.getReflectivity();
+        assertSame(shader, floatAttrib.getParent());
+        assertSame(doc, floatAttrib.getDocument());
+        floatValue = floatAttrib.getFloat();
+        assertSame(floatAttrib, floatValue.getParent());
+        assertSame(doc, floatValue.getDocument());
+        assertEquals("reflectivity-value", floatValue.getSid());
+        assertEquals(0.8, floatValue.getValue(), 0.001f);
+        color = shader.getEmission().getColor();
+        assertEquals("emission-color", color.getSid());
+        assertEquals(0.5f, color.getRed(), 0.001);
+        assertEquals(0.6f, color.getGreen(), 0.001);
+        assertEquals(0.7f, color.getBlue(), 0.001);
+        assertEquals(0.8f, color.getAlpha(), 0.001);
+        color = ((BlinnShader) shader).getAmbient().getColor();
+        assertEquals("ambient-color", color.getSid());
+        assertEquals(0.1f, color.getRed(), 0.001);
+        assertEquals(0.2f, color.getGreen(), 0.001);
+        assertEquals(0.3f, color.getBlue(), 0.001);
+        assertEquals(0.4f, color.getAlpha(), 0.001);
+        texture = ((BlinnShader) shader).getDiffuse()
+                .getTexture();
+        assertEquals("TEXCOORD", texture.getTexcoord());
+        assertEquals("TEXTURE", texture.getTexture());
+        color = ((BlinnShader) shader).getSpecular().getColor();
+        assertEquals("specular-color", color.getSid());
+        assertEquals(0.4f, color.getRed(), 0.001);
+        assertEquals(0.3f, color.getGreen(), 0.001);
+        assertEquals(0.2f, color.getBlue(), 0.001);
+        assertEquals(0.1f, color.getAlpha(), 0.001);
+        floatValue = ((BlinnShader) shader).getShininess().getFloat();
+        assertEquals(0.95, floatValue.getValue(), 0.001);
+        assertEquals("shininess-value", floatValue.getSid());
+        color = ((BlinnShader) shader).getReflective().getColor();
+        assertEquals("reflective-color", color.getSid());
+        assertEquals(0.9f, color.getRed(), 0.001);
+        assertEquals(0.8f, color.getGreen(), 0.001);
+        assertEquals(0.7f, color.getBlue(), 0.001);
+        assertEquals(0.6f, color.getAlpha(), 0.001);
+        color = ((BlinnShader) shader).getTransparent().getColor();
         assertEquals("transparent-color", color.getSid());
         assertEquals(0.1f, color.getRed(), 0.001);
         assertEquals(0.8f, color.getGreen(), 0.001);

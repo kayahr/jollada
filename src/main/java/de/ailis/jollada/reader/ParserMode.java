@@ -82,6 +82,9 @@ enum ParserMode {
     /** Parser is in phong element */
     PHONG("phong"),
 
+    /** Parser is in blinn element */
+    BLINN("blinn"),
+
     /** Parser is in emission element */
     EMISSION("emission"),
 
