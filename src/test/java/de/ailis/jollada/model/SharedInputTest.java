@@ -6,13 +6,12 @@
 package de.ailis.jollada.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.junit.Test;
-
-import de.ailis.jollada.model.SharedInput;
 
 
 /**
@@ -38,7 +37,7 @@ public class SharedInputTest
         assertEquals("SEMANTIC", input.getSemantic());
         assertEquals(new URI("SOURCE"), input.getSource());
         assertEquals(53, input.getOffset());
-        assertEquals(0, input.getSet());
+        assertNull(input.getSet());
     }
 
 
@@ -163,6 +162,6 @@ public class SharedInputTest
         final SharedInput input = new SharedInput("SEMANTIC",
             new URI("SOURCE"), 53);
         input.setSet(13);
-        assertEquals(13, input.getSet());
+        assertEquals(13, input.getSet().intValue());
     }
 }

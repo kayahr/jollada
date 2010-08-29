@@ -816,7 +816,7 @@ public class FullTest
         assertEquals(new URI("#geometry-1-floats"), primInput.getSource());
         assertEquals("STUFF", primInput.getSemantic());
         assertEquals(2, primInput.getOffset());
-        assertEquals(1, primInput.getSet());
+        assertEquals(1, primInput.getSet().intValue());
 
         // Check primitive data
         IntList data = triangles.getData();
@@ -843,7 +843,7 @@ public class FullTest
         assertEquals(new URI("#geometry-1-floats"), primInput.getSource());
         assertEquals("STUFF", primInput.getSemantic());
         assertEquals(2, primInput.getOffset());
-        assertEquals(1, primInput.getSet());
+        assertEquals(1, primInput.getSet().intValue());
         data = polyList.getVcount();
         assertEquals(3, data.getSize());
         assertEquals(2, data.getValue(0));

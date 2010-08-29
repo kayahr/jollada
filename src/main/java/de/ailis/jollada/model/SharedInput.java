@@ -30,7 +30,7 @@ public final class SharedInput extends Element
     private URI source;
 
     /** Which inputs to group as a single set. */
-    private int set = 0;
+    private Integer set;
 
 
     /**
@@ -136,10 +136,10 @@ public final class SharedInput extends Element
     /**
      * Returns the set number. Used to group inputs.
      *
-     * @return The set.
+     * @return The set. May return null if not set.
      */
 
-    public int getSet()
+    public Integer getSet()
     {
         return this.set;
     }
@@ -149,10 +149,10 @@ public final class SharedInput extends Element
      * Sets the set number. Used to group inputs.
      *
      * @param set
-     *            The set to set.
+     *            The set to set. Null to unset.
      */
 
-    public void setSet(final int set)
+    public void setSet(final Integer set)
     {
         this.set = set;
     }
