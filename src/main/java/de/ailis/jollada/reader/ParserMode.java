@@ -85,6 +85,9 @@ enum ParserMode {
     /** Parser is in blinn element */
     BLINN("blinn"),
 
+    /** Parser is in constant element */
+    CONSTANT("constant"),
+
     /** Parser is in emission element */
     EMISSION("emission"),
 

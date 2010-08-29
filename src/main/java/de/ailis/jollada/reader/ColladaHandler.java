@@ -38,6 +38,7 @@ import de.ailis.jollada.model.CameraInstance;
 import de.ailis.jollada.model.CameraLibrary;
 import de.ailis.jollada.model.ColorAttribute;
 import de.ailis.jollada.model.CommonSourceTechnique;
+import de.ailis.jollada.model.ConstantShader;
 import de.ailis.jollada.model.DataFlowParam;
 import de.ailis.jollada.model.DataFlowParams;
 import de.ailis.jollada.model.DataFlowSource;
@@ -112,10 +113,10 @@ public class ColladaHandler extends DefaultHandler
     private Effect effect;
 
     /** The current phong shading information */
-    private PhongShader phong;
+    private PhongShader phongShader;
 
     /** The current shading information */
-    private Shader shading;
+    private Shader shader;
 
     /** The current color or texture */
     private ColorAttribute colorOrTexture;
@@ -247,7 +248,10 @@ public class ColladaHandler extends DefaultHandler
     private MaterialInstance materialInstance;
 
     /** The current blinn shader. */
-    private BlinnShader blinn;
+    private BlinnShader blinnShader;
+
+    /** The current constant shader. */
+    private ConstantShader constantShader;
 
 
     /**
@@ -366,11 +370,15 @@ public class ColladaHandler extends DefaultHandler
                 case TECHNIQUE_COMMON:
                     if (localName.equals("phong"))
                         enterPhong();
-                    else if (localName.equals("blinn")) enterBlinn();
+                    else if (localName.equals("blinn"))
+                        enterBlinn();
+                    else if (localName.equals("constant"))
+                        enterConstant();
                     break;
 
                 case PHONG:
                 case BLINN:
+                case CONSTANT:
                     if (localName.equals("emission"))
                         enterElement(ParserMode.EMISSION);
                     else if (localName.equals("ambient"))
@@ -728,6 +736,10 @@ public class ColladaHandler extends DefaultHandler
 
             case BLINN:
                 leaveBlinn();
+                break;
+
+            case CONSTANT:
+                leaveConstant();
                 break;
 
             case TECHNIQUE_COMMON:
@@ -1521,7 +1533,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterPhong()
     {
-        this.shading = this.phong = new PhongShader();
+        this.shader = this.phongShader = new PhongShader();
         enterElement(ParserMode.PHONG);
     }
 
@@ -1532,8 +1544,19 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterBlinn()
     {
-        this.shading = this.blinn = new BlinnShader();
+        this.shader = this.blinnShader = new BlinnShader();
         enterElement(ParserMode.BLINN);
+    }
+
+
+    /**
+     * Enters a constant element.
+     */
+
+    private void enterConstant()
+    {
+        this.shader = this.constantShader = new ConstantShader();
+        enterElement(ParserMode.CONSTANT);
     }
 
 
@@ -1598,36 +1621,36 @@ public class ColladaHandler extends DefaultHandler
         switch (this.mode)
         {
             case EMISSION:
-                this.shading.setEmission(this.colorOrTexture);
+                this.shader.setEmission(this.colorOrTexture);
                 break;
 
             case AMBIENT:
-                if (this.phong != null)
-                    this.phong.setAmbient(this.colorOrTexture);
-                else if (this.blinn != null)
-                    this.blinn.setAmbient(this.colorOrTexture);
+                if (this.phongShader != null)
+                    this.phongShader.setAmbient(this.colorOrTexture);
+                else if (this.blinnShader != null)
+                    this.blinnShader.setAmbient(this.colorOrTexture);
                 break;
 
             case DIFFUSE:
-                if (this.phong != null)
-                    this.phong.setDiffuse(this.colorOrTexture);
-                else if (this.blinn != null)
-                    this.blinn.setDiffuse(this.colorOrTexture);
+                if (this.phongShader != null)
+                    this.phongShader.setDiffuse(this.colorOrTexture);
+                else if (this.blinnShader != null)
+                    this.blinnShader.setDiffuse(this.colorOrTexture);
                 break;
 
             case SPECULAR:
-                if (this.phong != null)
-                    this.phong.setSpecular(this.colorOrTexture);
-                else if (this.blinn != null)
-                    this.blinn.setSpecular(this.colorOrTexture);
+                if (this.phongShader != null)
+                    this.phongShader.setSpecular(this.colorOrTexture);
+                else if (this.blinnShader != null)
+                    this.blinnShader.setSpecular(this.colorOrTexture);
                 break;
 
             case REFLECTIVE:
-                this.shading.setReflective(this.colorOrTexture);
+                this.shader.setReflective(this.colorOrTexture);
                 break;
 
             case TRANSPARENT:
-                this.shading.setTransparent(this.colorOrTexture);
+                this.shader.setTransparent(this.colorOrTexture);
                 break;
 
             default:
@@ -1681,22 +1704,22 @@ public class ColladaHandler extends DefaultHandler
         switch (this.mode)
         {
             case REFLECTIVITY:
-                this.shading.setReflectivity(this.floatAttrib);
+                this.shader.setReflectivity(this.floatAttrib);
                 break;
 
             case SHININESS:
-                if (this.phong != null)
-                    this.phong.setShininess(this.floatAttrib);
-                else if (this.blinn != null)
-                    this.blinn.setShininess(this.floatAttrib);
+                if (this.phongShader != null)
+                    this.phongShader.setShininess(this.floatAttrib);
+                else if (this.blinnShader != null)
+                    this.blinnShader.setShininess(this.floatAttrib);
                 break;
 
             case TRANSPARENCY:
-                this.shading.setTransparency(this.floatAttrib);
+                this.shader.setTransparency(this.floatAttrib);
                 break;
 
             case INDEX_OF_REFRACTION:
-                this.shading.setIndexOfRefraction(this.floatAttrib);
+                this.shader.setIndexOfRefraction(this.floatAttrib);
                 break;
 
             default:
@@ -1713,8 +1736,8 @@ public class ColladaHandler extends DefaultHandler
 
     private void leavePhong()
     {
-        this.commonEffectTechniqueBuilder.setShader(this.phong);
-        this.shading = this.phong = null;
+        this.commonEffectTechniqueBuilder.setShader(this.phongShader);
+        this.shader = this.phongShader = null;
         leaveElement();
     }
 
@@ -1725,8 +1748,20 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveBlinn()
     {
-        this.commonEffectTechniqueBuilder.setShader(this.blinn);
-        this.shading = this.blinn = null;
+        this.commonEffectTechniqueBuilder.setShader(this.blinnShader);
+        this.shader = this.blinnShader = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a constant element.
+     */
+
+    private void leaveConstant()
+    {
+        this.commonEffectTechniqueBuilder.setShader(this.constantShader);
+        this.shader = this.constantShader = null;
         leaveElement();
     }
 
