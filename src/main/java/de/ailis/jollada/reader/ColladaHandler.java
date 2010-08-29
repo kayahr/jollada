@@ -30,6 +30,8 @@ import de.ailis.jollada.builders.MaterialBuilder;
 import de.ailis.jollada.builders.MeshBuilder;
 import de.ailis.jollada.builders.OrthographicBuilder;
 import de.ailis.jollada.builders.PerspectiveBuilder;
+import de.ailis.jollada.builders.PolyListBuilder;
+import de.ailis.jollada.builders.PrimitivesBuilder;
 import de.ailis.jollada.builders.ProjectionBuilder;
 import de.ailis.jollada.builders.TrianglesBuilder;
 import de.ailis.jollada.model.Accessor;
@@ -57,6 +59,7 @@ import de.ailis.jollada.model.GeometryInstance;
 import de.ailis.jollada.model.GeometryLibrary;
 import de.ailis.jollada.model.Image;
 import de.ailis.jollada.model.ImageLibrary;
+import de.ailis.jollada.model.IntList;
 import de.ailis.jollada.model.LambertShader;
 import de.ailis.jollada.model.LightInstance;
 import de.ailis.jollada.model.LightLibrary;
@@ -69,7 +72,6 @@ import de.ailis.jollada.model.Node;
 import de.ailis.jollada.model.NodeType;
 import de.ailis.jollada.model.Param;
 import de.ailis.jollada.model.PhongShader;
-import de.ailis.jollada.model.PrimitiveData;
 import de.ailis.jollada.model.RGBAColor;
 import de.ailis.jollada.model.RGBColor;
 import de.ailis.jollada.model.RotateTransform;
@@ -246,6 +248,12 @@ public class ColladaHandler extends DefaultHandler
 
     /** The current material instance. */
     private MaterialInstance materialInstance;
+
+    /** The current polylist builder. */
+    private PolyListBuilder polyListBuilder;
+
+    /** The current primitives builder. */
+    private PrimitivesBuilder primitivesBuilder;
 
 
     /**
@@ -437,6 +445,8 @@ public class ColladaHandler extends DefaultHandler
                      */
                     else if (localName.equals("triangles"))
                         enterTriangles(attributes);
+                    else if (localName.equals("polylist"))
+                        enterPolyList(attributes);
                     break;
 
                 case MESH_DATA_SOURCE:
@@ -471,11 +481,20 @@ public class ColladaHandler extends DefaultHandler
                         enterPrimitivesInput(attributes);
                     break;
 
-                case TRIANGLES:
-                    if (localName.equals("p"))
-                        enterElement(ParserMode.TRIANGLES_P);
-                    else if (localName.equals("input"))
+                case POLYLIST:
+                    if (localName.equals("input"))
                         enterPrimitivesInput(attributes);
+                    else if (localName.equals("vcount"))
+                        enterPolyListVcount();
+                    else if (localName.equals("p"))
+                        enterPolyListP();
+                    break;
+
+                case TRIANGLES:
+                    if (localName.equals("input"))
+                        enterPrimitivesInput(attributes);
+                    else if (localName.equals("p"))
+                        enterTrianglesP();
                     break;
 
                 // case LIBRARY_ANIMATIONS:
@@ -798,12 +817,28 @@ public class ColladaHandler extends DefaultHandler
                 leaveVertices();
                 break;
 
+            case TRIANGLES_P:
+                leaveTrianglesP();
+                break;
+
             case TRIANGLES:
                 leaveTriangles();
                 break;
 
             case POLYGONS_P:
                 leavePolygonsP();
+                break;
+
+            case POLYLIST_VCOUNT:
+                leavePolyListVcount();
+                break;
+
+            case POLYLIST_P:
+                leavePolyListP();
+                break;
+
+            case POLYLIST:
+                leavePolyList();
                 break;
 
             // case POLYGONS:
@@ -1011,7 +1046,9 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case POLYGONS_P:
+            case POLYLIST_P:
             case TRIANGLES_P:
+            case POLYLIST_VCOUNT:
                 this.chunkIntReader.addChunk(ch, start, length);
                 break;
 
@@ -2071,7 +2108,17 @@ public class ColladaHandler extends DefaultHandler
                 .getValue("count")));
         this.trianglesBuilder.setMaterial(attributes.getValue("material"));
         this.trianglesBuilder.setName(attributes.getValue("name"));
+        this.primitivesBuilder = this.trianglesBuilder;
+        enterElement(ParserMode.TRIANGLES);
+    }
 
+
+    /**
+     * Enters a triangles p element.
+     */
+
+    private void enterTrianglesP()
+    {
         final List<Integer> builder = this.intArrayBuilder = new ArrayList<Integer>();
         this.chunkIntReader = new ChunkIntReader()
         {
@@ -2081,7 +2128,7 @@ public class ColladaHandler extends DefaultHandler
                 builder.add(value);
             }
         };
-        enterElement(ParserMode.TRIANGLES);
+        enterElement(ParserMode.TRIANGLES_P);
     }
 
 
@@ -2112,11 +2159,25 @@ public class ColladaHandler extends DefaultHandler
         }
         final SharedInput input = new SharedInput(semantic, source, offset);
         input.setSet(set);
-        if (this.trianglesBuilder != null)
-            this.trianglesBuilder.getInputs().add(input);
-        else
-            throw new ParserException("not implemented");
+        this.primitivesBuilder.getInputs().add(input);
         enterElement(ParserMode.PRIMITIVES_INPUT);
+    }
+
+
+    /**
+     * Leaves a triangles p element.
+     */
+
+    private void leaveTrianglesP()
+    {
+        this.chunkIntReader.finish();
+        this.chunkIntReader = null;
+        final int size = this.intArrayBuilder.size();
+        final IntList data = new IntList(size);
+        data.setValues(this.intArrayBuilder);
+        this.trianglesBuilder.setData(data);
+        this.intArrayBuilder = null;
+        leaveElement();
     }
 
 
@@ -2126,15 +2187,113 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveTriangles()
     {
+        this.meshBuilder.getPrimitives().add(this.trianglesBuilder.build());
+        this.trianglesBuilder = null;
+        this.primitivesBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a polylist element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterPolyList(final Attributes attributes)
+    {
+        this.polyListBuilder = new PolyListBuilder();
+        this.polyListBuilder.setCount(Integer.parseInt(attributes
+                .getValue("count")));
+        this.polyListBuilder.setMaterial(attributes.getValue("material"));
+        this.polyListBuilder.setName(attributes.getValue("name"));
+        this.primitivesBuilder = this.polyListBuilder;
+        enterElement(ParserMode.POLYLIST);
+    }
+
+
+    /**
+     * Enters a polygons vcount element.
+     */
+
+    private void enterPolyListVcount()
+    {
+        final List<Integer> builder = this.intArrayBuilder = new ArrayList<Integer>();
+        this.chunkIntReader = new ChunkIntReader()
+        {
+            @Override
+            protected void valueFound(final int value)
+            {
+                builder.add(value);
+            }
+        };
+        enterElement(ParserMode.POLYLIST_VCOUNT);
+    }
+
+
+    /**
+     * Leaves a polylist vcount element.
+     */
+
+    private void leavePolyListVcount()
+    {
         this.chunkIntReader.finish();
         this.chunkIntReader = null;
         final int size = this.intArrayBuilder.size();
-        final PrimitiveData data = new PrimitiveData(size);
+        final IntList data = new IntList(size);
         data.setValues(this.intArrayBuilder);
-        this.trianglesBuilder.setData(data);
-        this.meshBuilder.getPrimitives().add(this.trianglesBuilder.build());
-        this.trianglesBuilder = null;
+        this.polyListBuilder.setVcount(data);
         this.intArrayBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a polygons p element.
+     */
+
+    private void enterPolyListP()
+    {
+        final List<Integer> builder = this.intArrayBuilder = new ArrayList<Integer>();
+        this.chunkIntReader = new ChunkIntReader()
+        {
+            @Override
+            protected void valueFound(final int value)
+            {
+                builder.add(value);
+            }
+        };
+        enterElement(ParserMode.POLYLIST_P);
+    }
+
+
+    /**
+     * Leaves a polylist p element.
+     */
+
+    private void leavePolyListP()
+    {
+        this.chunkIntReader.finish();
+        this.chunkIntReader = null;
+        final int size = this.intArrayBuilder.size();
+        final IntList data = new IntList(size);
+        data.setValues(this.intArrayBuilder);
+        this.polyListBuilder.setData(data);
+        this.intArrayBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a polylist element.
+     */
+
+    private void leavePolyList()
+    {
+        this.meshBuilder.getPrimitives().add(this.polyListBuilder.build());
+        this.polyListBuilder = null;
+        this.primitivesBuilder = null;
         leaveElement();
     }
 
@@ -2155,6 +2314,7 @@ public class ColladaHandler extends DefaultHandler
     // this.primitives = this.polygons = new Polygons();
     // this.polygons.setMaterial(material);
     // this.intArrayBuilder = new ArrayList<Integer>();
+    // this.primitivesBuilder = this.polygonsBuilder;
     // enterElement(ParserMode.POLYGONS);
     // }
 
@@ -2207,6 +2367,7 @@ public class ColladaHandler extends DefaultHandler
     // this.polygonsIndices = null;
     // this.intArrayBuilder = null;
     // this.primitives = this.polygons = null;
+    // this.primitivesBuilder = null;
     // leaveElement();
     // }
 

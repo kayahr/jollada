@@ -11,7 +11,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import de.ailis.jollada.model.PrimitiveData;
+import de.ailis.jollada.model.IntList;
 import de.ailis.jollada.model.Triangles;
 
 
@@ -30,7 +30,7 @@ public class TrianglesTest
     @Test
     public void testDefaultConstructor()
     {
-        final PrimitiveData data = new PrimitiveData(3);
+        final IntList data = new IntList(3);
         final Triangles triangles = new Triangles(1, data);
         assertNull(triangles.getName());
         assertNull(triangles.getMaterial());
@@ -47,7 +47,7 @@ public class TrianglesTest
     @Test
     public void testName()
     {
-        final Triangles triangles = new Triangles(1, new PrimitiveData(3));
+        final Triangles triangles = new Triangles(1, new IntList(3));
         assertNull(triangles.getName());
         triangles.setName("foo");
         assertEquals("foo", triangles.getName());
@@ -63,7 +63,7 @@ public class TrianglesTest
     @Test
     public void testMaterial()
     {
-        final Triangles triangles = new Triangles(1, new PrimitiveData(3));
+        final Triangles triangles = new Triangles(1, new IntList(3));
         assertNull(triangles.getMaterial());
         triangles.setMaterial("foo");
         assertEquals("foo", triangles.getMaterial());
@@ -79,8 +79,8 @@ public class TrianglesTest
     @Test
     public void testData()
     {
-        final Triangles triangles = new Triangles(1, new PrimitiveData(3));
-        final PrimitiveData data = new PrimitiveData(6);
+        final Triangles triangles = new Triangles(1, new IntList(3));
+        final IntList data = new IntList(6);
         triangles.setData(data);
         assertSame(data, triangles.getData());
     }
@@ -93,7 +93,7 @@ public class TrianglesTest
     @Test(expected = IllegalArgumentException.class)
     public void testSetDataWithNull()
     {
-        final Triangles triangles = new Triangles(1, new PrimitiveData(3));
+        final Triangles triangles = new Triangles(1, new IntList(3));
         triangles.setData(null);
     }
 
@@ -105,7 +105,7 @@ public class TrianglesTest
     @Test
     public void testCount()
     {
-        final Triangles triangles = new Triangles(1, new PrimitiveData(3));
+        final Triangles triangles = new Triangles(1, new IntList(3));
         triangles.setCount(3);
         assertEquals(3, triangles.getCount());
     }

@@ -7,17 +7,20 @@ package de.ailis.jollada.model;
 
 
 /**
- * Triangle primitives.
+ * Polygon list primitives.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class Triangles extends Primitives
+public final class PolyList extends Primitives
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
-    /** The primitives data */
+    /** The vertex count list. */
+    private IntList vcount;
+
+    /** The primitives data. */
     private IntList data;
 
 
@@ -26,14 +29,44 @@ public final class Triangles extends Primitives
      *
      * @param count
      *            The number of triangles.
+     * @param vcount
+     *            The list with the vertex counts per polygon. Must not be null.
      * @param data
-     *            The triangle data. Must not be null.
+     *            The polylist data. Must not be null.
      */
 
-    public Triangles(final int count, final IntList data)
+    public PolyList(final int count, final IntList vcount, final IntList data)
     {
         super(count);
+        setVcount(vcount);
         setData(data);
+    }
+
+
+    /**
+     * Returns the vertex count list.
+     *
+     * @return The vertex count list.
+     */
+
+    public IntList getVcount()
+    {
+        return this.vcount;
+    }
+
+
+    /**
+     * Sets the vertex count list.
+     *
+     * @param vcount
+     *            The vertex count list to set. Must not be null.
+     */
+
+    public void setVcount(final IntList vcount)
+    {
+        if (vcount == null)
+            throw new IllegalArgumentException("vcount must not be null");
+        this.vcount = vcount;
     }
 
 

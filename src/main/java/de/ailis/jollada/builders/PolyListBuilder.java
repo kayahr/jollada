@@ -6,18 +6,21 @@
 package de.ailis.jollada.builders;
 
 import de.ailis.jollada.model.IntList;
-import de.ailis.jollada.model.Triangles;
+import de.ailis.jollada.model.PolyList;
 
 
 /**
- * Builder for triangles primitives.
+ * Builder for polylist primitives.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class TrianglesBuilder extends PrimitivesBuilder
+public final class PolyListBuilder extends PrimitivesBuilder
 {
-    /** The geometric element. */
+    /** The vertex counts. */
+    private IntList vcount;
+
+    /** The primitive data. */
     private IntList data;
 
 
@@ -28,15 +31,17 @@ public final class TrianglesBuilder extends PrimitivesBuilder
      */
 
     @Override
-    public Triangles build()
+    public PolyList build()
     {
+        if (this.vcount == null)
+            throw new IllegalStateException("vcount not set");
         if (this.data == null)
             throw new IllegalStateException("data not set");
-        final Triangles triangles = new Triangles(this.count, this.data);
-        triangles.setMaterial(this.material);
-        triangles.setName(this.name);
-        triangles.getInputs().addAll(this.inputs);
-        return triangles;
+        final PolyList polyList = new PolyList(this.count, this.vcount, this.data);
+        polyList.setMaterial(this.material);
+        polyList.setName(this.name);
+        polyList.getInputs().addAll(this.inputs);
+        return polyList;
     }
 
 
@@ -48,9 +53,35 @@ public final class TrianglesBuilder extends PrimitivesBuilder
     public void reset()
     {
         super.reset();
+        this.vcount = null;
         this.data = null;
         this.material = null;
         this.name = null;
+    }
+
+
+    /**
+     * Returns the next vertex count list.
+     *
+     * @return The next vertex count list. May be null if unset.
+     */
+
+    public IntList getVcount()
+    {
+        return this.vcount;
+    }
+
+
+    /**
+     * Sets the next vertex count list.
+     *
+     * @param vcount
+     *            The next vertex count list to set. Null to unset.
+     */
+
+    public void setVcount(final IntList vcount)
+    {
+        this.vcount = vcount;
     }
 
 

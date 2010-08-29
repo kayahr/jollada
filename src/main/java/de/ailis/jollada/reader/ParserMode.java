@@ -178,6 +178,15 @@ enum ParserMode {
     /** Parser is in triangles p element */
     TRIANGLES_P("p"),
 
+    /** Parser is in polylist element */
+    POLYLIST("polylist"),
+
+    /** Parser is in polylist vcount element */
+    POLYLIST_VCOUNT("vcount"),
+
+    /** Parser is in polylist p element */
+    POLYLIST_P("p"),
+
     /** Parser is in library_animations element */
     LIBRARY_ANIMATIONS("library_animations"),
 

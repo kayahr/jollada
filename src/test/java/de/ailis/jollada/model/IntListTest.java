@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import de.ailis.jollada.model.PrimitiveData;
+import de.ailis.jollada.model.IntList;
 
 
 /**
@@ -18,7 +18,7 @@ import de.ailis.jollada.model.PrimitiveData;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class PrimitiveDataTest
+public class IntListTest
 {
     /**
      * Tests the constructor.
@@ -27,7 +27,7 @@ public class PrimitiveDataTest
     @Test
     public void testConstructor()
     {
-        final PrimitiveData array = new PrimitiveData(16);
+        final IntList array = new IntList(16);
         assertEquals(16, array.getSize());
     }
 
@@ -39,7 +39,7 @@ public class PrimitiveDataTest
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorNegativeSize()
     {
-        new PrimitiveData(-1).toString();
+        new IntList(-1).toString();
     }
 
 
@@ -50,7 +50,7 @@ public class PrimitiveDataTest
     @Test
     public void testSetSize()
     {
-        final PrimitiveData array = new PrimitiveData(4);
+        final IntList array = new IntList(4);
         array.setValue(0, 1);
         array.setValue(1, 2);
         array.setValue(2, 3);
@@ -75,7 +75,7 @@ public class PrimitiveDataTest
     @Test
     public void testGetValues()
     {
-        final PrimitiveData array = new PrimitiveData(4);
+        final IntList array = new IntList(4);
         array.setValue(0, 1);
         array.setValue(1, 2);
         array.setValue(2, 3);
@@ -121,7 +121,7 @@ public class PrimitiveDataTest
     @Test
     public void testSetValues()
     {
-        final PrimitiveData array = new PrimitiveData(4);
+        final IntList array = new IntList(4);
         final int[] values = new int[] { 1, 2, 3, 4 };
         array.setValues(values);
         assertEquals(1, array.getValue(0));

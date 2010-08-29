@@ -14,7 +14,7 @@ import java.util.Collection;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public final class PrimitiveData
+public final class IntList
 {
     /** The data. */
     private int[] data;
@@ -27,7 +27,7 @@ public final class PrimitiveData
      *            The data size.
      */
 
-    public PrimitiveData(final int size)
+    public IntList(final int size)
     {
         if (size < 0)
             throw new IllegalArgumentException("size must be >= 0");

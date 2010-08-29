@@ -384,6 +384,14 @@
             0 1 2 3 4 5
           </p>
         </triangles>
+        <polylist material="material-2" name="Polylist" count="3">
+          <input source="#geometry-1-source" semantic="TEXCOORDS" offset="1" set="3" />
+          <input source="#geometry-1-floats" semantic="STUFF" offset="2" set="1" />
+          <vcount>2 3 4</vcount>
+          <p>
+            0 1 0 1 2 0 1 2 3
+          </p>
+        </polylist>
       </mesh>
     </geometry>
   </library_geometries>
