@@ -38,9 +38,9 @@ public final class PerspectiveBuilder extends ProjectionBuilder
         if (this.zFar == null)
             throw new IllegalStateException("zFar not set");
         if (this.aspectRatio == null
-            && (this.xFov == null || this.yFov == null))
+            && this.xFov == null && this.yFov == null)
             throw new IllegalStateException(
-                "xFov and yFov must be set when no aspect ratio is given");
+                "xFov and/or yFov must be set when no aspect ratio is given");
         if (this.aspectRatio != null
             && (this.xFov != null && this.yFov != null))
             throw new IllegalStateException(
