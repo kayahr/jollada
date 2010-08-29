@@ -33,6 +33,7 @@ import de.ailis.jollada.builders.PerspectiveBuilder;
 import de.ailis.jollada.builders.ProjectionBuilder;
 import de.ailis.jollada.builders.TrianglesBuilder;
 import de.ailis.jollada.model.Accessor;
+import de.ailis.jollada.model.BRDFShader;
 import de.ailis.jollada.model.BlinnShader;
 import de.ailis.jollada.model.CameraInstance;
 import de.ailis.jollada.model.CameraLibrary;
@@ -111,9 +112,6 @@ public class ColladaHandler extends DefaultHandler
 
     /** The current effect */
     private Effect effect;
-
-    /** The current phong shading information */
-    private PhongShader phongShader;
 
     /** The current shading information */
     private Shader shader;
@@ -246,12 +244,6 @@ public class ColladaHandler extends DefaultHandler
 
     /** The current material instance. */
     private MaterialInstance materialInstance;
-
-    /** The current blinn shader. */
-    private BlinnShader blinnShader;
-
-    /** The current constant shader. */
-    private ConstantShader constantShader;
 
 
     /**
@@ -731,15 +723,9 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case PHONG:
-                leavePhong();
-                break;
-
             case BLINN:
-                leaveBlinn();
-                break;
-
             case CONSTANT:
-                leaveConstant();
+                leaveShader();
                 break;
 
             case TECHNIQUE_COMMON:
@@ -1533,7 +1519,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterPhong()
     {
-        this.shader = this.phongShader = new PhongShader();
+        this.shader = new PhongShader();
         enterElement(ParserMode.PHONG);
     }
 
@@ -1544,7 +1530,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterBlinn()
     {
-        this.shader = this.blinnShader = new BlinnShader();
+        this.shader = new BlinnShader();
         enterElement(ParserMode.BLINN);
     }
 
@@ -1555,7 +1541,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterConstant()
     {
-        this.shader = this.constantShader = new ConstantShader();
+        this.shader = new ConstantShader();
         enterElement(ParserMode.CONSTANT);
     }
 
@@ -1625,24 +1611,15 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case AMBIENT:
-                if (this.phongShader != null)
-                    this.phongShader.setAmbient(this.colorOrTexture);
-                else if (this.blinnShader != null)
-                    this.blinnShader.setAmbient(this.colorOrTexture);
+                ((BRDFShader) this.shader).setAmbient(this.colorOrTexture);
                 break;
 
             case DIFFUSE:
-                if (this.phongShader != null)
-                    this.phongShader.setDiffuse(this.colorOrTexture);
-                else if (this.blinnShader != null)
-                    this.blinnShader.setDiffuse(this.colorOrTexture);
+                ((BRDFShader) this.shader).setDiffuse(this.colorOrTexture);
                 break;
 
             case SPECULAR:
-                if (this.phongShader != null)
-                    this.phongShader.setSpecular(this.colorOrTexture);
-                else if (this.blinnShader != null)
-                    this.blinnShader.setSpecular(this.colorOrTexture);
+                ((BRDFShader) this.shader).setSpecular(this.colorOrTexture);
                 break;
 
             case REFLECTIVE:
@@ -1708,10 +1685,7 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case SHININESS:
-                if (this.phongShader != null)
-                    this.phongShader.setShininess(this.floatAttrib);
-                else if (this.blinnShader != null)
-                    this.blinnShader.setShininess(this.floatAttrib);
+                ((BRDFShader) this.shader).setShininess(this.floatAttrib);
                 break;
 
             case TRANSPARENCY:
@@ -1731,37 +1705,13 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
-     * Leaves a phong element.
+     * Leaves a shader element.
      */
 
-    private void leavePhong()
+    private void leaveShader()
     {
-        this.commonEffectTechniqueBuilder.setShader(this.phongShader);
-        this.shader = this.phongShader = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a phong element.
-     */
-
-    private void leaveBlinn()
-    {
-        this.commonEffectTechniqueBuilder.setShader(this.blinnShader);
-        this.shader = this.blinnShader = null;
-        leaveElement();
-    }
-
-
-    /**
-     * Leaves a constant element.
-     */
-
-    private void leaveConstant()
-    {
-        this.commonEffectTechniqueBuilder.setShader(this.constantShader);
-        this.shader = this.constantShader = null;
+        this.commonEffectTechniqueBuilder.setShader(this.shader);
+        this.shader = null;
         leaveElement();
     }
 
