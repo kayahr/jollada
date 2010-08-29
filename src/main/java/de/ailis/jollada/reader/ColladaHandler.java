@@ -43,6 +43,7 @@ import de.ailis.jollada.model.ConstantShader;
 import de.ailis.jollada.model.DataFlowParam;
 import de.ailis.jollada.model.DataFlowParams;
 import de.ailis.jollada.model.DataFlowSource;
+import de.ailis.jollada.model.DiffuseShader;
 import de.ailis.jollada.model.Document;
 import de.ailis.jollada.model.Effect;
 import de.ailis.jollada.model.EffectLibrary;
@@ -56,6 +57,7 @@ import de.ailis.jollada.model.GeometryInstance;
 import de.ailis.jollada.model.GeometryLibrary;
 import de.ailis.jollada.model.Image;
 import de.ailis.jollada.model.ImageLibrary;
+import de.ailis.jollada.model.LambertShader;
 import de.ailis.jollada.model.LightInstance;
 import de.ailis.jollada.model.LightLibrary;
 import de.ailis.jollada.model.LookAtTransform;
@@ -366,11 +368,14 @@ public class ColladaHandler extends DefaultHandler
                         enterBlinn();
                     else if (localName.equals("constant"))
                         enterConstant();
+                    else if (localName.equals("lambert"))
+                        enterLambert();
                     break;
 
                 case PHONG:
                 case BLINN:
                 case CONSTANT:
+                case LAMBERT:
                     if (localName.equals("emission"))
                         enterElement(ParserMode.EMISSION);
                     else if (localName.equals("ambient"))
@@ -725,6 +730,7 @@ public class ColladaHandler extends DefaultHandler
             case PHONG:
             case BLINN:
             case CONSTANT:
+            case LAMBERT:
                 leaveShader();
                 break;
 
@@ -1547,6 +1553,17 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
+     * Enters a lambert element.
+     */
+
+    private void enterLambert()
+    {
+        this.shader = new LambertShader();
+        enterElement(ParserMode.LAMBERT);
+    }
+
+
+    /**
      * Enters a color element.
      *
      * @param attributes
@@ -1611,11 +1628,11 @@ public class ColladaHandler extends DefaultHandler
                 break;
 
             case AMBIENT:
-                ((BRDFShader) this.shader).setAmbient(this.colorOrTexture);
+                ((DiffuseShader) this.shader).setAmbient(this.colorOrTexture);
                 break;
 
             case DIFFUSE:
-                ((BRDFShader) this.shader).setDiffuse(this.colorOrTexture);
+                ((DiffuseShader) this.shader).setDiffuse(this.colorOrTexture);
                 break;
 
             case SPECULAR:

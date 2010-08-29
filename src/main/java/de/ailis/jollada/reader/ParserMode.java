@@ -88,6 +88,9 @@ enum ParserMode {
     /** Parser is in constant element */
     CONSTANT("constant"),
 
+    /** Parser is in lambert element */
+    LAMBERT("lambert"),
+
     /** Parser is in emission element */
     EMISSION("emission"),
 

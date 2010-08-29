@@ -403,6 +403,55 @@ public class FullTest
         floatValue = shader.getIndexOfRefraction().getFloat();
         assertEquals("index_of_refraction-value", floatValue.getSid());
         assertEquals(20, floatValue.getValue(), 0.001f);
+
+        // Check lambert shader
+        effect = (Effect) doc.getById("effect-4");
+        commonEffectTechnique = effect.getProfiles().getCommonProfile().getTechnique();
+        shader = commonEffectTechnique.getShader();
+        assertSame(doc, shader.getDocument());
+        assertSame(commonEffectTechnique, shader.getParent());
+        floatAttrib = shader.getReflectivity();
+        assertSame(shader, floatAttrib.getParent());
+        assertSame(doc, floatAttrib.getDocument());
+        floatValue = floatAttrib.getFloat();
+        assertSame(floatAttrib, floatValue.getParent());
+        assertSame(doc, floatValue.getDocument());
+        assertEquals("reflectivity-value", floatValue.getSid());
+        assertEquals(0.8, floatValue.getValue(), 0.001f);
+        color = shader.getEmission().getColor();
+        assertEquals("emission-color", color.getSid());
+        assertEquals(0.5f, color.getRed(), 0.001);
+        assertEquals(0.6f, color.getGreen(), 0.001);
+        assertEquals(0.7f, color.getBlue(), 0.001);
+        assertEquals(0.8f, color.getAlpha(), 0.001);
+        color = ((LambertShader) shader).getAmbient().getColor();
+        assertEquals("ambient-color", color.getSid());
+        assertEquals(0.1f, color.getRed(), 0.001);
+        assertEquals(0.2f, color.getGreen(), 0.001);
+        assertEquals(0.3f, color.getBlue(), 0.001);
+        assertEquals(0.4f, color.getAlpha(), 0.001);
+        texture = ((LambertShader) shader).getDiffuse()
+                .getTexture();
+        assertEquals("TEXCOORD", texture.getTexcoord());
+        assertEquals("TEXTURE", texture.getTexture());
+        color = ((LambertShader) shader).getReflective().getColor();
+        assertEquals("reflective-color", color.getSid());
+        assertEquals(0.9f, color.getRed(), 0.001);
+        assertEquals(0.8f, color.getGreen(), 0.001);
+        assertEquals(0.7f, color.getBlue(), 0.001);
+        assertEquals(0.6f, color.getAlpha(), 0.001);
+        color = ((LambertShader) shader).getTransparent().getColor();
+        assertEquals("transparent-color", color.getSid());
+        assertEquals(0.1f, color.getRed(), 0.001);
+        assertEquals(0.8f, color.getGreen(), 0.001);
+        assertEquals(0.2f, color.getBlue(), 0.001);
+        assertEquals(0.6f, color.getAlpha(), 0.001);
+        floatValue = shader.getTransparency().getFloat();
+        assertEquals("transparency-value", floatValue.getSid());
+        assertEquals(0.7, floatValue.getValue(), 0.001f);
+        floatValue = shader.getIndexOfRefraction().getFloat();
+        assertEquals("index_of_refraction-value", floatValue.getSid());
+        assertEquals(20, floatValue.getValue(), 0.001f);
     }
 
 
