@@ -49,6 +49,10 @@ public final class Document extends Element implements AssetElement
     private final LightLibraries lightLibraries =
             new LightLibraries(this);
 
+    /** The list of animation libraries. */
+    private final AnimationLibraries animationLibraries =
+            new AnimationLibraries(this);
+
     /** The list of geometry libraries. */
     private final GeometryLibraries geometryLibraries = new GeometryLibraries(
         this);
@@ -234,6 +238,18 @@ public final class Document extends Element implements AssetElement
     public LightLibraries getLightLibraries()
     {
         return this.lightLibraries;
+    }
+
+
+    /**
+     * Returns the list of animation libraries.
+     *
+     * @return The list of animation libraries. Never null. May be empty.
+     */
+
+    public AnimationLibraries getAnimationLibraries()
+    {
+        return this.animationLibraries;
     }
 
 

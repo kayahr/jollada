@@ -6,15 +6,27 @@
 package de.ailis.jollada.model;
 
 
-
 /**
- * Base class for parameters.
+ * List of animations.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public abstract class Param extends Element
+public final class Animations extends Elements<Animation>
 {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
+
+
+    /**
+     * Constructor.
+     *
+     * @param parent
+     *            The parent element
+     */
+
+    Animations(final Element parent)
+    {
+        super(parent);
+    }
 }

@@ -137,6 +137,7 @@
         <newparam sid="common-newparam-2">
           <semantic>SEMANTIC-2</semantic>        
           <sampler2D>
+            <source>ksdjfh</source>
             <wrap_s>BORDER</wrap_s>
             <wrap_t>CLAMP</wrap_t>
             <minfilter>NEAREST</minfilter>
@@ -392,9 +393,48 @@
             0 1 0 1 2 0 1 2 3
           </p>
         </polylist>
+        <polygons material="material-3" name="Polygons" count="3">
+          <input source="#geometry-1-source" semantic="TEXCOORDS" offset="1" set="3" />
+          <input source="#geometry-1-floats" semantic="STUFF" offset="2" set="1" />
+          <p>0 1</p>
+          <p>0 1 2</p>
+          <p>0 1 2 3</p>
+        </polygons>
       </mesh>
     </geometry>
   </library_geometries>
+  
+  <library_animations id="anim-lib-1" name="Animation Library 1">
+    <animation id="anim-1" name="Animation 1">
+      <animation id="sub-anim" name="Sub animation">
+        <source id="anim-source-1" name="Animation Source 1">
+          <float_array id="anim-floats" name="Animation Floats" count="5" digits="3" magnitude="30">
+            1 2 3 4 5
+          </float_array>
+          <technique_common>
+            <accessor source="#anim-floats" count="5" offset="0" stride="1">
+              <param sid="anim-floats-param" name="A" type="float" semantic="INPUT"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="interpolations">
+          <Name_array id="interpolations-array" count="3">
+            LINEAR LINEAR LINEAR
+          </Name_array>
+          <technique_common>
+            <accessor source="#interpolations-array" count="3">
+              <param type="name" />
+            </accessor>
+          </technique_common>
+        </source>
+        <sampler id="anim-sampler" post_behavior="GRADIENT" pre_behavior="CYCLE">
+          <input source="#anim-source" semantic="SEMANTIC" />
+        </sampler>
+        <channel source="#source1" target="target/X" />
+        <channel source="#source2" target="target/Y" />
+      </animation>
+    </animation>
+  </library_animations>
   
   <library_visual_scenes id="visual-scene-lib-1" name="Visual Scene Lib 1">
     <visual_scene id="visual-scene-1" name="Visual Scene 1">

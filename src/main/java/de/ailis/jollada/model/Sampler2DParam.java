@@ -17,6 +17,9 @@ public final class Sampler2DParam extends Param
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
+    /** The image instance. */
+    private ImageInstance imageInstance;
+
     /** Controls texture repeating and clamping of the S coordinate. */
     private Wrap wrapS = Wrap.WRAP;
 
@@ -135,5 +138,35 @@ public final class Sampler2DParam extends Param
         if (magFilter == null)
             throw new IllegalArgumentException("magFilter must not be null");
         this.magFilter = magFilter;
+    }
+
+
+    /**
+     * Sets the image instance.
+     *
+     * @param imageInstance
+     *            The image instance to set. Null to unset.
+     */
+
+    public void setImageInstance(final ImageInstance imageInstance)
+    {
+        if (imageInstance != this.imageInstance)
+        {
+            if (this.imageInstance != null) removeChild(this.imageInstance);
+            this.imageInstance = imageInstance;
+            if (imageInstance != null) addChild(imageInstance);
+        }
+    }
+
+
+    /**
+     * Returns the image instance.
+     *
+     * @return The image instance. May be null if not set.
+     */
+
+    public ImageInstance getImageInstance()
+    {
+        return this.imageInstance;
     }
 }

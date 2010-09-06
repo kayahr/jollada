@@ -31,10 +31,16 @@ import de.ailis.jollada.builders.MeshBuilder;
 import de.ailis.jollada.builders.OrthographicBuilder;
 import de.ailis.jollada.builders.PerspectiveBuilder;
 import de.ailis.jollada.builders.PolyListBuilder;
+import de.ailis.jollada.builders.PolygonsBuilder;
 import de.ailis.jollada.builders.PrimitivesBuilder;
 import de.ailis.jollada.builders.ProjectionBuilder;
 import de.ailis.jollada.builders.TrianglesBuilder;
 import de.ailis.jollada.model.Accessor;
+import de.ailis.jollada.model.Animation;
+import de.ailis.jollada.model.AnimationBehavior;
+import de.ailis.jollada.model.AnimationChannel;
+import de.ailis.jollada.model.AnimationLibrary;
+import de.ailis.jollada.model.AnimationSampler;
 import de.ailis.jollada.model.BRDFShader;
 import de.ailis.jollada.model.BlinnShader;
 import de.ailis.jollada.model.CameraInstance;
@@ -58,6 +64,7 @@ import de.ailis.jollada.model.FloatValue;
 import de.ailis.jollada.model.GeometryInstance;
 import de.ailis.jollada.model.GeometryLibrary;
 import de.ailis.jollada.model.Image;
+import de.ailis.jollada.model.ImageInstance;
 import de.ailis.jollada.model.ImageLibrary;
 import de.ailis.jollada.model.IntList;
 import de.ailis.jollada.model.LambertShader;
@@ -134,12 +141,6 @@ public class ColladaHandler extends DefaultHandler
 
     /** The current vertices */
     private Vertices vertices;
-
-    /** The current polygons index */
-    private int polygonsIndex;
-
-    /** The current polygon indices */
-    private int[][] polygonsIndices;
 
     /** The int array builder */
     private List<Integer> intArrayBuilder;
@@ -255,6 +256,18 @@ public class ColladaHandler extends DefaultHandler
     /** The current primitives builder. */
     private PrimitivesBuilder primitivesBuilder;
 
+    /** The current polygons builder. */
+    private PolygonsBuilder polygonsBuilder;
+
+    /** The current animation library. */
+    private AnimationLibrary animationLibrary;
+
+    /** The current animation. */
+    private Animation animation;
+
+    /** The current animation sampler. */
+    private AnimationSampler sampler;
+
 
     /**
      * Constructs a new parser.
@@ -287,7 +300,7 @@ public class ColladaHandler extends DefaultHandler
             {
                 case ROOT:
                     if (localName.equals("COLLADA"))
-                        enterElement(ParserMode.COLLADA);
+                        enterCOLLADA(attributes);
                     break;
 
                 case COLLADA:
@@ -306,7 +319,7 @@ public class ColladaHandler extends DefaultHandler
                     else if (localName.equals("library_visual_scenes"))
                         enterLibraryVisualScenes(attributes);
                     else if (localName.equals("library_animations"))
-                        enterElement(ParserMode.LIBRARY_ANIMATIONS);
+                        enterLibraryAnimations(attributes);
                     else if (localName.equals("scene")) enterScene();
                     break;
 
@@ -320,7 +333,8 @@ public class ColladaHandler extends DefaultHandler
                     break;
 
                 case IMAGE_INIT_FROM:
-                    if (localName.equals("ref")) enterImageInitFromRef();
+                    if (localName.equals("ref"))
+                        enterImageInitFromRef();
                     break;
 
                 case LIBRARY_MATERIALS:
@@ -367,6 +381,8 @@ public class ColladaHandler extends DefaultHandler
                         enterSampler2DWrapS();
                     else if (localName.equals("wrap_t"))
                         enterSampler2DWrapT();
+                    else if (localName.equals("instance_image"))
+                        enterInstanceImage(attributes);
                     break;
 
                 case TECHNIQUE_COMMON:
@@ -439,14 +455,12 @@ public class ColladaHandler extends DefaultHandler
                         enterMeshDataSource(attributes);
                     else if (localName.equals("vertices"))
                         enterVertices(attributes);
-                    /*
-                     * else if (localName.equals("polygons"))
-                     * enterPolygons(attributes);
-                     */
                     else if (localName.equals("triangles"))
                         enterTriangles(attributes);
                     else if (localName.equals("polylist"))
                         enterPolyList(attributes);
+                    else if (localName.equals("polygons"))
+                        enterPolygons(attributes);
                     break;
 
                 case MESH_DATA_SOURCE:
@@ -475,10 +489,10 @@ public class ColladaHandler extends DefaultHandler
                     break;
 
                 case POLYGONS:
-                    if (localName.equals("p"))
-                        enterPolygonsP();
-                    else if (localName.equals("input"))
+                    if (localName.equals("input"))
                         enterPrimitivesInput(attributes);
+                    else if (localName.equals("p"))
+                        enterPolygonsP();
                     break;
 
                 case POLYLIST:
@@ -497,26 +511,28 @@ public class ColladaHandler extends DefaultHandler
                         enterTrianglesP();
                     break;
 
-                // case LIBRARY_ANIMATIONS:
-                // if (localName.equals("animation"))
-                // enterAnimation(attributes);
-                // break;
-                //
-                // case ANIMATION:
-                // if (localName.equals("source"))
-                // enterAnimationDataSource(attributes);
-                // else if (localName.equals("animation"))
-                // enterAnimation(attributes);
-                // else if (localName.equals("sampler"))
-                // enterSampler(attributes);
-                // else if (localName.equals("channel"))
-                // enterChannel(attributes);
-                // break;
-                //
-                // case SAMPLER:
-                // if (localName.equals("input")) enterSamplerInput(attributes);
-                // break;
-                //
+                case LIBRARY_ANIMATIONS:
+                    if (localName.equals("animation"))
+                        enterAnimation(attributes);
+                    break;
+
+
+                case ANIMATION:
+                    if (localName.equals("animation"))
+                        enterAnimation(attributes);
+                    else if (localName.equals("source"))
+                        enterAnimationDataSource(attributes);
+                    else if (localName.equals("sampler"))
+                        enterSampler(attributes);
+                    else if (localName.equals("channel"))
+                        enterChannel(attributes);
+                    break;
+
+                case SAMPLER:
+                    if (localName.equals("input"))
+                        enterSamplerInput(attributes);
+                    break;
+
                 case LIBRARY_LIGHTS:
                     if (localName.equals("light")) enterLight(attributes);
                     break;
@@ -681,6 +697,7 @@ public class ColladaHandler extends DefaultHandler
         }
     }
 
+
     /**
      * @see DefaultHandler#endElement(String, String, String)
      */
@@ -825,10 +842,6 @@ public class ColladaHandler extends DefaultHandler
                 leaveTriangles();
                 break;
 
-            case POLYGONS_P:
-                leavePolygonsP();
-                break;
-
             case POLYLIST_VCOUNT:
                 leavePolyListVcount();
                 break;
@@ -841,9 +854,13 @@ public class ColladaHandler extends DefaultHandler
                 leavePolyList();
                 break;
 
-            // case POLYGONS:
-            // leavePolygons();
-            // break;
+            case POLYGONS_P:
+                leavePolygonsP();
+                break;
+
+            case POLYGONS:
+                leavePolygons();
+                break;
 
             case MESH:
                 leaveMesh();
@@ -857,19 +874,22 @@ public class ColladaHandler extends DefaultHandler
                 leaveLibraryGeometries();
                 break;
 
+            case ANIMATION_DATA_SOURCE:
+                leaveAnimationDataSource();
+                break;
 
-            // case ANIMATION_DATA_SOURCE:
-            // leaveAnimationDataSource();
-            // break;
-            //
-            // case SAMPLER:
-            // leaveSampler();
-            // break;
-            //
-            // case ANIMATION:
-            // leaveAnimation();
-            // break;
-            //
+            case SAMPLER:
+                leaveSampler();
+                break;
+
+            case ANIMATION:
+                leaveAnimation();
+                break;
+
+            case LIBRARY_ANIMATIONS:
+                leaveLibraryAnimations();
+                break;
+
             case LIGHT_COLOR:
                 leaveLightColor();
                 break;
@@ -1017,6 +1037,7 @@ public class ColladaHandler extends DefaultHandler
             case FLOAT:
             case PARAM_SEMANTIC:
             case FLOAT_PARAM:
+            case IMAGE_INIT_FROM:
             case IMAGE_INIT_FROM_REF:
             case FALLOFF_ANGLE:
             case FALLOFF_EXPONENT:
@@ -1028,7 +1049,7 @@ public class ColladaHandler extends DefaultHandler
             case SAMPLER2D_MINFILTER:
             case SAMPLER2D_WRAP_S:
             case SAMPLER2D_WRAP_T:
-                this.stringBuilder.append(ch, start, length);
+                if (this.stringBuilder != null) this.stringBuilder.append(ch, start, length);
                 break;
 
             case FLOAT_ARRAY:
@@ -1099,6 +1120,22 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
+     * Enters COLLADA element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterCOLLADA(final Attributes attributes)
+    {
+        final String version = attributes.getValue("version");
+       //if (!"1.5.0".equals(version))
+            //throw new ParserException("Only COLLADA 1.5.0 supported");
+        enterElement(ParserMode.COLLADA);
+    }
+
+
+    /**
      * Enters a library_images element.
      *
      * @param attributes
@@ -1146,6 +1183,7 @@ public class ColladaHandler extends DefaultHandler
         final String tmp = attributes.getValue("mips_generate");
         if (tmp != null)
             this.imageSourceBuilder.setGenerateMips(Boolean.valueOf(tmp));
+        this.stringBuilder = new StringBuilder();
         enterElement(ParserMode.IMAGE_INIT_FROM);
     }
 
@@ -1162,7 +1200,7 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
-     * Leaves image init_from element.
+     * Leaves image init_from ref element.
      */
 
     private void leaveImageInitFromRef()
@@ -1187,6 +1225,21 @@ public class ColladaHandler extends DefaultHandler
 
     private void leaveImageInitFrom()
     {
+        // If string builder is still there then we got no ref attribute and
+        // maybe we got an image with the old COLLADA 1.4 syntax.
+        if (this.stringBuilder != null)
+        {
+            final String text = this.stringBuilder.toString();
+            try
+            {
+                this.imageSourceBuilder.setRef(new URI(text));
+            }
+            catch (final URISyntaxException e)
+            {
+                throw new ParserException(text + " is not a valid URI: " + e, e);
+            }
+            this.stringBuilder = null;
+        }
         this.image.setSource(this.imageSourceBuilder.build());
         this.imageSourceBuilder = null;
         leaveElement();
@@ -1438,6 +1491,34 @@ public class ColladaHandler extends DefaultHandler
     {
         this.stringBuilder = new StringBuilder();
         enterElement(ParserMode.SAMPLER2D_WRAP_T);
+    }
+
+
+    /**
+     * Enters an instance_image element.
+     *
+     * @param attributes
+     *            The element attributes.
+     */
+
+    private void enterInstanceImage(final Attributes attributes)
+    {
+        final String urlString = attributes.getValue("url");
+        URI url;
+        try
+        {
+            url = new URI(urlString);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(urlString + " is not a valid URI: " + e,
+                e);
+        }
+        final ImageInstance imageInstance = new ImageInstance(url);
+        imageInstance.setName(attributes.getValue("name"));
+        imageInstance.setSid(attributes.getValue("sid"));
+        ((Sampler2DParam) this.profileParam).setImageInstance(imageInstance);
+        enterElement(ParserMode.INSTANCE_IMAGE);
     }
 
 
@@ -1937,8 +2018,8 @@ public class ColladaHandler extends DefaultHandler
     {
         final int count = Integer.parseInt(attributes.getValue("count"));
         final NameArray array = this.nameArray = new NameArray(count);
-        this.floatArray.setId(attributes.getValue("id"));
-        this.floatArray.setName(attributes.getValue("name"));
+        array.setId(attributes.getValue("id"));
+        array.setName(attributes.getValue("name"));
         this.chunkStringReader = new ChunkStringReader()
         {
             private int index = 0;
@@ -2079,6 +2160,7 @@ public class ColladaHandler extends DefaultHandler
         }
         final UnsharedInput input = new UnsharedInput(semantic, source);
         this.vertices.getInputs().add(input);
+        enterElement(ParserMode.VERTICES_INPUT);
     }
 
 
@@ -2299,24 +2381,22 @@ public class ColladaHandler extends DefaultHandler
 
 
     /**
-     * Enters a polygons element.
+     * Enters a polylist element.
      *
      * @param attributes
      *            The element attributes
      */
 
-    // private void enterPolygons(final Attributes attributes)
-    // {
-    // final String material = attributes.getValue("material");
-    // final int count = Integer.parseInt(attributes.getValue("count"));
-    // this.polygonsIndices = new int[count][];
-    // this.polygonsIndex = 0;
-    // this.primitives = this.polygons = new Polygons();
-    // this.polygons.setMaterial(material);
-    // this.intArrayBuilder = new ArrayList<Integer>();
-    // this.primitivesBuilder = this.polygonsBuilder;
-    // enterElement(ParserMode.POLYGONS);
-    // }
+    private void enterPolygons(final Attributes attributes)
+    {
+        this.polygonsBuilder = new PolygonsBuilder();
+        this.polygonsBuilder.setCount(Integer.parseInt(attributes
+                .getValue("count")));
+        this.polygonsBuilder.setMaterial(attributes.getValue("material"));
+        this.polygonsBuilder.setName(attributes.getValue("name"));
+        this.primitivesBuilder = this.polygonsBuilder;
+        enterElement(ParserMode.POLYGONS);
+    }
 
 
     /**
@@ -2325,7 +2405,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterPolygonsP()
     {
-        final List<Integer> builder = this.intArrayBuilder;
+        final List<Integer> builder = this.intArrayBuilder = new ArrayList<Integer>();
         this.chunkIntReader = new ChunkIntReader()
         {
             @Override
@@ -2346,12 +2426,11 @@ public class ColladaHandler extends DefaultHandler
     {
         this.chunkIntReader.finish();
         this.chunkIntReader = null;
-        int size = this.intArrayBuilder.size();
-        final int[] data = this.polygonsIndices[this.polygonsIndex] = new int[size];
-        while ((--size) >= 0)
-            data[size] = this.intArrayBuilder.get(size);
-        this.polygonsIndex++;
-        this.intArrayBuilder.clear();
+        final int size = this.intArrayBuilder.size();
+        final IntList data = new IntList(size);
+        data.setValues(this.intArrayBuilder);
+        this.polygonsBuilder.getData().add(data);
+        this.intArrayBuilder = null;
         leaveElement();
     }
 
@@ -2360,16 +2439,13 @@ public class ColladaHandler extends DefaultHandler
      * Leaves a polygons element.
      */
 
-    // private void leavePolygons()
-    // {
-    // this.polygons.setIndices(this.polygonsIndices);
-    // this.mesh.getPrimitiveGroups().add(this.polygons);
-    // this.polygonsIndices = null;
-    // this.intArrayBuilder = null;
-    // this.primitives = this.polygons = null;
-    // this.primitivesBuilder = null;
-    // leaveElement();
-    // }
+    private void leavePolygons()
+    {
+        this.meshBuilder.getPrimitives().add(this.polygonsBuilder.build());
+        this.polygonsBuilder = null;
+        this.primitivesBuilder = null;
+        leaveElement();
+    }
 
 
     /**
@@ -2408,151 +2484,185 @@ public class ColladaHandler extends DefaultHandler
     }
 
 
-    // /**
-    // * Enters a animation element
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterAnimation(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // if (this.animationStack == null)
-    // this.animationStack = new Stack<ColladaAnimation>();
-    // else
-    // this.animationStack.push(this.animation);
-    // this.animation = new ColladaAnimation(id);
-    // enterElement(ParserMode.ANIMATION);
-    // }
-    //
-    //
-    // /**
-    // * Enters a animation data source element
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterAnimationDataSource(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // this.dataSource = new DataSource(id);
-    // enterElement(ParserMode.ANIMATION_DATA_SOURCE);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a animation data source element.
-    // */
-    //
-    // private void leaveAnimationDataSource()
-    // {
-    // this.animation.getSources().add(this.dataSource);
-    // this.dataSource = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Enters a sampler element
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterSampler(final Attributes attributes)
-    // {
-    // final String id = attributes.getValue("id");
-    // this.sampler = new ColladaSampler(id);
-    // enterElement(ParserMode.SAMPLER);
-    // }
-    //
-    //
-    // /**
-    // * Enters a channel element
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterChannel(final Attributes attributes)
-    // {
-    // final String sourceStr = attributes.getValue("source");
-    // URI source;
-    // try
-    // {
-    // source = new URI(sourceStr);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(sourceStr + " is not a valid URI: " + e,
-    // e);
-    // }
-    // final String target = attributes.getValue("target");
-    // this.animation.getChannels().add(new Channel(source, target));
-    // enterElement(ParserMode.CHANNEL);
-    // }
-    //
-    //
-    // /**
-    // * Enters sampler input element.
-    // *
-    // * @param attributes
-    // * The element attributes
-    // */
-    //
-    // private void enterSamplerInput(final Attributes attributes)
-    // {
-    // final Semantic semantic = Semantic.valueOf(attributes
-    // .getValue("semantic"));
-    // final String text = attributes.getValue("source");
-    // URI source;
-    // try
-    // {
-    // source = new URI(text);
-    // }
-    // catch (final URISyntaxException e)
-    // {
-    // throw new ParserException(text + " is not a valid URI: " + e, e);
-    // }
-    // final UnsharedInput input = new UnsharedInput(semantic, source);
-    // this.sampler.getInputs().add(input);
-    // }
-    //
-    //
-    // /**
-    // * Leaves a sampler element.
-    // */
-    //
-    // private void leaveSampler()
-    // {
-    // this.animation.getSamplers().add(this.sampler);
-    // this.sampler = null;
-    // leaveElement();
-    // }
-    //
-    //
-    // /**
-    // * Leaves animation element
-    // */
-    //
-    // private void leaveAnimation()
-    // {
-    // if (this.animationStack.empty())
-    // {
-    // this.document.getLibraryAnimations().add(this.animation);
-    // this.animation = null;
-    // this.animationStack = null;
-    // }
-    // else
-    // {
-    // final ColladaAnimation parentAnimation = this.animationStack.pop();
-    // parentAnimation.getAnimations().add(this.animation);
-    // this.animation = parentAnimation;
-    // }
-    // leaveElement();
-    // }
+    /**
+     * Enters a library_animations element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterLibraryAnimations(final Attributes attributes)
+    {
+        this.animationLibrary = new AnimationLibrary();
+        this.animationLibrary.setName(attributes.getValue("name"));
+        this.animationLibrary.setId(attributes.getValue("id"));
+        enterElement(ParserMode.LIBRARY_ANIMATIONS);
+    }
+
+
+    /**
+     * Enters a animation element
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterAnimation(final Attributes attributes)
+    {
+        final Animation animation = new Animation();
+        animation.setId(attributes.getValue("id"));
+        animation.setName(attributes.getValue("name"));
+
+        if (this.animation == null)
+            this.animationLibrary.getAnimations().add(animation);
+        else
+            this.animation.getAnimations().add(animation);
+
+        this.animation = animation;
+
+        enterElement(ParserMode.ANIMATION);
+    }
+
+
+    /**
+     * Enters a animation data source element
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterAnimationDataSource(final Attributes attributes)
+    {
+        final String id = attributes.getValue("id");
+        this.dataSource = new DataFlowSource(id);
+        this.dataSource.setName(attributes.getValue("name"));
+        enterElement(ParserMode.ANIMATION_DATA_SOURCE);
+    }
+
+
+    /**
+     * Leaves a animation data source element.
+     */
+
+    private void leaveAnimationDataSource()
+    {
+        this.animation.getSources().add(this.dataSource);
+        this.dataSource = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a sampler element
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterSampler(final Attributes attributes)
+    {
+        this.sampler = new AnimationSampler();
+        this.sampler.setId(attributes.getValue("id"));
+        final String preBehavior = attributes.getValue("pre_behavior");
+        if (preBehavior != null)
+            this.sampler.setPreBehavior(AnimationBehavior.valueOf(preBehavior));
+        final String postBehavior = attributes.getValue("post_behavior");
+        if (postBehavior != null)
+            this.sampler.setPostBehavior(AnimationBehavior
+                .valueOf(postBehavior));
+        enterElement(ParserMode.SAMPLER);
+    }
+
+
+    /**
+     * Enters sampler input element.
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterSamplerInput(final Attributes attributes)
+    {
+        final String semantic = attributes.getValue("semantic");
+        final String text = attributes.getValue("source");
+        URI source;
+        try
+        {
+            source = new URI(text);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(text + " is not a valid URI: " + e, e);
+        }
+        final UnsharedInput input = new UnsharedInput(semantic, source);
+        this.sampler.getInputs().add(input);
+        enterElement(ParserMode.SAMPLER_INPUT);
+    }
+
+
+    /**
+     * Enters a channel element
+     *
+     * @param attributes
+     *            The element attributes
+     */
+
+    private void enterChannel(final Attributes attributes)
+    {
+        final String sourceStr = attributes.getValue("source");
+        URI source;
+        try
+        {
+            source = new URI(sourceStr);
+        }
+        catch (final URISyntaxException e)
+        {
+            throw new ParserException(sourceStr + " is not a valid URI: " + e,
+                e);
+        }
+        final String target = attributes.getValue("target");
+        this.animation.getChannels().add(new AnimationChannel(source, target));
+        enterElement(ParserMode.CHANNEL);
+    }
+
+
+    /**
+     * Leaves a sampler element.
+     */
+
+    private void leaveSampler()
+    {
+        this.animation.getSamplers().add(this.sampler);
+        this.sampler = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves animation element
+     */
+
+    private void leaveAnimation()
+    {
+        final Element parent = this.animation.getParent();
+        if (parent instanceof Animation)
+            this.animation = (Animation) parent;
+        else
+            this.animation = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Leaves a library_animations element.
+     */
+
+    private void leaveLibraryAnimations()
+    {
+        this.document.getAnimationLibraries().add(this.animationLibrary);
+        this.animationLibrary = null;
+        leaveElement();
+    }
 
 
     /**

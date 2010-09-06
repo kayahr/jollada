@@ -795,7 +795,7 @@ public class FullTest
 
         // Check primitives
         final PrimitiveElements primitives = mesh.getPrimitives();
-        assertEquals(2, primitives.size());
+        assertEquals(3, primitives.size());
 
         // Check triangles
         final Triangles triangles = (Triangles) primitives.get(0);
@@ -860,6 +860,40 @@ public class FullTest
         assertEquals(1, data.getValue(6));
         assertEquals(2, data.getValue(7));
         assertEquals(3, data.getValue(8));
+
+        // Check polygons
+        final Polygons polygons = (Polygons) primitives.get(2);
+        assertSame(doc, polygons.getDocument());
+        assertSame(mesh, polygons.getParent());
+        assertEquals(3, polygons.getCount());
+        assertEquals("Polygons", polygons.getName());
+        assertEquals("material-3", polygons.getMaterial());
+        primInputs = polygons.getInputs();
+        assertEquals(2, primInputs.size());
+        primInput = primInputs.get(1);
+        assertSame(doc, primInput.getDocument());
+        assertSame(polygons, primInput.getParent());
+        assertEquals(new URI("#geometry-1-floats"), primInput.getSource());
+        assertEquals("STUFF", primInput.getSemantic());
+        assertEquals(2, primInput.getOffset());
+        assertEquals(1, primInput.getSet().intValue());
+        final List<IntList> polygonData = polygons.getData();
+        assertEquals(3, polygonData.size());
+        data = polygonData.get(0);
+        assertEquals(2, data.getSize());
+        assertEquals(0, data.getValue(0));
+        assertEquals(1, data.getValue(1));
+        data = polygonData.get(1);
+        assertEquals(3, data.getSize());
+        assertEquals(0, data.getValue(0));
+        assertEquals(1, data.getValue(1));
+        assertEquals(2, data.getValue(2));
+        data = polygonData.get(2);
+        assertEquals(4, data.getSize());
+        assertEquals(0, data.getValue(0));
+        assertEquals(1, data.getValue(1));
+        assertEquals(2, data.getValue(2));
+        assertEquals(3, data.getValue(3));
     }
 
 
@@ -1076,5 +1110,145 @@ public class FullTest
         assertEquals("Scene", instance.getName());
         assertEquals("scene", instance.getSid());
         assertEquals(new URI("#visual-scene-1"), instance.getUrl());
+    }
+
+
+    /**
+     * Tests the animation libraries.
+     *
+     * @throws Exception
+     *             When an error occurs.
+     */
+
+    @Test
+    public void testAnimationLibraries() throws Exception
+    {
+        // Check geometry libraries
+        final AnimationLibraries animationLibs = doc.getAnimationLibraries();
+        assertEquals(1, animationLibs.size());
+
+        // Check animation library
+        final AnimationLibrary animationLib = animationLibs.get(0);
+        assertEquals("anim-lib-1", animationLib.getId());
+        assertEquals("Animation Library 1", animationLib.getName());
+        assertSame(doc, animationLib.getDocument());
+        assertSame(doc, animationLib.getParent());
+
+        // Check animations
+        final Animations animations = animationLib.getAnimations();
+        assertEquals(1, animations.size());
+
+        // Check parent animation
+        final Animation parentAnimation = animations.get(0);
+        assertEquals("anim-1", parentAnimation.getId());
+        assertEquals("Animation 1", parentAnimation.getName());
+        assertSame(doc, parentAnimation.getDocument());
+        assertSame(animationLib, parentAnimation.getParent());
+        assertEquals(1, parentAnimation.getAnimations().size());
+        assertEquals(0, parentAnimation.getSources().size());
+        assertEquals(0, parentAnimation.getSamplers().size());
+        assertEquals(0, parentAnimation.getChannels().size());
+
+        // Check child animation
+        final Animation animation = parentAnimation.getAnimations().get(0);
+        assertEquals("sub-anim", animation.getId());
+        assertEquals("Sub animation", animation.getName());
+        assertSame(doc, animation.getDocument());
+        assertSame(parentAnimation, animation.getParent());
+
+        // Check sources
+        final DataFlowSources sources = animation.getSources();
+        assertEquals(2, sources.size());
+
+        // Check data flow source
+        final DataFlowSource source = sources.get(0);
+        assertEquals("anim-source-1", source.getId());
+        assertEquals("Animation Source 1", source.getName());
+        assertSame(doc, source.getDocument());
+        assertSame(animation, source.getParent());
+
+        // Check array
+        final Array array = source.getArray();
+        assertEquals("anim-floats", array.getId());
+        assertEquals("Animation Floats", array.getName());
+        assertSame(doc, array.getDocument());
+        assertSame(source, array.getParent());
+        assertEquals(5, array.getCount());
+
+        // Check float array
+        final FloatArray floatArray = (FloatArray) array;
+        assertEquals(3, floatArray.getDigits());
+        assertEquals(30, floatArray.getMagnitude());
+        assertEquals(1, floatArray.getValue(0), 0.001);
+        assertEquals(2, floatArray.getValue(1), 0.001);
+        assertEquals(3, floatArray.getValue(2), 0.001);
+        assertEquals(4, floatArray.getValue(3), 0.001);
+        assertEquals(5, floatArray.getValue(4), 0.001);
+
+        // Check common technique
+        final CommonSourceTechnique technique = source.getCommonTechnique();
+        assertSame(doc, technique.getDocument());
+        assertSame(source, technique.getParent());
+
+        // Check accessor
+        final Accessor accessor = technique.getAccessor();
+        assertSame(doc, accessor.getDocument());
+        assertSame(technique, accessor.getParent());
+        assertEquals(5, accessor.getCount());
+        assertEquals(0, accessor.getOffset());
+        assertEquals(1, accessor.getStride());
+        assertEquals(new URI("#anim-floats"), accessor.getSource());
+
+        // Check accessor params
+        final DataFlowParams params = accessor.getParams();
+        assertEquals(1, params.size());
+
+        // Check accessor param
+        final DataFlowParam param = params.get(0);
+        assertSame(doc, param.getDocument());
+        assertSame(accessor, param.getParent());
+        assertEquals("INPUT", param.getSemantic());
+        assertEquals("A", param.getName());
+        assertEquals("anim-floats-param", param.getSid());
+        assertEquals("float", param.getType());
+
+        // Check samplers
+        final AnimationSamplers samplers = animation.getSamplers();
+        assertEquals(1, samplers.size());
+
+        // Check sampler
+        final AnimationSampler sampler = samplers.get(0);
+        assertSame(doc, sampler.getDocument());
+        assertSame(animation, sampler.getParent());
+        assertEquals("anim-sampler", sampler.getId());
+        assertEquals(AnimationBehavior.GRADIENT, sampler.getPostBehavior());
+        assertEquals(AnimationBehavior.CYCLE, sampler.getPreBehavior());
+
+        // Check sampler inputs
+        final UnsharedInputs inputs = sampler.getInputs();
+        assertEquals(1, inputs.size());
+
+        // Check vertex input
+        final UnsharedInput input = inputs.get(0);
+        assertSame(doc, input.getDocument());
+        assertSame(sampler, input.getParent());
+        assertEquals("SEMANTIC", input.getSemantic());
+        assertEquals(new URI("#anim-source"), input.getSource());
+
+        // Check channels
+        final AnimationChannels channels = animation.getChannels();
+        assertEquals(2, channels.size());
+
+         // Check channel
+         AnimationChannel channel = channels.get(0);
+         assertSame(doc, channel.getDocument());
+         assertSame(animation, channel.getParent());
+         assertEquals(new URI("#source1"), channel.getSource());
+         assertEquals("target/X", channel.getTarget());
+         channel = channels.get(1);
+         assertSame(doc, channel.getDocument());
+         assertSame(animation, channel.getParent());
+         assertEquals(new URI("#source2"), channel.getSource());
+         assertEquals("target/Y", channel.getTarget());
     }
 }

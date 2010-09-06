@@ -91,7 +91,12 @@ public final class CommonNewParam extends Element implements ScopeIdentifiable
     {
         if (parameter == null)
             throw new IllegalArgumentException("parameter must not be null");
-        this.parameter = parameter;
+        if (parameter != this.parameter)
+        {
+            if (this.parameter != null) removeChild(this.parameter);
+            this.parameter = parameter;
+            addChild(parameter);
+        }
     }
 
 

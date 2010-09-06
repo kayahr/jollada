@@ -76,6 +76,9 @@ enum ParserMode {
     /** Parser is in sampler 2D wrap_t element */
     SAMPLER2D_WRAP_T("wrap_t"),
 
+    /** Parser is in instance_image element. */
+    INSTANCE_IMAGE("instance_image"),
+
     /** Parser is in technique element */
     TECHNIQUE_COMMON("technique"),
 
@@ -198,6 +201,9 @@ enum ParserMode {
 
     /** Parser is in sampler element */
     SAMPLER("sampler"),
+
+    /** Parser is in sampler input element */
+    SAMPLER_INPUT("input"),
 
     /** Parser is in channel element */
     CHANNEL("channel"),
