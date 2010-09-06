@@ -1128,7 +1128,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterCOLLADA(final Attributes attributes)
     {
-        final String version = attributes.getValue("version");
+        //final String version = attributes.getValue("version");
        //if (!"1.5.0".equals(version))
             //throw new ParserException("Only COLLADA 1.5.0 supported");
         enterElement(ParserMode.COLLADA);
