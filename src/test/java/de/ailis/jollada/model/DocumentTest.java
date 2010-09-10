@@ -15,14 +15,7 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import de.ailis.jollada.model.Document;
-import de.ailis.jollada.model.Elements;
-import de.ailis.jollada.model.Node;
-import de.ailis.jollada.model.Scene;
-import de.ailis.jollada.model.Version;
-import de.ailis.jollada.model.VisualScene;
-import de.ailis.jollada.model.VisualSceneLibrary;
-import de.ailis.jollada.model.VisualScenes;
+import de.ailis.jollada.exceptions.DocumentException;
 
 
 /**
@@ -253,7 +246,7 @@ public class DocumentTest
      * Tests register() method with already registered element.
      */
 
-    @Test(expected=InternalError.class)
+    @Test(expected=DocumentException.class)
     public void testInvalidRegister()
     {
         final Document document = new Document();
@@ -311,7 +304,7 @@ public class DocumentTest
      * Tests unregister() method with not-registered element.
      */
 
-    @Test(expected = InternalError.class)
+    @Test(expected = DocumentException.class)
     public void testInvalidUnregister()
     {
         final Document document = new Document();
