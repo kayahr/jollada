@@ -35,6 +35,7 @@ import de.ailis.jollada.builders.PolygonsBuilder;
 import de.ailis.jollada.builders.PrimitivesBuilder;
 import de.ailis.jollada.builders.ProjectionBuilder;
 import de.ailis.jollada.builders.TrianglesBuilder;
+import de.ailis.jollada.exceptions.ParserException;
 import de.ailis.jollada.model.Accessor;
 import de.ailis.jollada.model.Animation;
 import de.ailis.jollada.model.AnimationBehavior;

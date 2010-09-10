@@ -9,6 +9,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.ailis.jollada.exceptions.DocumentException;
+
 
 /**
  * COLLADA document.
@@ -109,7 +111,7 @@ public final class Document extends Element implements AssetElement
 
         final String id = element.id;
         if (id != null && this.idMap.put(id, element) != null)
-            throw new InternalError(
+            throw new DocumentException(
                 "Element with id '" + id + "' already registered");
     }
 
@@ -128,7 +130,7 @@ public final class Document extends Element implements AssetElement
 
         final String id = element.id;
         if (id != null && this.idMap.remove(id) == null)
-            throw new InternalError(
+            throw new DocumentException(
                 "Element with id '" + id + "' not registered");
     }
 

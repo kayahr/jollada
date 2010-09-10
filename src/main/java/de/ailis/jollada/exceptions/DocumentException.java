@@ -3,17 +3,17 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.jollada.reader;
+package de.ailis.jollada.exceptions;
 
 
 /**
- * Thrown when something goes wrong in the parser
+ * Thrown when an error in the COLLADA document has been found.
  *
  * @author Klaus Reimer (k@ailis.de)
  * @version $Revision: 84727 $
  */
 
-public class ParserException extends RuntimeException
+public class DocumentException extends JolladaException
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1;
@@ -23,7 +23,7 @@ public class ParserException extends RuntimeException
      * Constructor
      */
 
-    public ParserException()
+    public DocumentException()
     {
         super();
     }
@@ -37,7 +37,7 @@ public class ParserException extends RuntimeException
      *            The forwarded exception
      */
 
-    public ParserException(final String detailMessage, final Throwable throwable)
+    public DocumentException(final String detailMessage, final Throwable throwable)
     {
         super(detailMessage, throwable);
     }
@@ -50,7 +50,7 @@ public class ParserException extends RuntimeException
      *            The detailed error message
      */
 
-    public ParserException(final String detailMessage)
+    public DocumentException(final String detailMessage)
     {
         super(detailMessage);
     }
