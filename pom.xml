@@ -1,21 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
-  <parent>
-    <artifactId>maven-java</artifactId>
-    <groupId>de.ailis.maven</groupId>
-    <version>7</version>
-  </parent>   
   
   <groupId>de.ailis.jollada</groupId>
   <artifactId>jollada</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Jollada</name>
-  <url>http://www.ailis.de/~k/projects/xadrian/</url>
   <description>Collada DOM API for Java</description>
   <inceptionYear>2010</inceptionYear>
+  <url>http://kayahr.github.com/${project.artifactId}/</url>
   <organization>
     <name>Klaus Reimer</name>
     <url>http://www.ailis.de/~k/</url>
@@ -28,46 +22,82 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+    
   <developers>
     <developer>
       <id>k</id>
       <name>Klaus Reimer</name>
       <email>k@ailis.de</email>
       <roles>
-        <role>Architect</role>
+        <role>Developer</role>
       </roles>
       <timezone>+1</timezone>
       <url>http://www.ailis.de/~k/</url>
     </developer>        
   </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <releasesUrl>http://nexus.ailis.de/content/repositories/releases/de/ailis/${project.artifactId}/${project.artifactId}/${project.version}</releasesUrl>
+    <snapshotsUrl>http://nexus.ailis.de/content/repositories/snapshots/de/ailis/${project.artifactId}/${project.artifactId}</snapshotsUrl>
+  </properties>
   
   <scm>
-    <url>http://www.ailis.de/~k/hg/java/jollada</url>
-    <connection>scm:hg:http://www.ailis.de/~k/hg/java/jollada</connection>
-    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/jollada</developerConnection>
-  </scm>  
+    <connection>scm:git:git://github.com/kayahr/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kayahr/${project.artifactId}.git</developerConnection>
+    <url>http://github.com/kayahr/${project.artifactId}</url>
+  </scm>
+       
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/kayahr/${project.artifactId}/issues</url>
+  </issueManagement>
   
-  <repositories>  
+  <build>
+    <plugins>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>  
+  
+  <repositories>
     <repository>
       <id>ailis-releases</id>
       <name>Ailis Maven Releases</name>
-      <url>http://www.ailis.de/nexus/content/groups/public/</url>
+      <url>http://nexus.ailis.de/content/groups/public/</url>
+      <releases><enabled>true</enabled></releases>
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
-    <repository>
+    <repository> 
       <id>ailis-snapshots</id>
       <name>Ailis Maven Snapshots</name>
-      <url>http://www.ailis.de/nexus/content/groups/public-snapshots/</url>
+      <url>http://nexus.ailis.de/content/groups/public-snapshots/</url>
       <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
-   
+
   <distributionManagement>
-    <site>
-      <id>project-website</id>
-      <url>scpexe://k@ailis.de/home/k/public_html/projects/jollada/</url>
-    </site>
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>http://nexus.ailis.de/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>http://nexus.ailis.de/content/repositories/snapshots</url>
+    </snapshotRepository>    
   </distributionManagement>
   
   <dependencies>
@@ -86,7 +116,7 @@
     <dependency>
     	<groupId>de.ailis.gramath</groupId>
     	<artifactId>gramath</artifactId>
-    	<version>1.0.0-SNAPSHOT</version>
+    	<version>1.0.1</version>
     </dependency>
   </dependencies>
 </project>
