@@ -4,7 +4,7 @@
   
   <groupId>de.ailis.jollada</groupId>
   <artifactId>jollada</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Jollada</name>
   <description>Collada DOM API for Java</description>
